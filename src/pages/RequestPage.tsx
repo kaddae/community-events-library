@@ -53,9 +53,11 @@ export default function RequestPage() {
     );
   }
 
+  const req = <span className="font-bold text-primary" aria-hidden> *</span>;
+
   const field = (k: keyof typeof blank, label: string, type = 'text', required = true) => (
     <div className="flex flex-col gap-1.5">
-      <Label htmlFor={k}>{label}{!required && <span className="text-muted-foreground"> (optional)</span>}</Label>
+      <Label htmlFor={k}>{label}{required && req}</Label>
       <Input id={k} type={type} required={required} value={f[k]} onChange={set(k)} />
     </div>
   );
@@ -80,12 +82,13 @@ export default function RequestPage() {
       </section>
 
       <form onSubmit={onSubmit} className="flex flex-col gap-5">
+        <p className="text-muted-foreground">Fields marked <span className="font-bold text-primary">*</span> are needed. Everything else is up to you.</p>
         <h2 className="shelf-rule text-2xl">About you</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {field('firstName', 'First name')}
           {field('lastName', 'Last name')}
           {field('email', 'Email', 'email')}
-          {field('phone', 'Phone', 'tel')}
+          {field('phone', 'Phone', 'tel', false)}
         </div>
         {field('affiliation', 'Group, block, or organization', 'text', false)}
 
@@ -93,16 +96,16 @@ export default function RequestPage() {
         {field('eventName', 'Name of the gathering')}
         <div className="grid gap-4 sm:grid-cols-3">
           {field('eventDate', 'Date', 'date')}
-          {field('neededFrom', 'Pick up on', 'date')}
+          {field('neededFrom', "Day you'd like to pick up", 'date')}
           {field('returnBy', 'Bring back by', 'date')}
         </div>
-        {field('pickupWindow', 'When can you pick up?')}
+        {field('pickupWindow', 'What days/times work best for you?', 'text', false)}
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="description">What's the gathering?</Label>
-          <Textarea id="description" required rows={3} value={f.description} onChange={set('description')} />
+          <Textarea id="description" rows={3} value={f.description} onChange={set('description')} />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="notes">Anything else the librarians should know <span className="text-muted-foreground">(optional)</span></Label>
+          <Label htmlFor="notes">Anything else the librarians should know</Label>
           <Textarea id="notes" rows={2} value={f.notes} onChange={set('notes')} />
         </div>
         {error && <p className="font-semibold text-destructive" role="alert">{error}</p>}

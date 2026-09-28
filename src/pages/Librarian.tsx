@@ -128,7 +128,7 @@ function Requests() {
           <article key={g.id} className="stamp-border">
             <header className="hairline flex flex-wrap items-baseline justify-between gap-2 px-3 py-2.5">
               <h2 className="text-xl">{g.eventName}</h2>
-              <span className="text-sm text-muted-foreground">{g.eventDate} · pickup {g.neededFrom}, {g.pickupWindow} · back {g.returnBy}</span>
+              <span className="text-sm text-muted-foreground">{g.eventDate} · pickup {g.neededFrom}{g.pickupWindow && `, ${g.pickupWindow}`} · back {g.returnBy}</span>
             </header>
             <div className="flex flex-col gap-1 px-3 py-2.5">
               <p className="font-semibold">
@@ -137,7 +137,8 @@ function Requests() {
                 {g.host.example && <span className="font-normal text-muted-foreground"> (example)</span>}
               </p>
               <p className="text-sm">
-                <a className="text-secondary underline underline-offset-4" href={`mailto:${g.host.email}?subject=${encodeURIComponent(g.eventName)}`}>Reply to {g.host.email}</a> · {g.host.phone}
+                <a className="text-secondary underline underline-offset-4" href={`mailto:${g.host.email}?subject=${encodeURIComponent(g.eventName)}`}>Reply to {g.host.email}</a>
+                {g.host.phone && ` · ${g.host.phone}`}
               </p>
               <p>{g.description}</p>
               {g.notes && <p className="text-muted-foreground">Note: {g.notes}</p>}
