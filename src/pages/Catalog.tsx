@@ -6,6 +6,8 @@ import { copy } from '@/content/copy';
 export default function Catalog() {
   const items = useLibrary((s) => s.items);
   const lines = useLibrary((s) => s.lines);
+  const status = useLibrary((s) => s.status);
+  const loadError = useLibrary((s) => s.loadError);
   const shelf = items.filter((i) => i.status !== 'retired');
   const onShelf = shelf.reduce((n, i) => n + availableFor(i, lines), 0);
   const total = shelf.reduce((n, i) => n + i.quantityTotal, 0);
@@ -21,7 +23,13 @@ export default function Catalog() {
         <p className="label-caps mt-4 text-secondary">{onShelf} of {total} on the shelf</p>
       </section>
 
-      {shelf.length === 0 && <p className="text-lg">{copy.home.emptyShelf}</p>}
+      {status === 'loading' && <p className="text-lg text-muted-foreground">Checking the shelf…</p>}
+      {status === 'error' && (
+        <p className="text-lg" role="alert">
+          The shelf didn't load ({loadError}). Try again in a minute, or write {copy.shared.librarianEmail}.
+        </p>
+      )}
+      {status === 'ready' && shelf.length === 0 && <p className="text-lg">{copy.home.emptyShelf}</p>}
 
       {CATEGORIES.map((cat) => {
         const group = shelf.filter((i) => i.category === cat);

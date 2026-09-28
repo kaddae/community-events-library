@@ -8,7 +8,7 @@ import { copy } from '@/content/copy';
 export default function Shell({ children }: { children: ReactNode }) {
   const cart = useLibrary((s) => s.cart);
   const persona = useLibrary((s) => s.persona);
-  const setPersona = useLibrary((s) => s.setPersona);
+  const signOut = useLibrary((s) => s.signOut);
   const { pathname } = useLocation();
   const count = cart.reduce((n, c) => n + c.quantity, 0);
 
@@ -23,7 +23,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         <div className="bg-secondary text-secondary-foreground">
           <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-1.5 text-sm">
             <Link to="/librarian" className="font-semibold underline underline-offset-4">Librarian dashboard</Link>
-            <button onClick={() => setPersona('host')} className="min-h-10 underline underline-offset-4">Sign out</button>
+            <button onClick={() => { void signOut(); }} className="min-h-10 underline underline-offset-4">Sign out</button>
           </div>
         </div>
       )}

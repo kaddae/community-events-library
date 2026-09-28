@@ -12,7 +12,15 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 - **Reflection form** (`#/reflect/<token>`): three fields. The answers go straight onto the item's biography with the host's first name and gathering.
 - **About**: who keeps the shelf.
 
-Right now all data lives in the browser (seeded, saved in localStorage). The librarian sign-in is a stand-in. Supabase (database, magic-link auth) and Resend (librarian notification, reflection invite) come in the next pass.
+## Setup (Supabase)
+
+With `SUPABASE_URL` and `SUPABASE_ANON_KEY` set (see `.env.example`), the app uses one shared database. Without them it runs on seeded preview data saved in this browser.
+
+1. Run `supabase/migrations/0001_schema.sql`, then `0002_seed.sql`, in order.
+2. Authentication → Providers: turn on Email. Under URL Configuration, set Site URL to the address you use day to day. Add `https://<preview-host>/**` and `https://<published-host>/**` to Redirect URLs. The librarian sign-in page shows the exact line to paste.
+3. Librarians are rows in `librarian_allowlist`. To add someone, run a new migration (or SQL) with `insert into public.librarian_allowlist (email, name) values ('them@example.com', 'Their name');`. Delete the row to remove them.
+
+Hosts' contact details can be read only by signed-in librarians on the allowlist. The public can read the shelf and the biographies, and can call three functions: send a request, read a reflection prompt, and leave a reflection. Magic links only work in the same browser that asked for them.
 
 ## Editing the words
 

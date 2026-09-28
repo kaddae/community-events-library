@@ -10,7 +10,12 @@ export default function ItemDetail() {
   const items = useLibrary((s) => s.items);
   const lines = useLibrary((s) => s.lines);
   const reflections = useLibrary((s) => s.reflections);
+  const status = useLibrary((s) => s.status);
   const item = items.find((i) => i.slug === slug);
+
+  if (!item && status === 'loading') {
+    return <p className="text-lg text-muted-foreground">Checking the shelf…</p>;
+  }
 
   if (!item) {
     return (

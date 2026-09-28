@@ -25,16 +25,22 @@ export default function RequestPage() {
 
   const set = (k: keyof typeof blank) => (e: { target: { value: string } }) => setF({ ...f, [k]: e.target.value });
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault();
+    setError('');
     if (f.returnBy && f.neededFrom && f.returnBy < f.neededFrom) {
       setError('The return date comes before the pickup date — check those two.');
       return;
     }
     setSending(true);
     const { firstName, lastName, email, phone, affiliation, ...event } = f;
-    const id = submitRequest({ host: { firstName, lastName, email, phone, affiliation }, ...event });
-    navigate(`/request/sent/${id}`);
+    try {
+      const id = await submitRequest({ host: { firstName, lastName, email, phone, affiliation }, ...event });
+      navigate(`/request/sent/${id}`);
+    } catch (err) {
+      setError(`That didn't go through: ${(err as Error).message} Try again, or write the librarians at ${copy.shared.librarianEmail}.`);
+      setSending(false);
+    }
   }
 
   if (cart.length === 0) {
