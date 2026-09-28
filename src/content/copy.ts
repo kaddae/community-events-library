@@ -5,21 +5,21 @@
 export const copy = {
   shared: {
     siteName: 'Community Events Lending Library',
-    placeLine: 'New Haven · Civic Works Department + GROUP PROJECT',
-    stewardLine: 'Kept by the librarians at GROUP PROJECT.',
+    placeLine: 'New Haven · GROUP PROJECT x Civic Works Department',
+    stewardLine: 'Kept up by the team at GROUP PROJECT.',
     librarianEmail: 'grouprojectnhv@gmail.com',
     photoNeededShort: 'Photo needed — phone camera, plain wall at GROUP PROJECT',
     photoNeededFull: 'Add a real photo of this item — phone camera, plain wall at GROUP PROJECT is fine.',
   },
   home: {
     who: 'TODO: write this line in your own voice — who is behind the library (CWD + GROUP PROJECT), the way you would say it to a friend at a New Haven potluck.',
-    borrow: 'TODO: write the "how it works" borrowing step in your own words — add what you need, send one request, pick up at GROUP PROJECT.',
-    giveBack: 'TODO: write the giving-back step in your own words — bring it back, leave one tip for the next host.',
+    borrow: 'Browse our catalogue and pick out what you need. Request your item(s), find a time to pick up at GROUP PROJECT, and have a great event!',
+    giveBack: 'When you\'re done, bring your item(s) back to GROUP PROJECT, and let us know how it went! We encourage you to share tips & tricks so that other event-hosts can learn from your success.',
     emptyShelf: 'The shelf is empty right now. The librarians are restocking.',
   },
   item: {
     biographyTitle: 'Biography',
-    biographyEmpty: 'No stories yet. The first host to borrow this writes the first line.',
+    biographyEmpty: 'No stories yet. The first host to borrow this can add to the history of this item.',
     careNotesTitle: 'Care notes',
   },
   request: {
@@ -28,7 +28,7 @@ export const copy = {
     formTitle: 'About your gathering',
     submit: 'Send request to the librarians',
     sentTitle: 'Request sent.',
-    sentBody: "We'll reach out to set up pickup at GROUP PROJECT. You'll put a card on file and sign the care agreement in person.",
+    sentBody: "We'll reach out to set up pickup at GROUP PROJECT (140 Bradley Street, New Haven CT, 06511). You can put down a deposit and sign the care agreement in person.",
     careAgreement: 'TODO: librarians — add a one-line summary of the care agreement and the small fee amount.',
     handoffLead: 'A note from the last host',
   },
@@ -42,7 +42,7 @@ export const copy = {
   about: {
     title: 'Who keeps this shelf',
     cwd: 'TODO: write a short paragraph in your own voice about the Civic Works Department and why it is part of this.',
-    groupProject: 'TODO: write a short paragraph about GROUP PROJECT — the space, the people, where to find you.',
-    getInvolved: 'TODO: how can someone help steward the library? Say it plainly.',
+    groupProject: 'GROUP PROJECT is a new hub for community building in New Haven, CT. Our Community Events Lending Library will be a borrowing system of event supplies, tech, and furniture for organizers across New Haven to more easily host gatherings. This lending library will reduce the burden on organizers by gathering, storing and taking care of these items on behalf of the commons so that community members can affordably borrow items that they otherwise would not be able to, allowing them to host more successful, impactful and joyous community gatherings.',
+    getInvolved: 'Reach out to groupprojectnhv@gmail.com if you’d like to donate any items, or support the library in another way!',
   },
 };
