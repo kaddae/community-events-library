@@ -31,6 +31,7 @@ export const copy = {
     sentBody: "We'll reach out to set up pickup at GROUP PROJECT (140 Bradley Street, New Haven CT, 06511). You can put down a deposit and sign the care agreement in person.",
     careAgreement: 'TODO: librarians — add a one-line summary of the care agreement and the small fee amount.',
     handoffLead: 'A note from the last host',
+    privacy: 'TODO: in your own words, say who sees a host’s contact info — e.g. only the GROUP PROJECT librarians see your email and phone, and only to set up pickup.',
   },
   reflect: {
     title: 'Leave a tip for the next host',

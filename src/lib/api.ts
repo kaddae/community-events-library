@@ -27,7 +27,11 @@ interface ReflectionRow {
 interface HostRow { first_name: string; last_name: string; email: string; phone: string; affiliation: string }
 interface GroupRow {
   id: string; created_at: string; event_name: string; event_date: string; needed_from: string;
-  return_by: string; pickup_window: string; description: string; notes: string; hosts: HostRow | null;
+  return_by: string; pickup_window: string; description: string; notes: string;
+  // The contact details this request was sent with (added in 0003).
+  host_first_name: string | null; host_last_name: string | null;
+  host_phone: string | null; host_affiliation: string | null;
+  hosts: HostRow | null;
 }
 interface LineRow {
   id: string; group_id: string; item_id: string; quantity: number; status: string;
@@ -48,8 +52,11 @@ const toGroup = (r: GroupRow): RequestGroup => ({
   neededFrom: r.needed_from, returnBy: r.return_by, pickupWindow: r.pickup_window,
   description: r.description, notes: r.notes,
   host: {
-    firstName: r.hosts?.first_name ?? '', lastName: r.hosts?.last_name ?? '', email: r.hosts?.email ?? '',
-    phone: r.hosts?.phone ?? '', affiliation: r.hosts?.affiliation ?? '',
+    firstName: r.host_first_name ?? r.hosts?.first_name ?? '',
+    lastName: r.host_last_name ?? r.hosts?.last_name ?? '',
+    email: r.hosts?.email ?? '',
+    phone: r.host_phone ?? r.hosts?.phone ?? '',
+    affiliation: r.host_affiliation ?? r.hosts?.affiliation ?? '',
   },
 });
 const toLine = (r: LineRow): RequestLine => ({

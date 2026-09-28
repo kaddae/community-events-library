@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLibrary, availableFor } from '@/lib/store';
-import { QuantityStepper } from '@/components/Bits';
+import { QuantityStepper, TodoText } from '@/components/Bits';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -20,6 +20,8 @@ export default function RequestPage() {
   const submitRequest = useLibrary((s) => s.submitRequest);
   const navigate = useNavigate();
   const [f, setF] = useState(blank);
+  // Honeypot: people never see this field, but form-filling bots tend to fill it in.
+  const [trap, setTrap] = useState('');
   const [error, setError] = useState('');
   const [sending, setSending] = useState(false);
 
@@ -28,6 +30,10 @@ export default function RequestPage() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');
+    if (trap.trim()) {
+      navigate('/request/sent/received');
+      return;
+    }
     if (f.returnBy && f.neededFrom && f.returnBy < f.neededFrom) {
       setError('The return date comes before the pickup date — check those two.');
       return;
@@ -81,7 +87,7 @@ export default function RequestPage() {
         <Link to="/" className="font-semibold text-secondary underline underline-offset-4">Add something else</Link>
       </section>
 
-      <form onSubmit={onSubmit} className="flex flex-col gap-5">
+      <form onSubmit={onSubmit} className="relative flex flex-col gap-5">
         <p className="text-muted-foreground">Fields marked <span className="font-bold text-primary">*</span> are needed. Everything else is up to you.</p>
         <h2 className="shelf-rule text-2xl">About you</h2>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -91,6 +97,13 @@ export default function RequestPage() {
           {field('phone', 'Phone', 'tel', false)}
         </div>
         {field('affiliation', 'Group, block, or organization', 'text', false)}
+        <TodoText text={copy.request.privacy} className="text-muted-foreground" />
+
+        <div aria-hidden="true" className="absolute -left-[9999px] top-0 h-px w-px overflow-hidden">
+          <label htmlFor="website">Website</label>
+          <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off"
+            value={trap} onChange={(e) => setTrap(e.target.value)} />
+        </div>
 
         <h2 className="shelf-rule text-2xl">{copy.request.formTitle}</h2>
         {field('eventName', 'Name of the gathering')}
