@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { differenceInCalendarDays, parseISO } from 'date-fns';
 import { useLibrary, availableFor, reflectToken, type ItemInput, type LineStatus } from '@/lib/store';
-import { isConfigured, magicLinkReturnUrl } from '@/lib/supabase';
+import { isConfigured } from '@/lib/supabase';
 import { sendMagicLink } from '@/lib/api';
 import { parseCSV, rowsToItems, loadSheet } from '@/lib/sheet-sync';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -20,18 +20,6 @@ const actions: Partial<Record<LineStatus, { to: LineStatus; label: string; prima
 const statusLabel: Record<LineStatus, string> = {
   pending: 'Waiting', approved: 'Approved', checked_out: 'Out', returned: 'Returned', declined: 'Declined',
 };
-
-function ReturnAddress() {
-  const origin = `${location.origin}/**`;
-  return (
-    <div className="flex flex-col gap-1 border-l-4 border-secondary pl-3 text-sm">
-      <p className="font-semibold text-secondary">Allow this address in Supabase</p>
-      <p className="text-muted-foreground">Authentication → URL Configuration → Redirect URLs:</p>
-      <code className="break-all bg-muted px-2 py-1">{origin}</code>
-      <p className="text-muted-foreground">Sign-in links return to <span className="break-all">{magicLinkReturnUrl()}</span></p>
-    </div>
-  );
-}
 
 function SignIn() {
   const setPersona = useLibrary((s) => s.setPersona);
@@ -82,7 +70,7 @@ function SignIn() {
       <button type="submit" disabled={busy} className="big-action bg-primary px-5 text-primary-foreground disabled:opacity-60">
         {busy ? 'Sending…' : isConfigured ? 'Email me a sign-in link' : 'Sign in'}
       </button>
-      {isConfigured ? <ReturnAddress /> : (
+      {!isConfigured && (
         <p className="text-sm text-muted-foreground">Preview sign-in. Real sign-in links go out once Supabase keys are set.</p>
       )}
     </form>
