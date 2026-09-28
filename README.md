@@ -1,2 +1,49 @@
-# community-events-library
-Built with Relational Builder
+# New Haven Community Events Lending Library
+
+A lending library for the gear that makes gatherings happen: folding tables, chairs, a PA, pop-up tents, string lights, an ADA ramp. The Civic Works Department and GROUP PROJECT keep it in New Haven. Hosts put together a request list, one of the librarians writes back, pickup happens in person at GROUP PROJECT, and after the gear comes back the host leaves a tip. That tip becomes part of the item's public biography.
+
+## What's in this version
+
+- **The shelf** (home): all 13 starter items grouped by category. Each shows how many are on the shelf and the latest tip from a past host.
+- **Item pages**: description, care notes, availability, and the biography (dated tips from past borrowers, newest first).
+- **Request list**: add several items, adjust quantities, then send one short form. Submitting creates one request group with one line per item.
+- **Confirmation**: pickup details, plus the most recent tip for anything you requested.
+- **Librarians' desk** (`#/librarian`): requests grouped by submission, with Approve, Decline, Check out and Mark returned buttons for each item. Anything past its return date gets flagged. Returned items get a **Copy reflection link** button. The Inventory tab syncs from a published Google Sheet CSV, with a preview before anything changes.
+- **Reflection form** (`#/reflect/<token>`): three fields. The answers go straight onto the item's biography with the host's first name and gathering.
+- **About**: who keeps the shelf.
+
+Right now all data lives in the browser (seeded, saved in localStorage). The librarian sign-in is a stand-in. Supabase (database, magic-link auth) and Resend (librarian notification, reflection invite) come in the next pass.
+
+## Editing the words
+
+All public wording is in `src/content/copy.ts`, one named entry per piece of text. Rewrite any value freely, but keep the names. A value starting with `TODO` shows up as a dashed note on the page until you replace it.
+
+## Inventory sheet columns
+
+`name, slug, category, quantity_total, status, description, care_notes`
+
+Category is one of: Furniture, Sound/AV, Lights/Power, Signage, Safety. Status is one of: active, repair, retired. The sync matches rows to items by slug, and anything missing from the sheet stays as it is. In Google Sheets: File → Share → Publish to web → CSV.
+
+## Photos
+
+Real photos only: a phone camera against a plain wall at GROUP PROJECT. No AI-generated images of items, people, or New Haven.
+
+## Lineage
+
+> Built by Kai in New Haven, with the Civic Works Department and GROUP PROJECT.
+> Created from a build plan made at the Relational Tech Studio (https://studio.relationaltechproject.org).
+> Remixed from Local Supplies Sharing — https://studio.relationaltechproject.org/library?item=dcb4d804-a256-4402-b785-00dabbf9635c
+> Item-biography pattern drawn from the Z-Space community library shelf.
+
+## Join the network
+
+- [ ] Make repo public
+- [ ] Add `relational-tech` topic (`gh repo edit <owner>/<repo> --add-topic relational-tech`, or gear icon next to "About" in the GitHub UI)
+- [ ] Add MIT license
+- [ ] Commit `.reltech.yml`
+
+The RTP Watcher finds public repos with the `relational-tech` topic so other neighborhoods can find this work and remix it.
+
+## License
+
+MIT. See `LICENSE`.

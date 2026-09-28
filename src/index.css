@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F6F1E8;
+  --foreground: #2E2C27;
+  --card: #F6F1E8;
+  --card-foreground: #2E2C27;
+  --primary: #C4633B;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1F4A38;
+  --secondary-foreground: #F6F1E8;
+  --muted: #ECE5D8;
+  --muted-foreground: #5B574E;
+  --accent: #E7EDE8;
+  --accent-foreground: #1F4A38;
+  --destructive: #8E2F1E;
+  --destructive-foreground: #FBF3EF;
+  --border: #1F4A38;
+  --input: #1F4A38;
+  --ring: #C4633B;
+  --radius: 0rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@theme inline {
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Public Sans", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+:root {
+  --rule: 1.5px solid var(--secondary);
+  --rule-soft: 1px solid color-mix(in srgb, var(--secondary) 28%, transparent);
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 0, "WONK" 0;
+  color: var(--secondary);
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+/* Riso / card-catalog utilities */
+.hairline { border-bottom: var(--rule); }
+.hairline-soft { border-bottom: var(--rule-soft); }
+.stamp-border { border: var(--rule); background: transparent; }
+.label-caps {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.status-tag {
+  display: inline-block;
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+  padding: 0.05rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transform: rotate(-5deg);
+  line-height: 1.5;
+}
+.status-tag[data-kind="out"] { color: var(--muted-foreground); border-color: var(--muted-foreground); }
+.status-tag[data-kind="repair"] { border-style: dashed; }
+.shelf-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+.shelf-rule::after {
+  content: "";
+  flex: 1;
+  border-top: var(--rule);
+}
+.photo-slot {
+  background:
+    repeating-linear-gradient(135deg, transparent 0 10px, color-mix(in srgb, var(--secondary) 7%, transparent) 10px 11px);
+  border-bottom: var(--rule);
+}
+.todo-note {
+  border: 1.5px dashed var(--muted-foreground);
+  color: var(--muted-foreground);
+  padding: 0.35rem 0.6rem;
+  font-size: 0.95rem;
+}
+.big-action { font-size: 1.1rem; font-weight: 700; min-height: 48px; }
+
+:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
