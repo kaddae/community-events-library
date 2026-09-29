@@ -4,14 +4,14 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 
 ## What's in this version
 
-- **The shelf** (home): all 13 starter items grouped by category. Each shows how many are on the shelf and the latest tip from a past host.
+- **The library** (home): all 13 starter items grouped by category. Each shows how many are available and the latest tip from a past host.
 - **Item pages**: description, care notes, availability, and the biography (dated tips from past borrowers, newest first).
 - **Request list**: add several items, adjust quantities, then send one short form. Submitting creates one request group with one line per item.
 - **Confirmation**: pickup details, plus the most recent tip for anything you requested.
 - **Librarians' desk** (`#/librarian`): requests grouped by submission, with Approve, Decline, Check out and Mark returned buttons for each item. Anything past its return date gets flagged. Once anything in a request comes back, the request gets one **Copy reflection link** button, and each returned item gets **Add a tip they told us** for tips a host says at the counter (posted only with their OK). The **Testimonials** tab is where librarians approve or hide testimonials that hosts marked OK to share. The Inventory tab syncs from a published Google Sheet CSV, with a preview before anything changes.
 - **Reflection page** (`#/reflect/<token>`): one link per request. It asks one required question, "How did the gathering go?", with an "OK to share" checkbox that starts unchecked. Below that are optional tips for each returned item, collapsed until the host taps one. Tips go straight onto item biographies. Testimonials stay private to librarians unless the host checked "OK to share" **and** a librarian approved them. Older per-item links still open the single-item form.
 - **What hosts say** (About page): shared, approved testimonials only. The section is hidden until there's at least one.
-- **About**: who keeps the shelf.
+- **About**: how borrowing works and who keeps the library.
 
 ## Setup (Supabase)
 
@@ -21,7 +21,7 @@ With `SUPABASE_URL` and `SUPABASE_ANON_KEY` set (see `.env.example`), the app us
 2. Authentication → Providers: turn on Email. Under URL Configuration, set Site URL to the address you use day to day. Add `https://<preview-host>/**` and `https://<published-host>/**` to Redirect URLs. The librarian sign-in page shows the exact line to paste.
 3. Librarians are rows in `librarian_allowlist`. To add someone, run a new migration (or SQL) with `insert into public.librarian_allowlist (email, name) values ('them@example.com', 'Their name');`. Delete the row to remove them.
 
-Hosts' contact details can be read only by signed-in librarians on the allowlist. The public can read the shelf and the biographies, and can call three functions: send a request, read a reflection prompt, and leave a reflection. Magic links only work in the same browser that asked for them.
+Hosts' contact details can be read only by signed-in librarians on the allowlist. The public can read the library and the biographies, and can call three functions: send a request, read a reflection prompt, and leave a reflection. Magic links only work in the same browser that asked for them.
 
 ## Editing the words
 

@@ -49,7 +49,7 @@ export default function RequestSent() {
         Questions before then? Write the librarians at{' '}
         <a href={`mailto:${copy.shared.librarianEmail}`} className="font-semibold text-secondary underline underline-offset-4">{copy.shared.librarianEmail}</a>.
       </p>
-      <Link to="/" className="font-semibold text-secondary underline underline-offset-4">Back to the shelf</Link>
+      <Link to="/" className="font-semibold text-secondary underline underline-offset-4">Back to the library</Link>
     </div>
   );
 }

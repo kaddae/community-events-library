@@ -16,13 +16,13 @@ export default function Catalog() {
     <div className="flex flex-col gap-8">
       <section className="flex flex-col gap-3">
         <TodoText text={copy.home.who} className="text-lg" />
-        <p className="label-caps text-secondary">{onShelf} of {total} on the shelf</p>
+        <p className="label-caps text-secondary">{onShelf} of {total} available</p>
       </section>
 
-      {status === 'loading' && <p className="text-lg text-muted-foreground">Checking the shelf…</p>}
+      {status === 'loading' && <p className="text-lg text-muted-foreground">Checking the library…</p>}
       {status === 'error' && (
         <p className="text-lg" role="alert">
-          The shelf didn't load ({loadError}). Try again in a minute, or write {copy.shared.librarianEmail}.
+          The library didn't load ({loadError}). Try again in a minute, or write {copy.shared.librarianEmail}.
         </p>
       )}
       {status === 'ready' && shelf.length === 0 && <p className="text-lg">{copy.home.emptyShelf}</p>}

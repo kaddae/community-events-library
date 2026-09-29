@@ -13,7 +13,7 @@ export const copy = {
   },
   home: {
     who: 'TODO: one line in your own voice — who is behind the library (CWD + GROUP PROJECT), the way you would say it to a friend at a New Haven potluck.',
-    emptyShelf: 'The shelf is empty right now. The librarians are restocking.',
+    emptyShelf: 'The library is empty right now. The librarians are restocking.',
   },
   item: {
     biographyTitle: 'Biography',
@@ -22,7 +22,7 @@ export const copy = {
   },
   request: {
     title: 'Your request list',
-    empty: 'Nothing on your list yet. Add what your gathering needs from the shelf.',
+    empty: 'Nothing on your list yet. Add what your gathering needs from the library.',
     formTitle: 'About your gathering',
     submit: 'Send request to the librarians',
     responseTime: 'TODO: librarians — say when hosts will hear back, e.g. "We write back within 2 business days." Pick a number the weekly desk check can keep.',
@@ -55,7 +55,7 @@ export const copy = {
     testimonialsEmpty: 'No testimonials yet. They come in when a host fills out their reflection link.',
   },
   about: {
-    title: 'Who keeps this shelf',
+    title: 'Who keeps this library',
     testimonialsTitle: 'What hosts say',
     howTitle: 'How borrowing works',
     borrow: 'Browse our catalogue and pick out what you need. Request your item(s), find a time to pick up at GROUP PROJECT, and have a great event!',

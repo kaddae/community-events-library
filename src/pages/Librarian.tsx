@@ -334,7 +334,7 @@ function Inventory() {
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="shelf-rule text-xl">On the shelf now</h2>
+        <h2 className="shelf-rule text-xl">In the library now</h2>
         <ul className="stamp-border">
           {items.map((i) => (
             <li key={i.id} className="hairline-soft flex justify-between gap-2 px-3 py-2 last:border-0">
@@ -365,7 +365,7 @@ export default function Librarian() {
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h1 className="text-3xl">The librarians' desk</h1>
         {!isConfigured && (
-          <button onClick={() => { if (confirm('Reset all preview data to the starting shelf?')) resetDemo(); }}
+          <button onClick={() => { if (confirm('Reset all preview data to the starting library?')) resetDemo(); }}
             className="text-sm text-muted-foreground underline underline-offset-4">Reset preview data</button>
         )}
       </div>

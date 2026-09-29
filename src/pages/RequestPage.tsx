@@ -95,7 +95,7 @@ export default function RequestPage() {
       <div className="flex flex-col gap-4">
         <h1 className="text-3xl">{copy.request.title}</h1>
         <p className="text-lg">{copy.request.empty}</p>
-        <Link to="/" className="big-action inline-flex items-center self-start bg-primary px-5 text-primary-foreground">Go to the shelf</Link>
+        <Link to="/" className="big-action inline-flex items-center self-start bg-primary px-5 text-primary-foreground">Go to the library</Link>
       </div>
     );
   }

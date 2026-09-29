@@ -29,7 +29,7 @@ function GroupThanks({ fresh }: { fresh: boolean }) {
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-3xl">{fresh ? copy.reflect.groupThanks : 'You already sent this one in — thank you.'}</h1>
-      <Link to="/" className="font-semibold text-secondary underline underline-offset-4">Back to the shelf</Link>
+      <Link to="/" className="font-semibold text-secondary underline underline-offset-4">Back to the library</Link>
     </div>
   );
 }

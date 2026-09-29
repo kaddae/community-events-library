@@ -70,7 +70,7 @@ export default function Shell({ children }: { children: ReactNode }) {
 
       <div className="sticky top-0 z-30 border-b-[1.5px] border-secondary bg-background">
         <nav className="mx-auto flex max-w-5xl items-center justify-end gap-4 px-4 py-2 sm:justify-start">
-          <NavLink to="/" end className={navCls}>Shelf</NavLink>
+          <NavLink to="/" end className={navCls}>Library</NavLink>
           <NavLink to="/about" className={navCls}>About</NavLink>
           <Link
             key={lastAdded?.at ?? 0}

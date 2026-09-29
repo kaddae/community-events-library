@@ -47,7 +47,7 @@ export default function ItemCard({ item }: { item: Item }) {
       </Link>
       <div className="flex flex-1 flex-col gap-3 p-3">
         <p className="text-sm text-muted-foreground">
-          {available} of {item.quantityTotal} on the shelf
+          {available} of {item.quantityTotal} available
         </p>
         {tip && (
           <p className="text-base leading-snug">

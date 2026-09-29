@@ -46,7 +46,7 @@ export default function About() {
         </section>
       )}
       <section className="flex flex-col gap-2">
-        <h2 className="shelf-rule text-xl">Help keep the shelf</h2>
+        <h2 className="shelf-rule text-xl">Help keep the library going</h2>
         <TodoText text={copy.about.getInvolved} />
         <a href={`mailto:${copy.shared.librarianEmail}`} className="font-semibold text-secondary underline underline-offset-4">{copy.shared.librarianEmail}</a>
       </section>

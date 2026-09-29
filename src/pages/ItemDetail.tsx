@@ -14,14 +14,14 @@ export default function ItemDetail() {
   const item = items.find((i) => i.slug === slug);
 
   if (!item && status === 'loading') {
-    return <p className="text-lg text-muted-foreground">Checking the shelf…</p>;
+    return <p className="text-lg text-muted-foreground">Checking the library…</p>;
   }
 
   if (!item) {
     return (
       <div className="flex flex-col gap-3">
-        <h1 className="text-3xl">Not on the shelf</h1>
-        <Link to="/" className="font-semibold text-secondary underline underline-offset-4">Back to the shelf</Link>
+        <h1 className="text-3xl">Not in the library</h1>
+        <Link to="/" className="font-semibold text-secondary underline underline-offset-4">Back to the library</Link>
       </div>
     );
   }
@@ -46,7 +46,7 @@ export default function ItemDetail() {
             <StampTag kind={kind} />
           </div>
           <p className="text-lg">{item.description}</p>
-          <p className="label-caps text-secondary">{available} of {item.quantityTotal} on the shelf</p>
+          <p className="label-caps text-secondary">{available} of {item.quantityTotal} available</p>
         </div>
 
         <AddToRequest item={item} available={available} />

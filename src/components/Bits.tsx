@@ -41,7 +41,7 @@ export function QuantityStepper({
     if (!Number.isFinite(n) || draft.trim() === '') { setDraft(String(value)); return; }
     if (n <= 0) { setNote(''); onChange(0); return; }
     if (n > max) {
-      setNote(`Only ${max} on the shelf`);
+      setNote(`Only ${max} available`);
       setDraft(String(max));
       if (max !== value) onChange(max);
       return;
