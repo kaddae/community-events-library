@@ -18,6 +18,7 @@ export default function RequestSent() {
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
       <h1 className="text-4xl">{copy.request.sentTitle}</h1>
       <p className="text-lg">{copy.request.sentBody}</p>
+      <TodoText text={copy.request.responseTime} className="text-lg" />
 
       {group && (
         <section className="stamp-border">

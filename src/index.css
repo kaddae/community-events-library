@@ -119,3 +119,20 @@ h1, h2, h3, .font-display {
 .big-action { font-size: 1.1rem; font-weight: 700; min-height: 48px; }
 
 :focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+
+@keyframes pulse-once {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary) 30%, transparent); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 transparent; }
+}
+.pulse-once { animation: pulse-once 0.6s ease-out 1; }
+
+@keyframes notice-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.added-notice { animation: notice-in 0.2s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-once, .added-notice { animation: none; }
+}

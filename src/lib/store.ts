@@ -80,6 +80,8 @@ interface State {
   reflections: Reflection[];
   testimonials: Testimonial[];
   cart: CartLine[];
+  // The most recent new item on the request list, for the "Added" notice. Not saved.
+  lastAdded: { itemId: string; at: number } | null;
   persona: Persona;
   live: boolean;
   status: LoadStatus;
@@ -115,6 +117,7 @@ export const useLibrary = create<State>()(
     (set, get) => ({
       ...dataState(),
       cart: [] as CartLine[],
+      lastAdded: null,
       persona: 'host' as Persona,
       live: isConfigured,
       status: (isConfigured ? 'loading' : 'ready') as LoadStatus,
@@ -128,6 +131,7 @@ export const useLibrary = create<State>()(
           if (quantity <= 0) return { cart: rest };
           const exists = s.cart.some((c) => c.itemId === itemId);
           return {
+            lastAdded: exists ? s.lastAdded : { itemId, at: Date.now() },
             cart: exists
               ? s.cart.map((c) => (c.itemId === itemId ? { ...c, quantity } : c))
               : [...s.cart, { itemId, quantity }],

@@ -120,7 +120,7 @@ export default function RequestPage() {
 
   return (
     <div className="grid gap-10 md:grid-cols-[1fr_1.3fr]">
-      <section className="flex flex-col gap-3 md:sticky md:top-6 md:self-start">
+      <section className="flex flex-col gap-3 md:sticky md:top-24 md:self-start">
         <h1 className="text-3xl">{copy.request.title}</h1>
         <ul className="stamp-border">
           {cart.map((c) => {
@@ -175,6 +175,7 @@ export default function RequestPage() {
           <Textarea id="notes" rows={2} value={f.notes} onChange={set('notes')} />
         </div>
         {error && <p className="font-semibold text-destructive" role="alert">{error}</p>}
+        <TodoText text={copy.request.responseTime} />
         <button type="submit" disabled={sending} className="big-action bg-primary px-5 text-primary-foreground disabled:opacity-60">
           {sending ? 'Sending…' : copy.request.submit}
         </button>

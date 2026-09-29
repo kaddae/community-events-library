@@ -27,6 +27,7 @@ export const copy = {
     empty: 'Nothing on your list yet. Add what your gathering needs from the shelf.',
     formTitle: 'About your gathering',
     submit: 'Send request to the librarians',
+    responseTime: 'TODO: librarians — say when hosts will hear back, e.g. "We write back within 2 business days." Pick a number the weekly desk check can keep.',
     sentTitle: 'Request sent.',
     sentBody: "We'll reach out to set up pickup at GROUP PROJECT (140 Bradley Street, New Haven CT, 06511). You can put down a deposit and sign the care agreement in person.",
     careAgreement: 'TODO: librarians — add a one-line summary of the care agreement and the small fee amount.',
