@@ -55,7 +55,7 @@ export const copy = {
     testimonialsEmpty: 'No testimonials yet. They come in when a host fills out their reflection link.',
   },
   about: {
-    title: 'Who keeps this library',
+    title: 'All about the library',
     testimonialsTitle: 'What hosts say',
     howTitle: 'How borrowing works',
     borrow: 'Browse our catalogue and pick out what you need. Request your item(s), find a time to pick up at GROUP PROJECT, and have a great event!',
