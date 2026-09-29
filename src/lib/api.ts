@@ -1,6 +1,7 @@
 import { supabase, magicLinkReturnUrl } from '@/lib/supabase';
 import type {
   CartLine, Category, Item, ItemInput, ItemStatus, LineStatus, Reflection, RequestGroup, RequestLine,
+  Testimonial, TestimonialReview, TipInput,
 } from '@/lib/store';
 
 // Every call the app makes to Supabase. Row Level Security is the boundary:
@@ -31,7 +32,12 @@ interface GroupRow {
   // The contact details this request was sent with (added in 0003).
   host_first_name: string | null; host_last_name: string | null;
   host_phone: string | null; host_affiliation: string | null;
+  reflection_token: string | null;
   hosts: HostRow | null;
+}
+interface TestimonialRow {
+  id: string; group_id: string | null; first_name: string; event_name: string; body: string;
+  ok_to_share: boolean; review: string; created_at: string;
 }
 interface LineRow {
   id: string; group_id: string; item_id: string; quantity: number; status: string;
@@ -51,6 +57,7 @@ const toGroup = (r: GroupRow): RequestGroup => ({
   id: r.id, createdAt: r.created_at, eventName: r.event_name, eventDate: r.event_date,
   neededFrom: r.needed_from, returnBy: r.return_by, pickupWindow: r.pickup_window,
   description: r.description, notes: r.notes,
+  reflectionToken: r.reflection_token ?? undefined,
   host: {
     firstName: r.host_first_name ?? r.hosts?.first_name ?? '',
     lastName: r.host_last_name ?? r.hosts?.last_name ?? '',
@@ -65,16 +72,27 @@ const toLine = (r: LineRow): RequestLine => ({
   reflectionToken: r.reflection_token ?? undefined,
 });
 
+const toTestimonial = (r: TestimonialRow): Testimonial => ({
+  id: r.id, groupId: r.group_id ?? '', firstName: r.first_name, eventName: r.event_name, text: r.body,
+  okToShare: r.ok_to_share, review: r.review as TestimonialReview, createdAt: r.created_at,
+});
+
+// Row Level Security decides which testimonials come back: the public gets
+// shared + approved ones, a signed-in librarian gets all of them.
+const loadTestimonials = () => db().from('testimonials').select('*').order('created_at', { ascending: false });
+
 // Public side ---------------------------------------------------------------
 
 export async function loadShelf() {
-  const [shelf, refl] = await Promise.all([
+  const [shelf, refl, tm] = await Promise.all([
     db().rpc('shelf'),
     db().from('reflections').select('*').order('created_at', { ascending: false }),
+    loadTestimonials(),
   ]);
   return {
     items: (check(shelf) as ItemRow[]).map(toItem),
     reflections: ((check(refl) ?? []) as ReflectionRow[]).map(toReflection),
+    testimonials: ((check(tm) ?? []) as TestimonialRow[]).map(toTestimonial),
   };
 }
 
@@ -106,21 +124,52 @@ export async function submitReflection(token: string, eventName: string, tip: st
   check(await db().rpc('submit_reflection', { p_token: token, p_event_name: eventName, p_tip: tip, p_how: howItWent }));
 }
 
+export interface RequestReflectionItem { lineId: string; itemId: string; itemName: string; itemSlug: string; tipped: boolean }
+export interface RequestReflectionContext {
+  firstName: string; eventName: string; already: boolean; items: RequestReflectionItem[];
+}
+
+export async function requestReflectionContext(token: string): Promise<RequestReflectionContext | null> {
+  const ctx = check(await db().rpc('request_reflection_context', { p_token: token })) as RequestReflectionContext | null;
+  return ctx ? { ...ctx, items: ctx.items ?? [] } : null;
+}
+
+export async function submitRequestReflection(token: string, text: string, okToShare: boolean, tips: TipInput[]) {
+  check(await db().rpc('submit_request_reflection', {
+    p_token: token, p_testimonial: text, p_ok_to_share: okToShare,
+    p_tips: tips.filter((t) => t.tip.trim()).map((t) => ({ lineId: t.lineId, tip: t.tip })),
+  }));
+}
+
 // Librarians' desk ---------------------------------------------------------
 
 export async function loadDesk() {
-  const [groups, lines] = await Promise.all([
+  const [groups, lines, tm] = await Promise.all([
     db().from('request_groups').select('*, hosts(*)').order('created_at', { ascending: false }),
     db().from('request_lines').select('*').order('created_at', { ascending: true }),
+    loadTestimonials(),
   ]);
   return {
     groups: ((check(groups) ?? []) as GroupRow[]).map(toGroup),
     lines: ((check(lines) ?? []) as LineRow[]).map(toLine),
+    testimonials: ((check(tm) ?? []) as TestimonialRow[]).map(toTestimonial),
   };
 }
 
 export async function setLineStatus(lineId: string, status: LineStatus) {
   check(await db().from('request_lines').update({ status }).eq('id', lineId));
+}
+
+// A tip the host said out loud at the counter, typed in by a librarian with their OK.
+export async function addDeskTip(r: Omit<Reflection, 'id' | 'createdAt'>) {
+  check(await db().from('reflections').insert({
+    line_id: r.lineId, item_id: r.itemId, first_name: r.firstName,
+    event_name: r.eventName, tip: r.tip, how_it_went: r.howItWent,
+  }));
+}
+
+export async function reviewTestimonial(id: string, review: TestimonialReview) {
+  check(await db().from('testimonials').update({ review }).eq('id', id));
 }
 
 export async function syncItems(rows: ItemInput[]) {

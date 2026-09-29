@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { copy } from '@/content/copy';
 
 const actions: Partial<Record<LineStatus, { to: LineStatus; label: string; primary?: boolean }[]>> = {
@@ -77,11 +78,103 @@ function SignIn() {
   );
 }
 
+// A tip the host said out loud at the counter, typed in with their OK.
+function DeskTip({ lineId, firstName }: { lineId: string; firstName: string }) {
+  const addDeskTip = useLibrary((s) => s.addDeskTip);
+  const [open, setOpen] = useState(false);
+  const [tip, setTip] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+
+  if (!open) {
+    return (
+      <button onClick={() => setOpen(true)} className="min-h-11 border-[1.5px] border-secondary px-3 font-semibold text-secondary">
+        {copy.desk.tipButton}
+      </button>
+    );
+  }
+
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true); setError('');
+    try { await addDeskTip(lineId, tip); setOpen(false); setTip(''); setConsent(false); }
+    catch (err) { setError(`That didn't save: ${(err as Error).message}`); }
+    setBusy(false);
+  }
+
+  return (
+    <form onSubmit={save} className="flex w-full basis-full flex-col gap-2 pt-1">
+      <Label htmlFor={`dt-${lineId}`}>{copy.desk.tipLabel} ({firstName})</Label>
+      <Textarea id={`dt-${lineId}`} rows={2} required maxLength={600} value={tip} onChange={(e) => setTip(e.target.value)} />
+      <label className="flex min-h-11 items-start gap-3">
+        <Checkbox checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1" required />
+        <span>{copy.desk.consentLabel}</span>
+      </label>
+      {error && <p className="text-destructive" role="alert">{error}</p>}
+      <span className="flex gap-2">
+        <button type="submit" disabled={busy || !consent || !tip.trim()} className="min-h-11 bg-primary px-3 font-semibold text-primary-foreground disabled:opacity-50">
+          {busy ? 'Saving…' : 'Add to biography'}
+        </button>
+        <button type="button" onClick={() => setOpen(false)} className="min-h-11 px-3 text-secondary underline underline-offset-4">Cancel</button>
+      </span>
+    </form>
+  );
+}
+
+function Testimonials() {
+  const testimonials = useLibrary((s) => s.testimonials);
+  const reviewTestimonial = useLibrary((s) => s.reviewTestimonial);
+  const [working, setWorking] = useState('');
+  const [error, setError] = useState('');
+  const sorted = [...testimonials].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+  const review = async (id: string, to: 'approved' | 'hidden') => {
+    setWorking(id); setError('');
+    try { await reviewTestimonial(id, to); }
+    catch (e) { setError(`That didn't save: ${(e as Error).message}`); }
+    setWorking('');
+  };
+
+  if (sorted.length === 0) return <p className="text-lg">{copy.desk.testimonialsEmpty}</p>;
+
+  return (
+    <div className="flex flex-col gap-4">
+      {error && <p className="font-semibold text-destructive" role="alert">{error}</p>}
+      {sorted.map((t) => (
+        <article key={t.id} className="stamp-border flex flex-col gap-2 p-3">
+          <p className="flex flex-wrap items-center gap-2 font-semibold">
+            {t.firstName} · {t.eventName}
+            {t.example && <span className="font-normal text-muted-foreground">(example)</span>}
+            <Badge variant="outline">{!t.okToShare ? 'Private' : t.review === 'approved' ? 'On the About page' : t.review === 'hidden' ? 'Hidden' : 'OK to share — waiting'}</Badge>
+          </p>
+          <p>“{t.text}”</p>
+          {t.okToShare ? (
+            <span className="flex flex-wrap gap-2">
+              {t.review !== 'approved' && (
+                <button disabled={working === t.id} onClick={() => { void review(t.id, 'approved'); }}
+                  className="min-h-11 bg-primary px-3 font-semibold text-primary-foreground disabled:opacity-50">Approve</button>
+              )}
+              {t.review !== 'hidden' && (
+                <button disabled={working === t.id} onClick={() => { void review(t.id, 'hidden'); }}
+                  className="min-h-11 border-[1.5px] border-secondary px-3 font-semibold text-secondary disabled:opacity-50">Hide</button>
+              )}
+            </span>
+          ) : (
+            <p className="text-sm text-muted-foreground">The host kept this private. Only librarians see it.</p>
+          )}
+        </article>
+      ))}
+    </div>
+  );
+}
+
 function Requests() {
   const groups = useLibrary((s) => s.groups);
   const lines = useLibrary((s) => s.lines);
   const items = useLibrary((s) => s.items);
   const reflections = useLibrary((s) => s.reflections);
+  const testimonials = useLibrary((s) => s.testimonials);
   const setLineStatus = useLibrary((s) => s.setLineStatus);
   const [copied, setCopied] = useState('');
   const [working, setWorking] = useState('');
@@ -96,12 +189,12 @@ function Requests() {
     setWorking('');
   };
 
-  const copyLink = async (lineId: string, token?: string) => {
-    const t = isConfigured ? token : reflectToken(lineId);
-    if (!t) { setError('No reflection link on this line yet. Refresh the page and try again.'); return; }
+  const copyLink = async (groupId: string, token?: string) => {
+    const t = isConfigured ? token : reflectToken(groupId);
+    if (!t) { setError('No reflection link for this request yet. Refresh the page and try again.'); return; }
     const url = `${location.origin}${location.pathname}#/reflect/${t}`;
     try { await navigator.clipboard.writeText(url); } catch { window.prompt('Copy this link', url); }
-    setCopied(lineId);
+    setCopied(groupId);
   };
 
   if (sorted.length === 0) return <p className="text-lg">No requests yet. The first one will show up here.</p>;
@@ -112,12 +205,23 @@ function Requests() {
       {sorted.map((g) => {
         const gl = lines.filter((l) => l.groupId === g.id);
         const late = differenceInCalendarDays(today, parseISO(g.returnBy)) > 0;
+        const anyReturned = gl.some((l) => l.status === 'returned');
+        const answered = testimonials.some((t) => t.groupId === g.id);
         return (
           <article key={g.id} className="stamp-border">
             <header className="hairline flex flex-wrap items-baseline justify-between gap-2 px-3 py-2.5">
               <h2 className="text-xl">{g.eventName}</h2>
               <span className="text-sm text-muted-foreground">{g.eventDate} · pickup {g.neededFrom}{g.pickupWindow && `, ${g.pickupWindow}`} · back {g.returnBy}</span>
             </header>
+            {anyReturned && (
+              <div className="hairline-soft flex flex-wrap items-center gap-3 px-3 py-2">
+                {answered
+                  ? <span className="text-sm text-muted-foreground">{g.host.firstName} sent in their reflection.</span>
+                  : <button onClick={() => { void copyLink(g.id, g.reflectionToken); }} className="min-h-11 bg-secondary px-3 font-semibold text-secondary-foreground">
+                      {copied === g.id ? 'Link copied' : 'Copy reflection link'}
+                    </button>}
+              </div>
+            )}
             <div className="flex flex-col gap-1 px-3 py-2.5">
               <p className="font-semibold">
                 {g.host.firstName} {g.host.lastName}
@@ -154,12 +258,9 @@ function Requests() {
                           {a.label}
                         </button>
                       ))}
-                      {l.status === 'returned' && (reflected
-                        ? <span className="text-sm text-muted-foreground">Tip left</span>
-                        : <button onClick={() => { void copyLink(l.id, l.reflectionToken); }} className="min-h-11 border-[1.5px] border-secondary px-3 font-semibold text-secondary">
-                            {copied === l.id ? 'Link copied' : 'Copy reflection link'}
-                          </button>)}
+                      {l.status === 'returned' && reflected && <span className="text-sm text-muted-foreground">Tip left</span>}
                     </span>
+                    {l.status === 'returned' && !reflected && <DeskTip lineId={l.id} firstName={g.host.firstName} />}
                   </li>
                 );
               })}
@@ -253,6 +354,8 @@ export default function Librarian() {
   const resetDemo = useLibrary((s) => s.resetDemo);
   const lines = useLibrary((s) => s.lines);
   const pending = lines.filter((l) => l.status === 'pending').length;
+  const testimonials = useLibrary((s) => s.testimonials);
+  const toReview = testimonials.filter((t) => t.okToShare && t.review === 'waiting').length;
 
   if (!authReady) return <p className="text-lg text-muted-foreground">Checking your sign-in…</p>;
   if (persona !== 'librarian') return <SignIn />;
@@ -269,9 +372,11 @@ export default function Librarian() {
       <Tabs defaultValue="requests">
         <TabsList>
           <TabsTrigger value="requests">Requests{pending ? ` (${pending} waiting)` : ''}</TabsTrigger>
+          <TabsTrigger value="testimonials">Testimonials{toReview ? ` (${toReview} to review)` : ''}</TabsTrigger>
           <TabsTrigger value="inventory">Inventory</TabsTrigger>
         </TabsList>
         <TabsContent value="requests" className="pt-4"><Requests /></TabsContent>
+        <TabsContent value="testimonials" className="pt-4"><Testimonials /></TabsContent>
         <TabsContent value="inventory" className="pt-4"><Inventory /></TabsContent>
       </Tabs>
     </div>

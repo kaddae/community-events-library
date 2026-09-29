@@ -1,4 +1,4 @@
-import type { Item, RequestGroup, RequestLine, Reflection } from '@/lib/store';
+import type { Item, RequestGroup, RequestLine, Reflection, Testimonial } from '@/lib/store';
 
 // Starter inventory from the plan. Quantities are placeholders —
 // the Google Sheet sync on the librarian dashboard sets the real counts.
@@ -61,5 +61,13 @@ export const seedReflections: Reflection[] = [
     id: 'rf_fair_tent', lineId: 'ln_fair_tent', itemId: 'item_pop-up-tent', firstName: 'Nadia',
     eventName: 'Edgewood Park fair', tip: 'Takes fifteen minutes and two people to set up — bring a friend.',
     howItWent: 'Kept the face-painting table dry through a surprise shower.', createdAt: stamp(-21),
+  },
+];
+
+export const seedTestimonials: Testimonial[] = [
+  {
+    id: 'tm_fair', groupId: 'grp_fair', firstName: 'Nadia', eventName: 'Edgewood Park fair',
+    text: 'Having the tent meant we could say yes to face painting even with rain in the forecast. Pickup took five minutes.',
+    okToShare: true, review: 'approved', createdAt: stamp(-21), example: true,
   },
 ];
