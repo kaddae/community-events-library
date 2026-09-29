@@ -80,7 +80,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             }`}
           >
             <ClipboardList size={20} aria-hidden />
-            Request list ({count})
+            checkout
           </Link>
         </nav>
       </div>
