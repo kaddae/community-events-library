@@ -88,16 +88,35 @@ export default function Shell({ children }: { children: ReactNode }) {
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:py-10">{children}</main>
 
       <footer className="border-t-[1.5px] border-secondary">
-        <div className="mx-auto flex max-w-5xl flex-col gap-2 px-4 py-6 text-base sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            {copy.shared.stewardLine}{' '}
-            <a className="font-semibold text-secondary underline underline-offset-4" href={`mailto:${copy.shared.librarianEmail}`}>
-              {copy.shared.librarianEmail}
-            </a>
-          </p>
-          <Link to="/librarian" className="label-caps min-h-12 content-center text-muted-foreground hover:text-secondary">
-            Librarians
-          </Link>
+        <div className="mx-auto flex max-w-5xl flex-col gap-5 px-4 py-6 text-base">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="font-display text-lg text-secondary sm:max-w-xs">{copy.shared.supportedBy}</p>
+            <div className="flex items-center gap-6">
+              <img
+                data-asset="logo-d"
+                alt="GROUP PROJECT"
+                className="h-20 w-20 object-contain"
+                style={{ mixBlendMode: 'multiply' }}
+              />
+              <img
+                data-asset="cw-tertiary-logo-1"
+                alt="Civic Works Department"
+                className="h-9 w-auto object-contain"
+                style={{ mixBlendMode: 'multiply' }}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between" style={{ borderTop: 'var(--rule-soft)', paddingTop: '1rem' }}>
+            <p>
+              {copy.shared.stewardLine}{' '}
+              <a className="font-semibold text-secondary underline underline-offset-4" href={`mailto:${copy.shared.librarianEmail}`}>
+                {copy.shared.librarianEmail}
+              </a>
+            </p>
+            <Link to="/librarian" className="label-caps min-h-12 content-center text-muted-foreground hover:text-secondary">
+              Librarians
+            </Link>
+          </div>
         </div>
       </footer>
 

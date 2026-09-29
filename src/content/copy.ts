@@ -7,6 +7,7 @@ export const copy = {
     siteName: 'Community Events Lending Library',
     placeLine: 'New Haven · GROUP PROJECT x Civic Works Department',
     stewardLine: 'Kept up by the team at GROUP PROJECT.',
+    supportedBy: 'The library is supported by GROUP PROJECT and the Civic Works Department.',
     librarianEmail: 'grouprojectnhv@gmail.com',
     photoNeededShort: 'Photo needed — phone camera, plain wall at GROUP PROJECT',
     photoNeededFull: 'Add a real photo of this item — phone camera, plain wall at GROUP PROJECT is fine.',
