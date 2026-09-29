@@ -92,18 +92,32 @@ export default function Shell({ children }: { children: ReactNode }) {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="font-display text-lg text-secondary sm:max-w-xs">{copy.shared.supportedBy}</p>
             <div className="flex items-center gap-6">
-              <img
-                data-asset="logo-d"
-                alt="GROUP PROJECT"
-                className="h-20 w-20 object-contain"
-                style={{ mixBlendMode: 'multiply' }}
-              />
-              <img
-                data-asset="cw-tertiary-logo-1"
-                alt="Civic Works Department"
-                className="h-9 w-auto object-contain"
-                style={{ mixBlendMode: 'multiply' }}
-              />
+              <a
+                href="https://groupproject.group"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex transition-opacity hover:opacity-70"
+              >
+                <img
+                  data-asset="logo-d"
+                  alt="GROUP PROJECT website (opens in a new tab)"
+                  className="h-20 w-20 object-contain"
+                  style={{ mixBlendMode: 'multiply' }}
+                />
+              </a>
+              <a
+                href="https://www.civicworksct.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center transition-opacity hover:opacity-70"
+              >
+                <img
+                  data-asset="cw-tertiary-logo-1"
+                  alt="Civic Works Department website (opens in a new tab)"
+                  className="h-9 w-auto object-contain"
+                  style={{ mixBlendMode: 'multiply' }}
+                />
+              </a>
             </div>
           </div>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between" style={{ borderTop: 'var(--rule-soft)', paddingTop: '1rem' }}>
