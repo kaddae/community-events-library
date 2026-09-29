@@ -79,7 +79,16 @@ const toTestimonial = (r: TestimonialRow): Testimonial => ({
 
 // Row Level Security decides which testimonials come back: the public gets
 // shared + approved ones, a signed-in librarian gets all of them.
-const loadTestimonials = () => db().from('testimonials').select('*').order('created_at', { ascending: false });
+// Testimonials are extra, so a problem here shouldn't break the shelf or the desk
+// (for example, before migration 0004 has created the table).
+const loadTestimonials = async () => {
+  const res = await db().from('testimonials').select('*').order('created_at', { ascending: false });
+  if (res.error) {
+    console.warn(`Testimonials didn't load: ${res.error.message}`);
+    return { data: [] as TestimonialRow[], error: null };
+  }
+  return res;
+};
 
 // Public side ---------------------------------------------------------------
 
