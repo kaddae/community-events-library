@@ -16,7 +16,7 @@ export default function Catalog() {
     <div className="flex flex-col gap-8">
       <section className="flex flex-col gap-3">
         <TodoText text={copy.home.who} className="text-lg" />
-        <p className="label-caps text-secondary">{onShelf} of {total} available</p>
+        <p className="label-caps text-secondary">{onShelf} items available</p>
       </section>
 
       {status === 'loading' && <p className="text-lg text-muted-foreground">Checking the library…</p>}
