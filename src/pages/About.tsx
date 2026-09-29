@@ -12,6 +12,17 @@ export default function About() {
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
       <h1 className="text-4xl">{copy.about.title}</h1>
       <section className="flex flex-col gap-2">
+        <h2 className="shelf-rule text-xl">{copy.about.howTitle}</h2>
+        <ol className="flex flex-col gap-2">
+          {[copy.about.borrow, copy.about.giveBack].map((line, i) => (
+            <li key={i} className="grid grid-cols-[1.75rem_1fr] gap-2">
+              <span className="font-display text-lg text-secondary">{i + 1}.</span>
+              <TodoText text={line} />
+            </li>
+          ))}
+        </ol>
+      </section>
+      <section className="flex flex-col gap-2">
         <h2 className="shelf-rule text-xl">Civic Works Department</h2>
         <TodoText text={copy.about.cwd} />
       </section>

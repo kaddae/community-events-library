@@ -12,9 +12,7 @@ export const copy = {
     photoNeededFull: 'Add a real photo of this item — phone camera, plain wall at GROUP PROJECT is fine.',
   },
   home: {
-    who: 'TODO: write this line in your own voice — who is behind the library (CWD + GROUP PROJECT), the way you would say it to a friend at a New Haven potluck.',
-    borrow: 'Browse our catalogue and pick out what you need. Request your item(s), find a time to pick up at GROUP PROJECT, and have a great event!',
-    giveBack: 'When you\'re done, bring your item(s) back to GROUP PROJECT, and let us know how it went! We encourage you to share tips & tricks so that other event-hosts can learn from your success.',
+    who: 'TODO: one line in your own voice — who is behind the library (CWD + GROUP PROJECT), the way you would say it to a friend at a New Haven potluck.',
     emptyShelf: 'The shelf is empty right now. The librarians are restocking.',
   },
   item: {
@@ -59,6 +57,9 @@ export const copy = {
   about: {
     title: 'Who keeps this shelf',
     testimonialsTitle: 'What hosts say',
+    howTitle: 'How borrowing works',
+    borrow: 'Browse our catalogue and pick out what you need. Request your item(s), find a time to pick up at GROUP PROJECT, and have a great event!',
+    giveBack: 'When you\'re done, bring your item(s) back to GROUP PROJECT, and let us know how it went! We encourage you to share tips & tricks so that other event-hosts can learn from your success.',
     cwd: 'TODO: write a short paragraph in your own voice about the Civic Works Department and why it is part of this.',
     groupProject: 'GROUP PROJECT is a new hub for community building in New Haven, CT. Our Community Events Lending Library will be a borrowing system of event supplies, tech, and furniture for organizers across New Haven to more easily host gatherings. This lending library will reduce the burden on organizers by gathering, storing and taking care of these items on behalf of the commons so that community members can affordably borrow items that they otherwise would not be able to, allowing them to host more successful, impactful and joyous community gatherings.',
     getInvolved: 'Reach out to groupprojectnhv@gmail.com if you’d like to donate any items, or support the library in another way!',

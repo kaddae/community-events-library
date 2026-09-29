@@ -14,13 +14,9 @@ export default function Catalog() {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="flex flex-col">
-        {[copy.home.who, copy.home.borrow, copy.home.giveBack].map((line, i) => (
-          <div key={i} className="hairline-soft py-2.5 first:pt-0">
-            <TodoText text={line} />
-          </div>
-        ))}
-        <p className="label-caps mt-4 text-secondary">{onShelf} of {total} on the shelf</p>
+      <section className="flex flex-col gap-3">
+        <TodoText text={copy.home.who} className="text-lg" />
+        <p className="label-caps text-secondary">{onShelf} of {total} on the shelf</p>
       </section>
 
       {status === 'loading' && <p className="text-lg text-muted-foreground">Checking the shelf…</p>}
