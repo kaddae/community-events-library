@@ -3,7 +3,7 @@ project:
   name: "New Haven Community Events Lending Library"
   description: "A lending library for community event supplies — chairs, PA, tents, lights — stewarded by CWD and GROUP PROJECT in New Haven."
   neighborhood: "New Haven"
-  builder: "Kai"
+  builder: "Kai Addae"
 lineage:
   remixed_from: "Local Supplies Sharing"
   remixed_from_url: "https://studio.relationaltechproject.org/library?item=dcb4d804-a256-4402-b785-00dabbf9635c"

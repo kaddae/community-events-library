@@ -121,12 +121,6 @@ export default function Shell({ children }: { children: ReactNode }) {
             </div>
           </div>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between" style={{ borderTop: 'var(--rule-soft)', paddingTop: '1rem' }}>
-            <p>
-              {copy.shared.stewardLine}{' '}
-              <a className="font-semibold text-secondary underline underline-offset-4" href={`mailto:${copy.shared.librarianEmail}`}>
-                {copy.shared.librarianEmail}
-              </a>
-            </p>
             <Link to="/librarian" className="label-caps min-h-12 content-center text-muted-foreground hover:text-secondary">
               Librarians
             </Link>
