@@ -17,11 +17,20 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 
 With `SUPABASE_URL` and `SUPABASE_ANON_KEY` set (see `.env.example`), the app uses one shared database. Without them it runs on seeded preview data saved in this browser.
 
-1. Run the files in `supabase/migrations/` in order, 0001 through 0005.
+1. Run the files in `supabase/migrations/` in order, 0001 through 0006.
 2. Authentication → Providers: turn on Email. Under URL Configuration, set Site URL to the address you use day to day. Add `https://<preview-host>/**` and `https://<published-host>/**` to Redirect URLs. The librarian sign-in page shows the exact line to paste.
 3. Librarians are rows in `librarian_allowlist`. To add someone, run a new migration (or SQL) with `insert into public.librarian_allowlist (email, name) values ('them@example.com', 'Their name');`. Delete the row to remove them.
 
 Hosts' contact details can be read only by signed-in librarians on the allowlist. The public can read the library and the biographies, and can call three functions: send a request, read a reflection prompt, and leave a reflection. Magic links only work in the same browser that asked for them.
+
+## Emails
+
+Every email goes to the host and `grouprojectnhv+library@gmail.com`, with Reply set to both. Each one uses the same subject line, so Gmail keeps the whole request in one thread. Emails are sent through Community Cloud, so there are no keys to manage. The From address is set in the Services tab.
+
+- **Request made:** sent automatically, but only after the database has saved the request. If the email fails, the host's confirmation page says so.
+- **Checkout, return thank-you, late check-in:** drafts on each request card in the librarians' **Emails** row. Librarians edit and send them. The late email never sends by itself. After a send, the card shows when it went out.
+
+Librarians: use **Reply all** so the host stays in the thread. Set up a Gmail filter that labels `grouprojectnhv+library`, and agree on who checks that label each day. The default wording and the borrowing policy are in the `email` section of `src/content/copy.ts`.
 
 ## Editing the words
 

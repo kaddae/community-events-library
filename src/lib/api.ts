@@ -1,6 +1,6 @@
 import { supabase, magicLinkReturnUrl } from '@/lib/supabase';
 import type {
-  CartLine, Category, Item, ItemInput, ItemStatus, LineStatus, Reflection, RequestGroup, RequestLine,
+  CartLine, Category, EmailKind, Item, ItemInput, ItemStatus, LineStatus, Reflection, RequestGroup, RequestLine,
   Testimonial, TestimonialReview, TipInput,
 } from '@/lib/store';
 
@@ -35,6 +35,8 @@ interface GroupRow {
   host_first_name: string | null; host_last_name: string | null;
   host_phone: string | null; host_affiliation: string | null;
   reflection_token: string | null;
+  // Added in 0006; missing until that migration runs.
+  checkout_email_at?: string | null; return_email_at?: string | null; late_email_at?: string | null;
   hosts: HostRow | null;
 }
 interface TestimonialRow {
@@ -61,6 +63,11 @@ const toGroup = (r: GroupRow): RequestGroup => ({
   neededFrom: r.needed_from, returnBy: r.return_by, pickupWindow: r.pickup_window,
   description: r.description, notes: r.notes,
   reflectionToken: r.reflection_token ?? undefined,
+  emailsSent: {
+    ...(r.checkout_email_at ? { checkout: r.checkout_email_at } : {}),
+    ...(r.return_email_at ? { returned: r.return_email_at } : {}),
+    ...(r.late_email_at ? { late: r.late_email_at } : {}),
+  },
   host: {
     firstName: r.host_first_name ?? r.hosts?.first_name ?? '',
     lastName: r.host_last_name ?? r.hosts?.last_name ?? '',
@@ -178,6 +185,10 @@ export async function addDeskTip(r: Omit<Reflection, 'id' | 'createdAt'>) {
     line_id: r.lineId, item_id: r.itemId, first_name: r.firstName,
     event_name: r.eventName, tip: r.tip, how_it_went: r.howItWent,
   }));
+}
+
+export async function markEmailSent(groupId: string, kind: EmailKind) {
+  check(await db().rpc('mark_email_sent', { p_group: groupId, p_kind: kind }));
 }
 
 export async function reviewTestimonial(id: string, review: TestimonialReview) {

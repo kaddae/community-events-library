@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useLibrary, availableFor } from '@/lib/store';
 import { QuantityStepper, TodoText, DepositNotice } from '@/components/Bits';
+import { sendRequestEmail } from '@/lib/email';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -83,7 +84,17 @@ export default function RequestPage() {
     const { firstName, lastName, email, phone, affiliation, ...event } = f;
     try {
       const id = await submitRequest({ host: { firstName, lastName, email, phone, affiliation }, ...event });
-      navigate(`/request/sent/${id}`);
+      // The request is saved first. The email only goes out once the database has accepted it.
+      let emailFailed = false;
+      try {
+        const s = useLibrary.getState();
+        const group = s.groups.find((g) => g.id === id);
+        if (!group) throw new Error('Request not found.');
+        await sendRequestEmail(group, s.lines.filter((l) => l.groupId === id), s.items);
+      } catch {
+        emailFailed = true;
+      }
+      navigate(`/request/sent/${id}`, { state: { emailFailed } });
     } catch (err) {
       setError(`That didn't go through: ${(err as Error).message} Try again, or write the librarians at ${copy.shared.librarianEmail}.`);
       setSending(false);

@@ -1,10 +1,11 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useLibrary, latestReflection } from '@/lib/store';
-import { TodoText, DepositNotice } from '@/components/Bits';
+import { TodoText, DepositNotice, fill } from '@/components/Bits';
 import { copy } from '@/content/copy';
 
 export default function RequestSent() {
   const { groupId } = useParams();
+  const emailFailed = (useLocation().state as { emailFailed?: boolean } | null)?.emailFailed;
   const groups = useLibrary((s) => s.groups);
   const allLines = useLibrary((s) => s.lines);
   const items = useLibrary((s) => s.items);
@@ -18,6 +19,11 @@ export default function RequestSent() {
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
       <h1 className="text-4xl">{copy.request.sentTitle}</h1>
       <p className="text-lg">{copy.request.sentBody}</p>
+      {emailFailed && (
+        <p role="alert" className="border-l-4 border-destructive bg-muted px-4 py-3 font-semibold">
+          {fill(copy.request.emailFailed, { email: copy.shared.librarianEmail })}
+        </p>
+      )}
       <TodoText text={copy.request.responseTime} className="text-lg" />
 
       {group && (

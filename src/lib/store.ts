@@ -27,7 +27,10 @@ export interface RequestGroup {
   // One reflection link per request. Connected mode only: the database stamps it
   // when the first item comes back.
   reflectionToken?: string;
+  // When each librarian email last went out (ISO timestamps).
+  emailsSent?: Partial<Record<EmailKind, string>>;
 }
+export type EmailKind = 'checkout' | 'returned' | 'late';
 export type LineStatus = 'pending' | 'approved' | 'checked_out' | 'returned' | 'declined';
 export interface RequestLine {
   id: string; groupId: string; itemId: string; quantity: number; status: LineStatus;
@@ -125,6 +128,7 @@ interface State {
   addGroupReflection: (groupId: string, text: string, okToShare: boolean, tips: TipInput[]) => void;
   addDeskTip: (lineId: string, tip: string) => Promise<void>;
   reviewTestimonial: (id: string, review: TestimonialReview) => Promise<void>;
+  markEmailSent: (groupId: string, kind: EmailKind) => Promise<void>;
   applySync: (incoming: ItemInput[]) => Promise<void>;
   setPersona: (p: Persona) => void;
   signOut: () => Promise<void>;
@@ -252,6 +256,18 @@ export const useLibrary = create<State>()(
         set((s) => ({
           testimonials: s.testimonials.map((t) =>
             t.id === id && (review !== 'approved' || t.okToShare) ? { ...t, review } : t),
+        }));
+      },
+
+      markEmailSent: async (groupId, kind) => {
+        if (isConfigured) {
+          await api.markEmailSent(groupId, kind);
+          await get().refreshDesk();
+          return;
+        }
+        const at = new Date().toISOString();
+        set((s) => ({
+          groups: s.groups.map((g) => (g.id === groupId ? { ...g, emailsSent: { ...g.emailsSent, [kind]: at } } : g)),
         }));
       },
 

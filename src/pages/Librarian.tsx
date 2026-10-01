@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { differenceInCalendarDays, parseISO } from 'date-fns';
-import { useLibrary, availableFor, reflectToken, depositsFor, describeDeposits, type ItemInput, type LineStatus } from '@/lib/store';
+import { differenceInCalendarDays, format, parseISO } from 'date-fns';
+import {
+  useLibrary, availableFor, reflectToken, depositsFor, describeDeposits,
+  type EmailKind, type ItemInput, type LineStatus, type RequestGroup,
+} from '@/lib/store';
 import { isConfigured } from '@/lib/supabase';
+import { draftEmail, recipients, sendEmail } from '@/lib/email';
+import { fill } from '@/components/Bits';
 import { sendMagicLink } from '@/lib/api';
 import { parseCSV, rowsToItems, loadSheet } from '@/lib/sheet-sync';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -169,6 +174,46 @@ function Testimonials() {
   );
 }
 
+// A ready-made email for one request. The librarian edits it, then sends.
+function EmailDraft({ group, kind, onClose }: { group: RequestGroup; kind: EmailKind; onClose: () => void }) {
+  const lines = useLibrary((s) => s.lines);
+  const items = useLibrary((s) => s.items);
+  const markEmailSent = useLibrary((s) => s.markEmailSent);
+  const [draft] = useState(() => draftEmail(kind, group, lines.filter((l) => l.groupId === group.id), items));
+  const [text, setText] = useState(draft.text);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const to = recipients(group);
+  const policyTodo = kind === 'checkout' && text.includes('TODO');
+  const fieldId = `email-${group.id}-${kind}`;
+
+  async function send(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true); setError('');
+    try { await sendEmail(to, draft.subject, text); }
+    catch (err) { setError(`The email didn't send: ${(err as Error).message}`); setBusy(false); return; }
+    try { await markEmailSent(group.id, kind); onClose(); }
+    catch (err) { setError(`The email went out, but the sent date didn't save: ${(err as Error).message}`); setBusy(false); }
+  }
+
+  return (
+    <form onSubmit={send} className="flex flex-col gap-2 border-[1.5px] border-secondary bg-background p-3">
+      <p className="text-sm"><span className="font-semibold">To:</span> {to.join(', ')}</p>
+      <p className="text-sm"><span className="font-semibold">Subject:</span> {draft.subject}</p>
+      <Label htmlFor={fieldId}>Message</Label>
+      <Textarea id={fieldId} rows={14} required value={text} onChange={(e) => setText(e.target.value)} />
+      {policyTodo && <p className="todo-note">{copy.desk.emails.policyTodo}</p>}
+      {error && <p className="font-semibold text-destructive" role="alert">{error}</p>}
+      <span className="flex flex-wrap gap-2">
+        <button type="submit" disabled={busy || !text.trim()} className="min-h-11 bg-primary px-3 font-semibold text-primary-foreground disabled:opacity-50">
+          {busy ? 'Sending…' : fill(copy.desk.emails.send, { firstName: group.host.firstName })}
+        </button>
+        <button type="button" onClick={onClose} className="min-h-11 px-3 text-secondary underline underline-offset-4">Cancel</button>
+      </span>
+    </form>
+  );
+}
+
 function Requests() {
   const groups = useLibrary((s) => s.groups);
   const lines = useLibrary((s) => s.lines);
@@ -177,6 +222,7 @@ function Requests() {
   const testimonials = useLibrary((s) => s.testimonials);
   const setLineStatus = useLibrary((s) => s.setLineStatus);
   const [copied, setCopied] = useState('');
+  const [drafting, setDrafting] = useState<{ groupId: string; kind: EmailKind } | null>(null);
   const [working, setWorking] = useState('');
   const [error, setError] = useState('');
   const today = new Date();
@@ -197,6 +243,20 @@ function Requests() {
     setCopied(groupId);
   };
 
+  const emailButton = (g: RequestGroup, kind: EmailKind) => {
+    const at = g.emailsSent?.[kind];
+    const open = drafting?.groupId === g.id && drafting.kind === kind;
+    return (
+      <span key={kind} className="flex flex-col gap-0.5">
+        <button onClick={() => setDrafting(open ? null : { groupId: g.id, kind })} aria-expanded={open}
+          className={`min-h-11 px-3 font-semibold ${kind === 'returned' ? 'bg-secondary text-secondary-foreground' : 'border-[1.5px] border-secondary text-secondary'}`}>
+          {copy.desk.emails[kind]}
+        </button>
+        {at && <span className="text-sm text-muted-foreground">{fill(copy.desk.emails.sent[kind], { date: format(parseISO(at), 'MMM d') })}</span>}
+      </span>
+    );
+  };
+
   if (sorted.length === 0) return <p className="text-lg">No requests yet. The first one will show up here.</p>;
 
   return (
@@ -210,6 +270,12 @@ function Requests() {
         // Reminder only: shows while anything with a deposit is still waiting, approved, or out.
         const stillOpen = gl.filter((l) => l.status !== 'declined' && l.status !== 'returned');
         const deposits = depositsFor(stillOpen, items).list;
+        const active = gl.filter((l) => l.status !== 'declined');
+        const allBack = active.length > 0 && active.every((l) => l.status === 'returned');
+        const anyOut = gl.some((l) => l.status === 'checked_out');
+        const canCheckout = anyOut || Boolean(g.emailsSent?.checkout);
+        const isLate = anyOut && late;
+        const showEmails = canCheckout || allBack || isLate || anyReturned;
         return (
           <article key={g.id} className="stamp-border">
             <header className="hairline flex flex-wrap items-baseline justify-between gap-2 px-3 py-2.5">
@@ -221,13 +287,22 @@ function Requests() {
                 <span className="font-bold">{copy.desk.depositFlag}</span> {describeDeposits(deposits, false)}
               </p>
             )}
-            {anyReturned && (
-              <div className="hairline-soft flex flex-wrap items-center gap-3 px-3 py-2">
-                {answered
-                  ? <span className="text-sm text-muted-foreground">{g.host.firstName} sent in their reflection.</span>
-                  : <button onClick={() => { void copyLink(g.id, g.reflectionToken); }} className="min-h-11 bg-secondary px-3 font-semibold text-secondary-foreground">
-                      {copied === g.id ? 'Link copied' : 'Copy reflection link'}
-                    </button>}
+            {showEmails && (
+              <div className="hairline-soft flex flex-col gap-2 px-3 py-2">
+                <div className="flex flex-wrap items-start gap-x-4 gap-y-2">
+                  <span className="label-caps min-h-11 content-center text-secondary">{copy.desk.emails.title}</span>
+                  {canCheckout && emailButton(g, 'checkout')}
+                  {allBack && emailButton(g, 'returned')}
+                  {isLate && emailButton(g, 'late')}
+                  {anyReturned && (answered
+                    ? <span className="min-h-11 content-center text-sm text-muted-foreground">{g.host.firstName} sent in their reflection.</span>
+                    : <button onClick={() => { void copyLink(g.id, g.reflectionToken); }} className="min-h-11 text-sm text-secondary underline underline-offset-4">
+                        {copied === g.id ? copy.desk.emails.linkCopied : copy.desk.emails.copyLink}
+                      </button>)}
+                </div>
+                {drafting?.groupId === g.id && (
+                  <EmailDraft key={drafting.kind} group={g} kind={drafting.kind} onClose={() => setDrafting(null)} />
+                )}
               </div>
             )}
             <div className="flex flex-col gap-1 px-3 py-2.5">
