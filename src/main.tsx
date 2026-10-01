@@ -8,14 +8,20 @@ import App from '@/App';
 // turns cream instead of leaving a white box.
 const CREAM = '#F6F1E8';
 
+// Just the two faces — the middle band of the logo, without the GROUP / PROJECT
+// lettering, so the icon reads at tab size. Fractions of the source image.
+const FACES = { x: 0.10, y: 0.23, w: 0.80, h: 0.54 };
+
 function stampIcon(src: string) {
   const img = new Image();
   img.onload = () => {
     const make = (size: number) => {
-      const pad = Math.round(size * 0.06);
+      const sx = img.width * FACES.x, sy = img.height * FACES.y;
+      const sw = img.width * FACES.w, sh = img.height * FACES.h;
+      const pad = Math.round(size * 0.05);
       const box = size - pad * 2;
-      const scale = Math.min(box / img.width, box / img.height);
-      const w = Math.round(img.width * scale), h = Math.round(img.height * scale);
+      const scale = Math.min(box / sw, box / sh);
+      const w = Math.round(sw * scale), h = Math.round(sh * scale);
       const out = document.createElement('canvas');
       out.width = size; out.height = size;
       const oc = out.getContext('2d')!;
@@ -23,7 +29,7 @@ function stampIcon(src: string) {
       oc.fillRect(0, 0, size, size);
       oc.imageSmoothingQuality = 'high';
       oc.globalCompositeOperation = 'multiply';
-      oc.drawImage(img, Math.round((size - w) / 2), Math.round((size - h) / 2), w, h);
+      oc.drawImage(img, sx, sy, sw, sh, Math.round((size - w) / 2), Math.round((size - h) / 2), w, h);
       return out.toDataURL('image/png');
     };
     try {
