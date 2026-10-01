@@ -129,6 +129,8 @@ export default function Shell({ children }: { children: ReactNode }) {
       </footer>
 
       <AddedNotice />
+      {/* Source for the site icon only; never shown. */}
+      <img data-asset="logo-cropped" alt="" aria-hidden="true" hidden />
     </div>
   );
 }
