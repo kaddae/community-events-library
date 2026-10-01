@@ -313,7 +313,7 @@ function Inventory() {
         <Label htmlFor="src">Published CSV link (or paste the CSV)</Label>
         <Textarea id="src" rows={3} value={source} onChange={(e) => setSource(e.target.value)}
           placeholder="https://docs.google.com/spreadsheets/d/e/…/pub?output=csv" />
-        <p className="text-sm text-muted-foreground">Columns: name, slug, category, quantity_total, status, description, care_notes. Items missing from the sheet stay as they are.</p>
+        <p className="text-sm text-muted-foreground">Columns: name, slug, category, quantity_total, status, description, care_notes, replacement_cost, deposit. Items missing from the sheet stay as they are.</p>
         <button onClick={dryRun} disabled={!source.trim() || busy} className="min-h-12 border-[1.5px] border-secondary font-semibold text-secondary disabled:opacity-40">
           {busy && !preview ? 'Reading…' : 'Preview changes'}
         </button>
