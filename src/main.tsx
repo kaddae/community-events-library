@@ -25,11 +25,19 @@ function stampIcon(src: string) {
       const out = document.createElement('canvas');
       out.width = size; out.height = size;
       const oc = out.getContext('2d')!;
-      oc.fillStyle = CREAM;
-      oc.fillRect(0, 0, size, size);
       oc.imageSmoothingQuality = 'high';
-      oc.globalCompositeOperation = 'multiply';
       oc.drawImage(img, sx, sy, sw, sh, Math.round((size - w) / 2), Math.round((size - h) / 2), w, h);
+      // Knock the paper-white background out to transparent: the whiter a pixel,
+      // the more see-through it becomes. The saturated blue and green lines stay.
+      try {
+        const px = oc.getImageData(0, 0, size, size);
+        const d = px.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const white = Math.min(d[i], d[i + 1], d[i + 2]);
+          d[i + 3] = Math.min(d[i + 3], 255 - white);
+        }
+        oc.putImageData(px, 0, 0);
+      } catch { /* cross-origin image: leave it as drawn */ }
       return out.toDataURL('image/png');
     };
     try {
