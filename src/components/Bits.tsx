@@ -1,7 +1,24 @@
 import { useEffect, useState } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { copy } from '@/content/copy';
-import type { Item } from '@/lib/store';
+import { useLibrary, depositsFor, describeDeposits, type Item } from '@/lib/store';
+
+// Fills {name} slots in a copy string: fill('About {amount}', { amount: '$180' }).
+export const fill = (text: string, vars: Record<string, string>) =>
+  text.replace(/\{(\w+)\}/g, (m, k: string) => vars[k] ?? m);
+
+// Deposit due at pickup for whatever is listed. Shows nothing when no deposit applies.
+export function DepositNotice({ entries }: { entries: { itemId: string }[] }) {
+  const items = useLibrary((s) => s.items);
+  const { list } = depositsFor(entries, items);
+  if (list.length === 0) return null;
+  return (
+    <div className="flex flex-col gap-1 border-l-4 border-primary bg-muted px-4 py-3">
+      <p><span className="font-bold">{copy.request.depositLead}</span> {describeDeposits(list)}.</p>
+      <p className="text-muted-foreground">{copy.request.depositReturn}</p>
+    </div>
+  );
+}
 
 export function TodoText({ text, className = '' }: { text: string; className?: string }) {
   const isTodo = text.trim().startsWith('TODO');

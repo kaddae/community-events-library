@@ -17,7 +17,7 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 
 With `SUPABASE_URL` and `SUPABASE_ANON_KEY` set (see `.env.example`), the app uses one shared database. Without them it runs on seeded preview data saved in this browser.
 
-1. Run the files in `supabase/migrations/` in order, 0001 through 0004.
+1. Run the files in `supabase/migrations/` in order, 0001 through 0005.
 2. Authentication → Providers: turn on Email. Under URL Configuration, set Site URL to the address you use day to day. Add `https://<preview-host>/**` and `https://<published-host>/**` to Redirect URLs. The librarian sign-in page shows the exact line to paste.
 3. Librarians are rows in `librarian_allowlist`. To add someone, run a new migration (or SQL) with `insert into public.librarian_allowlist (email, name) values ('them@example.com', 'Their name');`. Delete the row to remove them.
 
@@ -29,7 +29,9 @@ All public wording is in `src/content/copy.ts`, one named entry per piece of tex
 
 ## Inventory sheet columns
 
-`name, slug, category, quantity_total, status, description, care_notes`
+`name, slug, category, quantity_total, status, description, care_notes, replacement_cost, deposit`
+
+`replacement_cost` and `deposit` are optional and take whole dollars ("$180", "180" and "180.00" all work). A blank cell clears the amount. If a sheet doesn't have one of these columns, the amounts already saved stay as they are. Both amounts are public. The replacement cost shows on the item page. The deposit shows on the item page, on the request list, on the confirmation page and on the librarians' request card. Each item has one deposit, however many someone borrows.
 
 Category is one of: Furniture, Sound/AV, Lights/Power, Signage, Safety. Status is one of: active, repair, retired. The sync matches rows to items by slug, and anything missing from the sheet stays as it is. In Google Sheets: File → Share → Publish to web → CSV.
 

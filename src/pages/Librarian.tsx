@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { differenceInCalendarDays, parseISO } from 'date-fns';
-import { useLibrary, availableFor, reflectToken, type ItemInput, type LineStatus } from '@/lib/store';
+import { useLibrary, availableFor, reflectToken, depositsFor, describeDeposits, type ItemInput, type LineStatus } from '@/lib/store';
 import { isConfigured } from '@/lib/supabase';
 import { sendMagicLink } from '@/lib/api';
 import { parseCSV, rowsToItems, loadSheet } from '@/lib/sheet-sync';
@@ -207,12 +207,20 @@ function Requests() {
         const late = differenceInCalendarDays(today, parseISO(g.returnBy)) > 0;
         const anyReturned = gl.some((l) => l.status === 'returned');
         const answered = testimonials.some((t) => t.groupId === g.id);
+        // Reminder only: shows while anything with a deposit is still waiting, approved, or out.
+        const stillOpen = gl.filter((l) => l.status !== 'declined' && l.status !== 'returned');
+        const deposits = depositsFor(stillOpen, items).list;
         return (
           <article key={g.id} className="stamp-border">
             <header className="hairline flex flex-wrap items-baseline justify-between gap-2 px-3 py-2.5">
               <h2 className="text-xl">{g.eventName}</h2>
               <span className="text-sm text-muted-foreground">{g.eventDate} · pickup {g.neededFrom}{g.pickupWindow && `, ${g.pickupWindow}`} · back {g.returnBy}</span>
             </header>
+            {deposits.length > 0 && (
+              <p className="hairline-soft border-l-4 border-l-primary bg-muted px-3 py-2">
+                <span className="font-bold">{copy.desk.depositFlag}</span> {describeDeposits(deposits, false)}
+              </p>
+            )}
             {anyReturned && (
               <div className="hairline-soft flex flex-wrap items-center gap-3 px-3 py-2">
                 {answered
@@ -315,7 +323,9 @@ function Inventory() {
             <ul className="stamp-border text-sm">
               {preview.map((r) => {
                 const prev = items.find((i) => i.slug === r.slug);
-                const change = !prev ? 'new' : prev.quantityTotal !== r.quantityTotal || prev.status !== r.status || prev.name !== r.name ? 'changed' : 'same';
+                const change = !prev ? 'new' : prev.quantityTotal !== r.quantityTotal || prev.status !== r.status || prev.name !== r.name
+                  || ('replacementCost' in r && (prev.replacementCost ?? null) !== (r.replacementCost ?? null))
+                  || ('deposit' in r && (prev.deposit ?? null) !== (r.deposit ?? null)) ? 'changed' : 'same';
                 return (
                   <li key={r.slug} className="hairline-soft flex justify-between px-3 py-1.5 last:border-0">
                     <span>{r.name} · {r.quantityTotal} · {r.status}</span>

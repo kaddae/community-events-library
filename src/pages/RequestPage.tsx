@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useLibrary, availableFor } from '@/lib/store';
-import { QuantityStepper, TodoText } from '@/components/Bits';
+import { QuantityStepper, TodoText, DepositNotice } from '@/components/Bits';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -138,6 +138,7 @@ export default function RequestPage() {
       </section>
 
       <form onSubmit={onSubmit} className="relative flex flex-col gap-5">
+        <DepositNotice entries={cart} />
         <p className="text-muted-foreground">Fields marked <span className="font-bold text-primary">*</span> are needed. Everything else is up to you.</p>
         <h2 className="shelf-rule text-2xl">About you</h2>
         <div className="grid gap-4 sm:grid-cols-2">

@@ -11,6 +11,10 @@ export type ItemStatus = 'active' | 'repair' | 'retired';
 export interface Item {
   id: string; slug: string; name: string; category: Category; description: string;
   careNotes: string; quantityTotal: number; status: ItemStatus; photo?: string;
+  // Whole dollars, public. null or missing means none is set. One deposit per
+  // item, however many are borrowed.
+  replacementCost?: number | null;
+  deposit?: number | null;
   // Server-computed (approved + checked out). Present only when connected to Supabase.
   held?: number;
 }
@@ -60,6 +64,31 @@ export function latestReflection(itemIds: string[], reflections: Reflection[]) {
   return [...reflections]
     .filter((r) => itemIds.includes(r.itemId))
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
+}
+
+export const dollars = (n: number) => `$${n.toLocaleString('en-US')}`;
+
+// One entry per item with a deposit, counted once per item.
+export function depositsFor(entries: { itemId: string }[], items: Item[]) {
+  const seen = new Set<string>();
+  const list: { item: Item; amount: number }[] = [];
+  entries.forEach((e) => {
+    if (seen.has(e.itemId)) return;
+    seen.add(e.itemId);
+    const item = items.find((i) => i.id === e.itemId);
+    if (item?.deposit && item.deposit > 0) list.push({ item, amount: item.deposit });
+  });
+  return { list, total: list.reduce((n, d) => n + d.amount, 0) };
+}
+
+// "Projector + screen" → "projector + screen", but "PA + mic" stays.
+const inSentence = (name: string) => (/^[A-Z]{2}/.test(name) ? name : name.charAt(0).toLowerCase() + name.slice(1));
+
+// "$50 for the PA + mic, $40 for the projector + screen ($90 total)"
+export function describeDeposits(list: { item: Item; amount: number }[], withFor = true) {
+  const parts = list.map((d) => `${dollars(d.amount)} ${withFor ? 'for the ' : ''}${inSentence(d.item.name)}`);
+  const total = list.reduce((n, d) => n + d.amount, 0);
+  return parts.join(', ') + (list.length > 1 ? ` (${dollars(total)} total)` : '');
 }
 
 // Preview-only tokens: a request id (one link per request) or a line id

@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
-import { useLibrary, availableFor } from '@/lib/store';
-import { PhotoSlot, StampTag, TodoText } from '@/components/Bits';
+import { useLibrary, availableFor, dollars } from '@/lib/store';
+import { PhotoSlot, StampTag, TodoText, fill } from '@/components/Bits';
 import { AddToRequest } from '@/components/ItemCard';
 import { copy } from '@/content/copy';
 
@@ -54,6 +54,12 @@ export default function ItemDetail() {
         <section className="flex flex-col gap-2">
           <h2 className="shelf-rule text-xl">{copy.item.careNotesTitle}</h2>
           <TodoText text={item.careNotes} />
+          {item.deposit ? (
+            <p className="font-semibold">{fill(copy.item.deposit, { amount: dollars(item.deposit) })}</p>
+          ) : null}
+          {item.replacementCost ? (
+            <p className="text-muted-foreground">{fill(copy.item.replacementCost, { amount: dollars(item.replacementCost) })}</p>
+          ) : null}
         </section>
 
         <section className="flex flex-col gap-3">

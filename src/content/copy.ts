@@ -19,6 +19,9 @@ export const copy = {
     biographyTitle: 'Biography',
     biographyEmpty: 'No stories yet. The first host to borrow this can add to the history of this item.',
     careNotesTitle: 'Care notes',
+    // {amount} is filled in from the Google Sheet. Each line shows only when that item has an amount.
+    deposit: '{amount} deposit at pickup, returned in full when it comes back in good shape.',
+    replacementCost: 'About {amount} to replace if it’s lost or broken.',
   },
   request: {
     title: 'Your request list',
@@ -30,6 +33,8 @@ export const copy = {
     sentBody: "We'll reach out to set up pickup at GROUP PROJECT (140 Bradley Street, New Haven CT, 06511). You can put down a deposit and sign the care agreement in person.",
     careAgreement: 'TODO: librarians — add a one-line summary of the care agreement and the small fee amount.',
     handoffLead: 'A note from the last host',
+    depositLead: 'Deposit due at pickup:',
+    depositReturn: 'Returned in full when everything comes back in good shape.',
     privacy: 'TODO: in your own words, say who sees a host’s contact info — e.g. only the GROUP PROJECT librarians see your email and phone, and only to set up pickup.',
   },
   reflect: {
@@ -53,6 +58,7 @@ export const copy = {
     tipLabel: 'Their tip, in their words',
     consentLabel: 'They said it’s OK to post this with their first name.',
     testimonialsEmpty: 'No testimonials yet. They come in when a host fills out their reflection link.',
+    depositFlag: 'Deposit at pickup:',
   },
   about: {
     title: 'All about the library',

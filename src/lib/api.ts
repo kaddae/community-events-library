@@ -20,6 +20,8 @@ function check<T>(res: { data: T; error: { message: string } | null }): T {
 interface ItemRow {
   id: string; slug: string; name: string; category: string; description: string; care_notes: string;
   quantity_total: number; status: string; photo: string | null; held: number;
+  // Added in 0005; missing until that migration runs.
+  replacement_cost?: number | null; deposit?: number | null;
 }
 interface ReflectionRow {
   id: string; line_id: string | null; item_id: string; first_name: string; event_name: string;
@@ -48,6 +50,7 @@ const toItem = (r: ItemRow): Item => ({
   id: r.id, slug: r.slug, name: r.name, category: r.category as Category, description: r.description,
   careNotes: r.care_notes, quantityTotal: r.quantity_total, status: r.status as ItemStatus,
   photo: r.photo ?? undefined, held: r.held ?? 0,
+  replacementCost: r.replacement_cost ?? null, deposit: r.deposit ?? null,
 });
 const toReflection = (r: ReflectionRow): Reflection => ({
   id: r.id, lineId: r.line_id ?? '', itemId: r.item_id, firstName: r.first_name, eventName: r.event_name,
@@ -187,6 +190,9 @@ export async function syncItems(rows: ItemInput[]) {
       rows.map((r) => ({
         slug: r.slug, name: r.name, category: r.category, description: r.description,
         care_notes: r.careNotes, quantity_total: r.quantityTotal, status: r.status,
+        // Only sent when the sheet has the column, so a sheet without it leaves amounts alone.
+        ...('replacementCost' in r ? { replacement_cost: r.replacementCost ?? null } : {}),
+        ...('deposit' in r ? { deposit: r.deposit ?? null } : {}),
       })),
       { onConflict: 'slug' }
     )

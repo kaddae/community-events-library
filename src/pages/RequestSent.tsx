@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { useLibrary, latestReflection } from '@/lib/store';
-import { TodoText } from '@/components/Bits';
+import { TodoText, DepositNotice } from '@/components/Bits';
 import { copy } from '@/content/copy';
 
 export default function RequestSent() {
@@ -33,6 +33,8 @@ export default function RequestSent() {
           </p>
         </section>
       )}
+
+      <DepositNotice entries={lines.filter((l) => l.status !== 'declined')} />
 
       {handoff && handoffItem && (
         <section className="flex flex-col gap-1 border-l-4 border-secondary pl-4">
