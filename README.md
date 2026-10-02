@@ -25,7 +25,7 @@ Hosts' contact details can be read only by signed-in librarians on the allowlist
 
 ## Emails
 
-Every email goes to the host and `grouprojectnhv+library@gmail.com`, with Reply set to both. Each one uses the same subject line, so Gmail keeps the whole request in one thread. Emails are sent through Community Cloud, so there are no keys to manage. The app asks for every email to come from `library@groupproject.group`, using the `FROM_ADDRESS` setting at the top of `src/lib/email.ts`. Community Cloud makes the final call on the sender, and the address only works while `groupproject.group` stays verified in the Resend account behind it. Replies go to the host and the library inbox, not to the From address.
+Every email goes to the host and `grouprojectnhv+library@gmail.com`, with Reply set to both. Each one uses the same subject line, so Gmail keeps the whole request in one thread. Emails are sent through Community Cloud, so there are no keys to manage. The sender (`library@groupproject.group`) is set in the Cloud tab under the connected backend, not in code. It only works while `groupproject.group` stays verified in the Resend account behind it. Replies go to the host and the library inbox, not to the From address.
 
 - **Request made:** sent automatically, but only after the database has saved the request. If the email fails, the host's confirmation page says so.
 - **Checkout, return thank-you, late check-in:** drafts on each request card in the librarians' **Emails** row. Librarians edit and send them. The late email never sends by itself. After a send, the card shows when it went out.
