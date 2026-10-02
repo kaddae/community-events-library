@@ -15,6 +15,12 @@ import {
 // The host and the library inbox get nothing. Set it to '' before launch.
 export const TEST_RECIPIENT = 'addaekai@gmail.com';
 
+// Sender the app asks for on every email. Community Cloud passes it on to
+// Resend, which only accepts it while groupproject.group stays verified.
+// The service doesn't document this field. If it rejects it, the
+// confirmation page shows the service's words.
+export const FROM_ADDRESS = 'Community Events Lending Library <library@groupproject.group>';
+
 const slot = (text: string, vars: Record<string, string>) =>
   text.replace(/\{(\w+)\}/g, (m, k: string) => vars[k] ?? m);
 const tidy = (s: string) => s.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
@@ -100,6 +106,7 @@ export async function sendEmail(to: string[], subject: string, text: string) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       action: 'send_email', app_id: e.APP_ID, app_key: e.APP_KEY,
+      from: FROM_ADDRESS,
       to: dest, subject, text, reply_to: TEST_RECIPIENT ? TEST_RECIPIENT : dest,
     }),
   });
