@@ -86,15 +86,17 @@ export default function RequestPage() {
       const id = await submitRequest({ host: { firstName, lastName, email, phone, affiliation }, ...event });
       // The request is saved first. The email only goes out once the database has accepted it.
       let emailFailed = false;
+      let emailError = '';
       try {
         const s = useLibrary.getState();
         const group = s.groups.find((g) => g.id === id);
         if (!group) throw new Error('Request not found.');
         await sendRequestEmail(group, s.lines.filter((l) => l.groupId === id), s.items);
-      } catch {
+      } catch (err) {
         emailFailed = true;
+        emailError = (err as Error)?.message || String(err);
       }
-      navigate(`/request/sent/${id}`, { state: { emailFailed } });
+      navigate(`/request/sent/${id}`, { state: { emailFailed, emailError } });
     } catch (err) {
       setError(`That didn't go through: ${(err as Error).message} Try again, or write the librarians at ${copy.shared.librarianEmail}.`);
       setSending(false);

@@ -1,11 +1,14 @@
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useLibrary, latestReflection } from '@/lib/store';
 import { TodoText, DepositNotice, fill } from '@/components/Bits';
+import { TEST_RECIPIENT } from '@/lib/email';
 import { copy } from '@/content/copy';
 
 export default function RequestSent() {
   const { groupId } = useParams();
-  const emailFailed = (useLocation().state as { emailFailed?: boolean } | null)?.emailFailed;
+  const navState = useLocation().state as { emailFailed?: boolean; emailError?: string } | null;
+  const emailFailed = navState?.emailFailed;
+  const emailError = navState?.emailError;
   const groups = useLibrary((s) => s.groups);
   const allLines = useLibrary((s) => s.lines);
   const items = useLibrary((s) => s.items);
@@ -20,9 +23,13 @@ export default function RequestSent() {
       <h1 className="text-4xl">{copy.request.sentTitle}</h1>
       <p className="text-lg">{copy.request.sentBody}</p>
       {emailFailed && (
-        <p role="alert" className="border-l-4 border-destructive bg-muted px-4 py-3 font-semibold">
-          {fill(copy.request.emailFailed, { email: copy.shared.librarianEmail })}
-        </p>
+        <div role="alert" className="flex flex-col gap-1 border-l-4 border-destructive bg-muted px-4 py-3">
+          <p className="font-semibold">{fill(copy.request.emailFailed, { email: copy.shared.librarianEmail })}</p>
+          {emailError && <p className="text-muted-foreground">What the email service said: {emailError}</p>}
+        </div>
+      )}
+      {TEST_RECIPIENT && (
+        <p className="todo-note">Test mode: emails go only to {TEST_RECIPIENT}, not to the host or the library inbox.</p>
       )}
       <TodoText text={copy.request.responseTime} className="text-lg" />
 

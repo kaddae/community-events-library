@@ -10,6 +10,11 @@ import {
 // Every email goes to the host and the library inbox, with Reply set to both,
 // under the same subject, so each request stays in one thread.
 
+// TEST MODE. While this has an address, every email (request, checkout,
+// thank-you, late) goes ONLY here, with this one address as the reply-to.
+// The host and the library inbox get nothing. Set it to '' before launch.
+export const TEST_RECIPIENT = 'addaekai@gmail.com';
+
 const slot = (text: string, vars: Record<string, string>) =>
   text.replace(/\{(\w+)\}/g, (m, k: string) => vars[k] ?? m);
 const tidy = (s: string) => s.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
@@ -21,7 +26,9 @@ export const threadSubject = (g: RequestGroup) =>
   slot(copy.email.subject, { eventName: g.eventName, eventDate: day(g.eventDate) });
 
 export const recipients = (g: RequestGroup) =>
-  [...new Set([g.host.email.trim().toLowerCase(), copy.email.threadAddress])].filter(Boolean);
+  TEST_RECIPIENT
+    ? [TEST_RECIPIENT]
+    : [...new Set([g.host.email.trim().toLowerCase(), copy.email.threadAddress])].filter(Boolean);
 
 const itemList = (lines: RequestLine[], items: Item[]) =>
   lines.map((l) => `- ${l.quantity} × ${items.find((i) => i.id === l.itemId)?.name ?? 'Item'}`).join('\n');
@@ -87,12 +94,13 @@ export async function sendEmail(to: string[], subject: string, text: string) {
   const e = env as unknown as Record<string, string | undefined>;
   const url = e.COMMUNITY_CAPABILITIES_URL ?? e.COMMUNITY_CLOUD_URL?.replace(/app-data$/, 'app-capabilities');
   if (!url || !e.APP_ID || !e.APP_KEY) throw new Error('Email isn’t connected yet.');
+  const dest = TEST_RECIPIENT ? [TEST_RECIPIENT] : to;
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       action: 'send_email', app_id: e.APP_ID, app_key: e.APP_KEY,
-      to, subject, text, reply_to: to,
+      to: dest, subject, text, reply_to: TEST_RECIPIENT ? TEST_RECIPIENT : dest,
     }),
   });
   let data: { ok?: boolean; error?: string } = {};
