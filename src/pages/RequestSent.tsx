@@ -1,5 +1,5 @@
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { useLibrary, latestReflection } from '@/lib/store';
+import { useLibrary, latestReflection, availableFor } from '@/lib/store';
 import { TodoText, DepositNotice, fill } from '@/components/Bits';
 import { TEST_RECIPIENT } from '@/lib/email';
 import { copy } from '@/content/copy';
@@ -37,9 +37,16 @@ export default function RequestSent() {
         <section className="stamp-border">
           <p className="hairline label-caps px-3 py-2 text-secondary">{group.eventName} · {group.eventDate}</p>
           <ul className="p-3">
-            {lines.map((l) => (
-              <li key={l.id}>{l.quantity} × {items.find((i) => i.id === l.itemId)?.name}</li>
-            ))}
+            {lines.map((l) => {
+              const item = items.find((i) => i.id === l.itemId);
+              const short = item ? Math.max(0, l.quantity - availableFor(item, allLines)) : 0;
+              return (
+                <li key={l.id}>
+                  {l.quantity} × {item?.name}
+                  {short > 0 && <span className="text-sm font-semibold text-primary"> · {fill(copy.request.outNow, { count: String(short) })}</span>}
+                </li>
+              );
+            })}
           </ul>
           <p className="border-t px-3 py-2 text-muted-foreground" style={{ borderTop: 'var(--rule-soft)' }}>
             Pickup {group.neededFrom} ({group.pickupWindow}) · back by {group.returnBy}

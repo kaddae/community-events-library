@@ -4,8 +4,13 @@ import { seedItems, seedGroups, seedLines, seedReflections, seedTestimonials } f
 import { isConfigured, supabase } from '@/lib/supabase';
 import * as api from '@/lib/api';
 
-export type Category = 'Furniture' | 'Sound/AV' | 'Lights/Power' | 'Signage' | 'Safety';
-export const CATEGORIES: Category[] = ['Furniture', 'Sound/AV', 'Lights/Power', 'Signage', 'Safety'];
+export type Category = 'Furniture' | 'Sound/AV' | 'Lights/Power' | 'Signage' | 'Safety' | 'Games';
+export const CATEGORIES: Category[] = ['Furniture', 'Sound/AV', 'Lights/Power', 'Signage', 'Safety', 'Games'];
+
+// Gathering kits. Each item carries a suggested count per kit (from the sheet).
+// A third kit later = one more sheet column, one more key here, one entry in copy.kits.
+export type KitKey = 'blockParty' | 'indoorGathering';
+export const KIT_KEYS: KitKey[] = ['blockParty', 'indoorGathering'];
 export type ItemStatus = 'active' | 'repair' | 'retired';
 
 export interface Item {
@@ -15,6 +20,9 @@ export interface Item {
   // item, however many are borrowed.
   replacementCost?: number | null;
   deposit?: number | null;
+  // Suggested count for one typical gathering of each kind. null/missing = not in that kit.
+  blockParty?: number | null;
+  indoorGathering?: number | null;
   // Server-computed (approved + checked out). Present only when connected to Supabase.
   held?: number;
 }
@@ -94,6 +102,16 @@ export function describeDeposits(list: { item: Item; amount: number }[], withFor
   return parts.join(', ') + (list.length > 1 ? ` (${dollars(total)} total)` : '');
 }
 
+// Who is holding an item (approved or checked out) in other requests. Pending holds nothing.
+export function holdersFor(itemId: string, lines: RequestLine[], groups: RequestGroup[], exceptGroupId: string) {
+  return lines
+    .filter((l) => l.itemId === itemId && l.groupId !== exceptGroupId && (l.status === 'approved' || l.status === 'checked_out'))
+    .flatMap((l) => {
+      const group = groups.find((g) => g.id === l.groupId);
+      return group ? [{ line: l, group }] : [];
+    });
+}
+
 // Preview-only tokens: a request id (one link per request) or a line id
 // (older per-item links), encoded. Connected mode uses the random tokens
 // the database stamps when items are marked returned.
@@ -121,6 +139,8 @@ interface State {
   authReady: boolean;
   signedInEmail: string | null;
   setCartQty: (itemId: string, quantity: number) => void;
+  // Adds each active item in the kit at its suggested count. Leaves what's already on the list alone.
+  startKit: (kit: KitKey) => void;
   submitRequest: (input: Omit<RequestGroup, 'id' | 'createdAt'>) => Promise<string>;
   setLineStatus: (lineId: string, status: LineStatus) => Promise<void>;
   addReflection: (r: Omit<Reflection, 'id' | 'createdAt'>) => void;
@@ -169,6 +189,15 @@ export const useLibrary = create<State>()(
               ? s.cart.map((c) => (c.itemId === itemId ? { ...c, quantity } : c))
               : [...s.cart, { itemId, quantity }],
           };
+        }),
+
+      startKit: (kit) =>
+        set((s) => {
+          const add = s.items
+            .filter((i) => i.status === 'active' && (i[kit] ?? 0) > 0 && !s.cart.some((c) => c.itemId === i.id))
+            .map((i) => ({ itemId: i.id, quantity: Math.min(i[kit] ?? 0, i.quantityTotal) }))
+            .filter((c) => c.quantity > 0);
+          return { cart: [...s.cart, ...add] };
         }),
 
       submitRequest: async (input) => {
@@ -318,7 +347,7 @@ export const useLibrary = create<State>()(
     }),
     {
       // Connected mode keeps only the host's request list in this browser.
-      name: isConfigured ? 'nh-lending-library-live-v1' : 'nh-lending-library-v1',
+      name: isConfigured ? 'nh-lending-library-live-v1' : 'nh-lending-library-v2',
       partialize: (s) =>
         (isConfigured
           ? { cart: s.cart }

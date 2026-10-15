@@ -3,7 +3,7 @@ import { env } from '@/env';
 import { copy } from '@/content/copy';
 import { isConfigured } from '@/lib/supabase';
 import {
-  depositsFor, describeDeposits, reflectToken,
+  useLibrary, availableFor, depositsFor, describeDeposits, reflectToken,
   type EmailKind, type Item, type RequestGroup, type RequestLine,
 } from '@/lib/store';
 
@@ -30,8 +30,12 @@ export const recipients = (g: RequestGroup) =>
     ? [TEST_RECIPIENT]
     : [...new Set([g.host.email.trim().toLowerCase(), copy.email.threadAddress])].filter(Boolean);
 
-const itemList = (lines: RequestLine[], items: Item[]) =>
-  lines.map((l) => `- ${l.quantity} × ${items.find((i) => i.id === l.itemId)?.name ?? 'Item'}`).join('\n');
+const itemList = (lines: RequestLine[], items: Item[], flagShort = false) =>
+  lines.map((l) => {
+    const item = items.find((i) => i.id === l.itemId);
+    const short = flagShort && item ? Math.max(0, l.quantity - availableFor(item, useLibrary.getState().lines)) : 0;
+    return `- ${l.quantity} × ${item?.name ?? 'Item'}${short > 0 ? slot(copy.email.outNow, { count: String(short) }) : ''}`;
+  }).join('\n');
 
 const depositText = (template: string, lines: RequestLine[], items: Item[]) => {
   const { list } = depositsFor(lines, items);
@@ -60,7 +64,7 @@ export function requestEmail(g: RequestGroup, lines: RequestLine[], items: Item[
     subject: threadSubject(g),
     text: tidy(slot(copy.email.request, {
       ...baseVars(g),
-      items: itemList(lines, items),
+      items: itemList(lines, items, true),
       deposit: depositText(copy.email.depositLine, lines, items),
     })),
   };

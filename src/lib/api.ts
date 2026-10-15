@@ -22,6 +22,8 @@ interface ItemRow {
   quantity_total: number; status: string; photo: string | null; held: number;
   // Added in 0005; missing until that migration runs.
   replacement_cost?: number | null; deposit?: number | null;
+  // Added in 0008.
+  block_party?: number | null; indoor_gathering?: number | null;
 }
 interface ReflectionRow {
   id: string; line_id: string | null; item_id: string; first_name: string; event_name: string;
@@ -53,6 +55,7 @@ const toItem = (r: ItemRow): Item => ({
   careNotes: r.care_notes, quantityTotal: r.quantity_total, status: r.status as ItemStatus,
   photo: r.photo ?? undefined, held: r.held ?? 0,
   replacementCost: r.replacement_cost ?? null, deposit: r.deposit ?? null,
+  blockParty: r.block_party ?? null, indoorGathering: r.indoor_gathering ?? null,
 });
 const toReflection = (r: ReflectionRow): Reflection => ({
   id: r.id, lineId: r.line_id ?? '', itemId: r.item_id, firstName: r.first_name, eventName: r.event_name,
@@ -204,6 +207,8 @@ export async function syncItems(rows: ItemInput[]) {
         // Only sent when the sheet has the column, so a sheet without it leaves amounts alone.
         ...('replacementCost' in r ? { replacement_cost: r.replacementCost ?? null } : {}),
         ...('deposit' in r ? { deposit: r.deposit ?? null } : {}),
+        ...('blockParty' in r ? { block_party: r.blockParty ?? null } : {}),
+        ...('indoorGathering' in r ? { indoor_gathering: r.indoorGathering ?? null } : {}),
       })),
       { onConflict: 'slug' }
     )

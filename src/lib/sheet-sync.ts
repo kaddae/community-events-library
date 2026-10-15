@@ -1,7 +1,7 @@
 import { CATEGORIES, type Category, type Item, type ItemInput, type ItemStatus } from '@/lib/store';
 
 // Sheet columns: name, slug, category, quantity_total, status, description, care_notes,
-// replacement_cost (optional), deposit (optional)
+// replacement_cost (optional), deposit (optional), block_party (optional), indoor_gathering (optional)
 export function parseCSV(text: string): string[][] {
   const rows: string[][] = [];
   let row: string[] = [], cell = '', quoted = false;
@@ -33,6 +33,13 @@ export function parseDollars(raw: string): number | null | undefined {
   return m ? parseInt(m[1], 10) : undefined;
 }
 
+// Kit counts: a whole number. Blank means not in that kit.
+export function parseCount(raw: string): number | null | undefined {
+  const s = raw.trim();
+  if (s === '') return null;
+  return /^\d+$/.test(s) ? parseInt(s, 10) : undefined;
+}
+
 export interface SyncResult { rows: ItemInput[]; errors: string[] }
 
 export function rowsToItems(rows: string[][], existing: Item[]): SyncResult {
@@ -42,7 +49,8 @@ export function rowsToItems(rows: string[][], existing: Item[]): SyncResult {
   const col = (n: string) => header.findIndex((h) => h.trim().toLowerCase() === n);
   const idx = { name: col('name'), slug: col('slug'), category: col('category'), qty: col('quantity_total'),
     status: col('status'), description: col('description'), care: col('care_notes'),
-    cost: col('replacement_cost'), deposit: col('deposit') };
+    cost: col('replacement_cost'), deposit: col('deposit'),
+    block: col('block_party'), indoor: col('indoor_gathering') };
   if (idx.name < 0) return { rows: [], errors: ['No "name" column found in the first row.'] };
 
   const out: ItemInput[] = [];
@@ -61,13 +69,21 @@ export function rowsToItems(rows: string[][], existing: Item[]): SyncResult {
     // Amounts: only included when the sheet has the column, so a sheet
     // without it leaves saved amounts alone. A row with an unreadable
     // amount is left out of the sync until it's fixed.
-    const amounts: Partial<Pick<ItemInput, 'replacementCost' | 'deposit'>> = {};
+    const amounts: Partial<Pick<ItemInput, 'replacementCost' | 'deposit' | 'blockParty' | 'indoorGathering'>> = {};
     let bad = false;
     ([['cost', 'replacementCost', 'replacement_cost'], ['deposit', 'deposit', 'deposit']] as const).forEach(([key, field, label]) => {
       if (idx[key] < 0) return;
       const v = parseDollars(get(idx[key]));
       if (v === undefined) {
         errors.push(`Row ${n + 2} (${name}): ${label} "${get(idx[key])}" isn't whole dollars, so this row was skipped.`);
+        bad = true;
+      } else amounts[field] = v;
+    });
+    ([['block', 'blockParty', 'block_party'], ['indoor', 'indoorGathering', 'indoor_gathering']] as const).forEach(([key, field, label]) => {
+      if (idx[key] < 0) return;
+      const v = parseCount(get(idx[key]));
+      if (v === undefined) {
+        errors.push(`Row ${n + 2} (${name}): ${label} "${get(idx[key])}" isn't a whole number, so this row was skipped.`);
         bad = true;
       } else amounts[field] = v;
     });

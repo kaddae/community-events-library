@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useLibrary, availableFor } from '@/lib/store';
-import { QuantityStepper, TodoText, DepositNotice } from '@/components/Bits';
+import { QuantityStepper, TodoText, DepositNotice, fill } from '@/components/Bits';
 import { sendRequestEmail } from '@/lib/email';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -114,6 +114,11 @@ export default function RequestPage() {
   }
 
   const req = <span className="font-bold text-primary" aria-hidden> *</span>;
+  const shortBy = (itemId: string, qty: number) => {
+    const item = items.find((i) => i.id === itemId);
+    return item ? Math.max(0, qty - availableFor(item, lines)) : 0;
+  };
+  const anyShort = cart.some((c) => shortBy(c.itemId, c.quantity) > 0);
 
   const dateField = (k: keyof Dates, label: string, onChange: (v: string) => void, min: string, max?: string) => (
     <div className="flex flex-col gap-1.5">
@@ -135,14 +140,19 @@ export default function RequestPage() {
     <div className="grid gap-10 md:grid-cols-[1fr_1.3fr]">
       <section className="flex flex-col gap-3 md:sticky md:top-24 md:self-start">
         <h1 className="text-3xl">{copy.request.title}</h1>
+        {anyShort && <p className="border-l-4 border-primary bg-muted px-4 py-3">{copy.request.outNote}</p>}
         <ul className="stamp-border">
           {cart.map((c) => {
             const item = items.find((i) => i.id === c.itemId);
             if (!item) return null;
+            const short = shortBy(c.itemId, c.quantity);
             return (
               <li key={c.itemId} className="hairline-soft flex flex-wrap items-center justify-between gap-3 p-3 last:border-0">
-                <Link to={`/items/${item.slug}`} className="font-semibold text-secondary underline-offset-4 hover:underline">{item.name}</Link>
-                <QuantityStepper value={c.quantity} max={availableFor(item, lines)} onChange={(n) => setCartQty(item.id, n)} label={item.name} />
+                <span className="flex flex-col">
+                  <Link to={`/items/${item.slug}`} className="font-semibold text-secondary underline-offset-4 hover:underline">{item.name}</Link>
+                  {short > 0 && <span className="text-sm font-semibold text-primary">{fill(copy.request.outNow, { count: String(short) })}</span>}
+                </span>
+                <QuantityStepper value={c.quantity} max={item.quantityTotal} onChange={(n) => setCartQty(item.id, n)} label={item.name} />
               </li>
             );
           })}

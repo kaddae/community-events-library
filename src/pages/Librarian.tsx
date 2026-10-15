@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { differenceInCalendarDays, format, parseISO } from 'date-fns';
 import {
-  useLibrary, availableFor, reflectToken, depositsFor, describeDeposits,
+  useLibrary, availableFor, reflectToken, depositsFor, describeDeposits, holdersFor,
   type EmailKind, type ItemInput, type LineStatus, type RequestGroup,
 } from '@/lib/store';
 import { isConfigured } from '@/lib/supabase';
@@ -330,9 +330,6 @@ function Requests() {
                       {l.quantity} × {item?.name}
                       <Badge variant="outline">{statusLabel[l.status]}</Badge>
                       {overdue && <Badge variant="secondary">Past return date</Badge>}
-                      {l.status === 'pending' && item && l.quantity > free && (
-                        <span className="text-sm text-destructive">only {free} free</span>
-                      )}
                     </span>
                     <span className="flex flex-wrap gap-2">
                       {(actions[l.status] ?? []).map((a) => (
@@ -343,6 +340,22 @@ function Requests() {
                       ))}
                       {l.status === 'returned' && reflected && <span className="text-sm text-muted-foreground">Tip left</span>}
                     </span>
+                    {l.status === 'pending' && item && l.quantity > free && (
+                      <div className="flex basis-full flex-col gap-0.5 text-sm">
+                        <span className="font-semibold">{free} of {item.quantityTotal} in the library now.</span>
+                        {holdersFor(item.id, lines, groups, g.id).map(({ line: h, group: hg }) => {
+                          const when = hg.returnBy < g.neededFrom ? 'before' : hg.returnBy === g.neededFrom ? 'same' : 'after';
+                          return (
+                            <span key={h.id} className={when === 'after' ? 'font-semibold text-destructive' : 'text-muted-foreground'}>
+                              {fill(copy.desk.holder, {
+                                qty: String(h.quantity), state: h.status === 'checked_out' ? 'out' : 'promised',
+                                eventName: hg.eventName, returnBy: format(parseISO(hg.returnBy), 'MMM d'),
+                              })} — {fill(copy.desk.holderWhen[when], { pickup: format(parseISO(g.neededFrom), 'MMM d') })}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
                     {l.status === 'returned' && !reflected && <DeskTip lineId={l.id} firstName={g.host.firstName} />}
                   </li>
                 );
@@ -388,7 +401,7 @@ function Inventory() {
         <Label htmlFor="src">Published CSV link (or paste the CSV)</Label>
         <Textarea id="src" rows={3} value={source} onChange={(e) => setSource(e.target.value)}
           placeholder="https://docs.google.com/spreadsheets/d/e/…/pub?output=csv" />
-        <p className="text-sm text-muted-foreground">Columns: name, slug, category, quantity_total, status, description, care_notes, replacement_cost, deposit. Items missing from the sheet stay as they are.</p>
+        <p className="text-sm text-muted-foreground">Columns: name, slug, category, quantity_total, status, description, care_notes, replacement_cost, deposit, block_party, indoor_gathering. Items missing from the sheet stay as they are.</p>
         <button onClick={dryRun} disabled={!source.trim() || busy} className="min-h-12 border-[1.5px] border-secondary font-semibold text-secondary disabled:opacity-40">
           {busy && !preview ? 'Reading…' : 'Preview changes'}
         </button>
@@ -400,7 +413,9 @@ function Inventory() {
                 const prev = items.find((i) => i.slug === r.slug);
                 const change = !prev ? 'new' : prev.quantityTotal !== r.quantityTotal || prev.status !== r.status || prev.name !== r.name
                   || ('replacementCost' in r && (prev.replacementCost ?? null) !== (r.replacementCost ?? null))
-                  || ('deposit' in r && (prev.deposit ?? null) !== (r.deposit ?? null)) ? 'changed' : 'same';
+                  || ('deposit' in r && (prev.deposit ?? null) !== (r.deposit ?? null))
+                  || ('blockParty' in r && (prev.blockParty ?? null) !== (r.blockParty ?? null))
+                  || ('indoorGathering' in r && (prev.indoorGathering ?? null) !== (r.indoorGathering ?? null)) ? 'changed' : 'same';
                 return (
                   <li key={r.slug} className="hairline-soft flex justify-between px-3 py-1.5 last:border-0">
                     <span>{r.name} · {r.quantityTotal} · {r.status}</span>

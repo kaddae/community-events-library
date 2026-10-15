@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLibrary, availableFor, latestReflection, type Item } from '@/lib/store';
 import { PhotoSlot, StampTag, QuantityStepper } from '@/components/Bits';
+import { copy } from '@/content/copy';
 
 export function AddToRequest({ item, available }: { item: Item; available: number }) {
   const cart = useLibrary((s) => s.cart);
@@ -10,7 +11,7 @@ export function AddToRequest({ item, available }: { item: Item; available: numbe
   if (inCart > 0) {
     return (
       <div className="flex flex-wrap items-center gap-3">
-        <QuantityStepper value={inCart} max={available} onChange={(n) => setCartQty(item.id, n)} label={item.name} />
+        <QuantityStepper value={inCart} max={item.quantityTotal} onChange={(n) => setCartQty(item.id, n)} label={item.name} />
         <span className="text-sm text-muted-foreground">on your list</span>
       </div>
     );
@@ -18,11 +19,13 @@ export function AddToRequest({ item, available }: { item: Item; available: numbe
   return (
     <button
       type="button"
-      disabled={available === 0}
+      disabled={item.status !== 'active' || item.quantityTotal === 0}
       onClick={() => setCartQty(item.id, 1)}
-      className="big-action w-full bg-primary px-4 text-primary-foreground disabled:bg-muted disabled:text-muted-foreground"
+      className={`big-action w-full px-4 disabled:bg-muted disabled:text-muted-foreground ${
+        available > 0 ? 'bg-primary text-primary-foreground' : 'border-[1.5px] border-primary text-primary'
+      }`}
     >
-      {available > 0 ? 'Add to request' : item.status === 'repair' ? 'Being repaired' : 'All out right now'}
+      {item.status === 'repair' ? 'Being repaired' : available > 0 ? 'Add to request' : copy.item.requestAnyway}
     </button>
   );
 }

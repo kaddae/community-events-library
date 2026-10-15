@@ -15,7 +15,17 @@ export const copy = {
     who: 'TODO: one line in your own voice — who is behind the library (CWD + GROUP PROJECT), the way you would say it to a friend at a New Haven potluck.',
     emptyShelf: 'The library is empty right now. The librarians are restocking.',
   },
+  // Gathering kits on the Library page. Counts come from the sheet's block_party
+  // and indoor_gathering columns.
+  kits: {
+    blockParty: { title: 'Outdoor block party', picker: 'Block party' },
+    indoorGathering: { title: 'Indoor gathering or meeting', picker: 'Indoor gathering' },
+    everything: 'Everything',
+    start: 'Start with this kit',
+    none: 'Nothing in this kit can go out right now. Write the librarians and we’ll figure something out.',
+  },
   item: {
+    requestAnyway: 'Request anyway',
     biographyTitle: 'Biography',
     biographyEmpty: 'No stories yet. The first host to borrow this can add to the history of this item.',
     careNotesTitle: 'Care notes',
@@ -33,6 +43,8 @@ export const copy = {
     sentBody: "We'll reach out to set up pickup at GROUP PROJECT (140 Bradley Street, New Haven CT, 06511). You can put down a deposit and sign the care agreement in person.",
     careAgreement: 'TODO: librarians — add a one-line summary of the care agreement and the small fee amount.',
     handoffLead: 'A note from the last host',
+    outNow: '{count} out with another gathering right now',
+    outNote: 'Some of this is out with another gathering right now. The librarians will check whether it’s back in time for your dates.',
     depositLead: 'Deposit due at pickup:',
     depositReturn: 'Returned in full when everything comes back in good shape.',
     privacy: 'TODO: in your own words, say who sees a host’s contact info — e.g. only the GROUP PROJECT librarians see your email and phone, and only to set up pickup.',
@@ -60,6 +72,13 @@ export const copy = {
     consentLabel: 'They said it’s OK to post this with their first name.',
     testimonialsEmpty: 'No testimonials yet. They come in when a host fills out their reflection link.',
     depositFlag: 'Deposit at pickup:',
+    // Under a waiting line that asks for more than is in the library now.
+    holder: '{qty} {state} with the {eventName}, back {returnBy}',
+    holderWhen: {
+      before: 'before this pickup ({pickup})',
+      same: 'same day as this pickup ({pickup})',
+      after: 'after this pickup ({pickup})',
+    },
     emails: {
       title: 'Emails',
       checkout: 'Checkout email',
@@ -84,6 +103,7 @@ export const copy = {
     subject: 'Lending library request: {eventName} ({eventDate})',
     pickupAddress: 'GROUP PROJECT, 140 Bradley Street, New Haven CT 06511',
     depositLine: 'Deposit due at pickup: {deposits}. It’s returned in full when everything comes back in good shape.',
+    outNow: ' ({count} out with another gathering right now. We’ll check it’s back in time.)',
     depositHeld: 'Deposit held: {deposits}. It’s returned in full when everything comes back in good shape.',
     signoff: '— The Community Events Lending Library\nGROUP PROJECT x Civic Works Department',
     policy: 'TODO: librarians — paste the borrowing policy / care agreement here before going live.',

@@ -4,8 +4,26 @@ import type { Item, RequestGroup, RequestLine, Reflection, Testimonial } from '@
 // the Google Sheet sync on the librarian dashboard sets the real counts.
 const CARE_TODO = 'TODO: librarians — add care notes (setup time, what is in the bag, how to pack it back up).';
 
+// Suggested kit counts are placeholders too — set the real ones in the sheet's
+// block_party and indoor_gathering columns from the survey.
+const KIT: Record<string, { blockParty?: number; indoorGathering?: number }> = {
+  'folding-tables': { blockParty: 2, indoorGathering: 2 },
+  'folding-chairs': { blockParty: 4, indoorGathering: 12 },
+  'pop-up-tent': { blockParty: 1 },
+  'coolers': { blockParty: 1 },
+  'string-lights': { blockParty: 2 },
+  'extension-cords': { blockParty: 1, indoorGathering: 1 },
+  'cornhole': { blockParty: 1 },
+  'giant-jenga': { blockParty: 1 },
+  'whiteboard-easel': { indoorGathering: 1 },
+  'air-purifier': { indoorGathering: 1 },
+  'bluetooth-speaker': { blockParty: 1, indoorGathering: 1 },
+  'name-tags': { indoorGathering: 1 },
+};
+
 const item = (slug: string, name: string, category: Item['category'], quantityTotal: number, description: string): Item => ({
   id: `item_${slug}`, slug, name, category, quantityTotal, description, careNotes: CARE_TODO, status: 'active',
+  blockParty: KIT[slug]?.blockParty ?? null, indoorGathering: KIT[slug]?.indoorGathering ?? null,
 });
 
 export const seedItems: Item[] = [
@@ -22,6 +40,11 @@ export const seedItems: Item[] = [
   item('name-tags', 'Name tags', 'Signage', 4, 'Packs of blank name tags with markers.'),
   item('ada-ramp', 'ADA ramp', 'Safety', 1, 'Portable ramp for a step or curb.'),
   item('stanchions', 'Stanchions', 'Safety', 6, 'Posts with retractable belts for lines and walkways.'),
+  item('bluetooth-speaker', 'Bluetooth speaker', 'Sound/AV', 2, 'Rechargeable speaker for background music from a phone.'),
+  item('whiteboard-easel', 'Whiteboard + easel', 'Signage', 2, 'Dry-erase board on a standing easel. Markers and eraser included.'),
+  item('air-purifier', 'Air purifier', 'Safety', 2, 'HEPA air purifier for an indoor room.'),
+  item('cornhole', 'Cornhole', 'Games', 1, 'Two boards and eight bags.'),
+  item('giant-jenga', 'Giant Jenga', 'Games', 1, 'Oversized wooden block tower in a carry crate.'),
 ];
 
 const day = (offset: number) => {

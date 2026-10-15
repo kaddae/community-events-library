@@ -58,7 +58,7 @@ export function QuantityStepper({
     if (!Number.isFinite(n) || draft.trim() === '') { setDraft(String(value)); return; }
     if (n <= 0) { setNote(''); onChange(0); return; }
     if (n > max) {
-      setNote(`Only ${max} available`);
+      setNote(`The library has ${max} in all`);
       setDraft(String(max));
       if (max !== value) onChange(max);
       return;

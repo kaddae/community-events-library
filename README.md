@@ -38,11 +38,13 @@ All public wording is in `src/content/copy.ts`, one named entry per piece of tex
 
 ## Inventory sheet columns
 
-`name, slug, category, quantity_total, status, description, care_notes, replacement_cost, deposit`
+`name, slug, category, quantity_total, status, description, care_notes, replacement_cost, deposit, block_party, indoor_gathering`
+
+`block_party` and `indoor_gathering` hold the **suggested count** of that item for one typical gathering of that kind (e.g. 2 tables, 4 chairs, 1 cooler). They are not how many the library owns. Leave the cell blank if the item isn't in that kit. An item can be in both. "Start with this kit" on the Library page puts these counts on the host's request list, and the host adjusts from there. If a sheet doesn't have one of these columns, the saved counts stay as they are.
 
 `replacement_cost` and `deposit` are optional and take whole dollars ("$180", "180" and "180.00" all work). A blank cell clears the amount. If a sheet doesn't have one of these columns, the amounts already saved stay as they are. Both amounts are public. The replacement cost shows on the item page. The deposit shows on the item page, on the request list, on the confirmation page and on the librarians' request card. Each item has one deposit, however many someone borrows.
 
-Category is one of: Furniture, Sound/AV, Lights/Power, Signage, Safety. Status is one of: active, repair, retired. The sync matches rows to items by slug, and anything missing from the sheet stays as it is. In Google Sheets: File → Share → Publish to web → CSV.
+Category is one of: Furniture, Sound/AV, Lights/Power, Signage, Safety, Games. Status is one of: active, repair, retired. The sync matches rows to items by slug, and anything missing from the sheet stays as it is. In Google Sheets: File → Share → Publish to web → CSV.
 
 ## Photos
 
