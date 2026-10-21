@@ -6,10 +6,11 @@
 -- Adds "Games" (cornhole, giant Jenga) to the allowed categories.
 -- shelf() is dropped and recreated because what it returns changes. It is a
 -- read-only view of items, so no data is lost.
+-- Safe to run even if the kit columns were already added by hand.
 
 alter table public.items
-  add column block_party integer check (block_party is null or block_party >= 0),
-  add column indoor_gathering integer check (indoor_gathering is null or indoor_gathering >= 0);
+  add column if not exists block_party integer check (block_party is null or block_party >= 0),
+  add column if not exists indoor_gathering integer check (indoor_gathering is null or indoor_gathering >= 0);
 
 alter table public.items drop constraint if exists items_category_check;
 alter table public.items add constraint items_category_check

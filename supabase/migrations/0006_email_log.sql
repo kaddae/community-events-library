@@ -1,10 +1,11 @@
 -- 0006: Records when each librarian email went out for a request, so two
 -- librarians don't send the same one by accident. Nothing is removed.
+-- Safe to run even if these columns were already added by hand.
 
 alter table public.request_groups
-  add column checkout_email_at timestamptz,
-  add column return_email_at timestamptz,
-  add column late_email_at timestamptz;
+  add column if not exists checkout_email_at timestamptz,
+  add column if not exists return_email_at timestamptz,
+  add column if not exists late_email_at timestamptz;
 
 -- Librarians only. Stamps the time the checkout, return, or late email was sent.
 create or replace function public.mark_email_sent(p_group uuid, p_kind text)
