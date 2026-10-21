@@ -4,8 +4,8 @@ import { seedItems, seedGroups, seedLines, seedReflections, seedTestimonials } f
 import { isConfigured, supabase } from '@/lib/supabase';
 import * as api from '@/lib/api';
 
-export type Category = 'Furniture' | 'Sound/AV' | 'Lights/Power' | 'Signage' | 'Safety' | 'Games';
-export const CATEGORIES: Category[] = ['Furniture', 'Sound/AV', 'Lights/Power', 'Signage', 'Safety', 'Games'];
+export type Category = 'Furniture' | 'Sound/AV' | 'Lights/Power' | 'Signage' | 'Safety' | 'Games' | 'Other';
+export const CATEGORIES: Category[] = ['Furniture', 'Sound/AV', 'Lights/Power', 'Signage', 'Safety', 'Games', 'Other'];
 
 // Gathering kits. Each item carries a suggested count per kit (from the sheet).
 // A third kit later = one more sheet column, one more key here, one entry in copy.kits.
