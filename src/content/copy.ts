@@ -91,7 +91,6 @@ export const copy = {
       },
       copyLink: 'Copy link instead',
       linkCopied: 'Link copied',
-      policyTodo: 'The policy in this email is still a placeholder. Replace the TODO line here (or in copy.ts, for every email) before sending.',
       send: 'Send to {firstName} and the library inbox',
     },
   },
@@ -106,7 +105,7 @@ export const copy = {
     outNow: ' ({count} out with another gathering right now. We’ll check it’s back in time.)',
     depositHeld: 'Deposit held: {deposits}. It’s returned in full when everything comes back in good shape.',
     signoff: '— The Community Events Lending Library\nGROUP PROJECT x Civic Works Department',
-    policy: '<a href="https://docs.google.com/document/d/1_nlWbO_1eAYxsQYAw-lKWgtMN9jd556UkXwyKaDvvbY/edit">Events lending library - borrower agreement </a>',
+    policy: '<a href="https://docs.google.com/document/d/1_nlWbO_1eAYxsQYAw-lKWgtMN9jd556UkXwyKaDvvbY/edit">Events lending library - borrower agreement</a>',
     request: `Hi {firstName},
 
 Thanks for your request for the {eventName}! Here's what you asked for:
@@ -144,7 +143,7 @@ If anything breaks or you need more time, just reply here. We'd much rather hear
 
 Everything from the {eventName} is back. Thank you for taking good care of it.
 
-Would you take two minutes to tell us how the gathering went? You can also leave a tip for the next host who borrows the same gear:
+Would you take two minutes to tell us how the gathering went? You can also leave a tip for the next event host who borrows the same gear:
 {reflectionLink}
 
 {signoff}`,
