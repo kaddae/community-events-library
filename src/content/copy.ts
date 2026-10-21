@@ -12,7 +12,7 @@ export const copy = {
     photoNeededFull: 'Add a real photo of this item — phone camera, plain wall at GROUP PROJECT is fine.',
   },
   home: {
-    who: 'TODO: one line in your own voice — who is behind the library (CWD + GROUP PROJECT), the way you would say it to a friend at a New Haven potluck.',
+    who: 'Welcome to the Event Lending Library, hosted by GROUP PROJECT and the Civics Work Department! Find what you need to have a great event, borrow it, and have a great gathering! ',
     emptyShelf: 'The library is empty right now. The librarians are restocking.',
   },
   // Gathering kits on the Library page. Counts come from the sheet's block_party
@@ -40,15 +40,15 @@ export const copy = {
     submit: 'Send request to the librarians',
     responseTime: 'We will respond to you in the next 2 business days!',
     sentTitle: 'Request sent.',
-    sentBody: "We'll reach out to set up pickup at GROUP PROJECT (140 Bradley Street, New Haven CT, 06511). You can put down a deposit and sign the care agreement in person.",
-    careAgreement: 'TODO: librarians — add a one-line summary of the care agreement and the small fee amount.',
+    sentBody: "We'll reach out to set up pickup at GROUP PROJECT (140 Bradley Street, New Haven CT, 06511). You can put down a deposit (if needed) and sign the borrower agreement in person.",
+    careAgreement: 'We ask you to treat the items you borrow carefully, and let us know if anything happens. If an item is lost or seriously damaged, we may ask you to pay for the replacement or repair.,
     handoffLead: 'A note from the last host',
     outNow: '{count} out with another gathering right now',
     outNote: 'Some of this is out with another gathering right now. The librarians will check whether it’s back in time for your dates.',
     depositLead: 'Deposit due at pickup:',
     depositReturn: 'Returned in full when everything comes back in good shape.',
-    privacy: 'TODO: in your own words, say who sees a host’s contact info — e.g. only the GROUP PROJECT librarians see your email and phone, and only to set up pickup.',
-    emailFailed: 'Your request is saved, but the email didn’t go out. Write {email} so we can start the conversation.',
+    privacy: 'Only the GROUP PROJECT librarians see your email and phone, and only for lending library business.',
+    emailFailed: 'Your request was sent, but for some reason the email didn’t go out. Please write to {email} so we can find a time for pickup.',
   },
   reflect: {
     title: 'Leave a tip for the next host',
@@ -106,7 +106,7 @@ export const copy = {
     outNow: ' ({count} out with another gathering right now. We’ll check it’s back in time.)',
     depositHeld: 'Deposit held: {deposits}. It’s returned in full when everything comes back in good shape.',
     signoff: '— The Community Events Lending Library\nGROUP PROJECT x Civic Works Department',
-    policy: 'TODO: librarians — paste the borrowing policy / care agreement here before going live.',
+    policy: '<a href="https://docs.google.com/document/d/1_nlWbO_1eAYxsQYAw-lKWgtMN9jd556UkXwyKaDvvbY/edit">Events lending library - borrower agreement </a>',
     request: `Hi {firstName},
 
 Thanks for your request for the {eventName}! Here's what you asked for:
@@ -165,7 +165,7 @@ No worries if plans changed. Reply and let us know how it's going and when works
     borrow: 'Browse our catalog and pick out what you need. Request your items, find a time to pick up at GROUP PROJECT, and have a great event!',
     giveBack: 'After your gathering, bring your item(s) back to GROUP PROJECT, and let us know how it went! We encourage you to share tips or tricks so that other event-hosts can learn from you.',
     cwd: 'Built by a growing coalition of neighbors, Civic Works\' mission is to increase volunteerism, civic engagement, and service in New Haven. We invest in neighbors to bring their blocks together because we believe that the health of our democracy begins at the neighborhood level. <br> Neighbors have often told us that a missing PA system, tables and chairs, or cleanup tools is often what stands between a great idea and an actual event. That\’s why we are so excited to partner with Group Project to build the Community Events Lending Library.',
-    groupProject: 'GROUP PROJECT is a new hub for community-building that supports local projects through relationships, resources, and skill-sharing. We offer working space for projects, a lending library for gatherings, and partner with locals to host community-building events that inspire, educate, and help folks do cool stuff in New Haven. <br> We know from that hosting an event takes a lot of work, and can require organizers to coordinate the borrowing or buying of many different physical items. TWe built this library with the goal of encouraging more successful, impactful and joyous gatherings through easy access to the event materials and supplies they need.',
+    groupProject: 'GROUP PROJECT is a new hub for community-building that supports local projects through relationships, resources, and skill-sharing. We offer working space for projects, a lending library for gatherings, and partner with locals to host community-building events that inspire, educate, and help folks do cool stuff in New Haven. <br> We know from that hosting an event takes a lot of work, and can require organizers to coordinate the borrowing or buying of many different physical items. We built this library with the goal of encouraging more successful, impactful and joyous gatherings through easy access to the event materials and supplies they need.',
     getInvolved: 'Reach out to groupprojectnhv@gmail.com if you’d like to donate any items, or support the library in another way!',
   },
 };
