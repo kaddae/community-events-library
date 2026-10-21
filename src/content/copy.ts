@@ -41,7 +41,7 @@ export const copy = {
     responseTime: 'We will respond to you in the next 2 business days!',
     sentTitle: 'Request sent.',
     sentBody: "We'll reach out to set up pickup at GROUP PROJECT (140 Bradley Street, New Haven CT, 06511). You can put down a deposit (if needed) and sign the borrower agreement in person.",
-    careAgreement: 'We ask you to treat the items you borrow carefully, and let us know if anything happens. If an item is lost or seriously damaged, we may ask you to pay for the replacement or repair.,
+    careAgreement: 'We ask you to treat the items you borrow carefully, and let us know if anything happens. If an item is lost or seriously damaged, we may ask you to pay for the replacement or repair.',
     handoffLead: 'A note from the last host',
     outNow: '{count} out with another gathering right now',
     outNote: 'Some of this is out with another gathering right now. The librarians will check whether it’s back in time for your dates.',
