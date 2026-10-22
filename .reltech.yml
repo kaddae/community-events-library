@@ -1,7 +1,7 @@
 version: 2
 project:
   name: "New Haven Community Events Lending Library"
-  description: "A lending library for community event supplies — chairs, PA, tents, lights — stewarded by CWD and GROUP PROJECT in New Haven."
+  description: "A lending library for community event supplies — chairs, PA, tents, lights — stewarded by Civic Works and GROUP PROJECT in New Haven."
   neighborhood: "New Haven"
   builder: "Kai Addae"
 lineage:

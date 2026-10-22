@@ -23,7 +23,7 @@ export default function About() {
         </ol>
       </section>
       <section className="flex flex-col gap-2">
-        <h2 className="shelf-rule text-xl">Civic Works Department</h2>
+        <h2 className="shelf-rule text-xl">Civic Works</h2>
         <TodoText text={copy.about.cwd} />
       </section>
       <section className="flex flex-col gap-2">

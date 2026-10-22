@@ -1,6 +1,6 @@
 # New Haven Community Events Lending Library
 
-A lending library for the gear that makes gatherings happen: folding tables, chairs, a PA, pop-up tents, string lights, an ADA ramp. The Civic Works Department and GROUP PROJECT keep it in New Haven. Hosts put together a request list, one of the librarians writes back, pickup happens in person at GROUP PROJECT, and after the gear comes back the host leaves a tip. That tip becomes part of the item's public biography.
+A lending library for the gear that makes gatherings happen: folding tables, chairs, a PA, pop-up tents, string lights, an ADA ramp. Civic Works and GROUP PROJECT keep it in New Haven. Hosts put together a request list, one of the librarians writes back, pickup happens in person at GROUP PROJECT, and after the gear comes back the host leaves a tip. That tip becomes part of the item's public biography.
 
 ## What's in this version
 
@@ -56,7 +56,7 @@ Real photos only: a phone camera against a plain wall at GROUP PROJECT. No AI-ge
 
 ## Lineage
 
-> Built by Kai in New Haven, with the Civic Works Department and GROUP PROJECT.
+> Built by Kai in New Haven, with Civic Works and GROUP PROJECT.
 > Created from a build plan made at the Relational Tech Studio (https://studio.relationaltechproject.org).
 > Remixed from Local Supplies Sharing — https://studio.relationaltechproject.org/library?item=dcb4d804-a256-4402-b785-00dabbf9635c
 > Item-biography pattern drawn from the Z-Space community library shelf.

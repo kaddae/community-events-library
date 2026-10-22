@@ -113,7 +113,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               >
                 <img
                   data-asset="cw-tertiary-logo-1"
-                  alt="Civic Works Department website (opens in a new tab)"
+                  alt="Civic Works website (opens in a new tab)"
                   className="h-9 w-auto object-contain"
                   style={{ mixBlendMode: 'multiply' }}
                 />
