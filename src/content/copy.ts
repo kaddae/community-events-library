@@ -12,7 +12,7 @@ export const copy = {
     photoNeededFull: 'Add a real photo of this item — phone camera, plain wall at GROUP PROJECT is fine.',
   },
   home: {
-    who: 'Welcome to the Event Lending Library, hosted by GROUP PROJECT and the Civics Work Department! Find what you need to have a great event, borrow it, and have a great gathering! ',
+    who: 'Welcome to the Event Lending Library, hosted by GROUP PROJECT and the Civic Works Department! Find what you need to have a great event, borrow it, and have a great gathering! ',
     emptyShelf: 'The library is empty right now. The librarians are restocking.',
   },
   // Gathering kits on the Library page. Counts come from the sheet's block_party
@@ -105,7 +105,7 @@ export const copy = {
     outNow: ' ({count} out with another gathering right now. We’ll check it’s back in time.)',
     depositHeld: 'Deposit held: {deposits}. It’s returned in full when everything comes back in good shape.',
     signoff: '— The Community Events Lending Library\nGROUP PROJECT x Civic Works Department',
-    policy: '<a href="https://docs.google.com/document/d/1_nlWbO_1eAYxsQYAw-lKWgtMN9jd556UkXwyKaDvvbY/edit">Events lending library - borrower agreement</a>',
+    policy: 'Events lending library - borrower agreement\nhttps://docs.google.com/document/d/1_nlWbO_1eAYxsQYAw-lKWgtMN9jd556UkXwyKaDvvbY/edit',
     request: `Hi {firstName},
 
 Thanks for your request for the {eventName}! Here's what you asked for:

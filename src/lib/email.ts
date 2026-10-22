@@ -12,8 +12,8 @@ import {
 
 // TEST MODE. While this has an address, every email (request, checkout,
 // thank-you, late) goes ONLY here, with this one address as the reply-to.
-// The host and the library inbox get nothing. Set it to '' before launch.
-export const TEST_RECIPIENT = 'addaekai@gmail.com';
+// The host and the library inbox get nothing. '' means live: real recipients.
+export const TEST_RECIPIENT = '';
 
 const slot = (text: string, vars: Record<string, string>) =>
   text.replace(/\{(\w+)\}/g, (m, k: string) => vars[k] ?? m);
