@@ -202,7 +202,7 @@ export default function RequestPage() {
         <div className="flex flex-col gap-2">
           <div className="grid gap-4 sm:grid-cols-3">
             {dateField('eventDate', 'Date', setEventDate, today)}
-            {dateField('neededFrom', "Day you'd like to pick up", setPickup, today, f.eventDate)}
+            {dateField('neededFrom', 'Pickup Date', setPickup, today, f.eventDate)}
             {dateField('returnBy', 'Bring back by', setReturn, f.eventDate || f.neededFrom || today)}
           </div>
           {dateError && <p id="date-error" className="font-semibold text-destructive">{dateError}</p>}
