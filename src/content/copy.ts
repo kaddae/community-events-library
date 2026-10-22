@@ -18,8 +18,8 @@ export const copy = {
   // Gathering kits on the Library page. Counts come from the sheet's block_party
   // and indoor_gathering columns.
   kits: {
-    blockParty: { title: 'Outdoor block party', picker: 'Block party' },
-    indoorGathering: { title: 'Indoor gathering or meeting', picker: 'Indoor gathering' },
+    blockParty: { title: 'Block Party Bundle', picker: 'Block party' },
+    indoorGathering: { title: 'Community Meeting Kit', picker: 'Community meeting' },
     everything: 'Everything',
     start: 'Start with this kit',
     none: 'Nothing in this kit can go out right now. Write the librarians and we’ll figure something out.',
