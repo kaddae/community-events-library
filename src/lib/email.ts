@@ -7,8 +7,10 @@ import {
   type EmailKind, type Item, type RequestGroup, type RequestLine,
 } from '@/lib/store';
 
-// Every email goes to the host and the library inbox, with Reply set to both,
-// under the same subject, so each request stays in one thread.
+// Every email goes to the host and the library inbox, under the same subject,
+// so each request stays in one thread. Reply goes to the library inbox (the
+// email service takes one reply-to address). Reply all from the library inbox
+// still reaches the host, since they're on the To: line.
 
 // TEST MODE. While this has an address, every email (request, checkout,
 // thank-you, late) goes ONLY here, with this one address as the reply-to.
@@ -105,7 +107,7 @@ export async function sendEmail(to: string[], subject: string, text: string) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       action: 'send_email', app_id: e.APP_ID, app_key: e.APP_KEY,
-      to: dest, subject, text, reply_to: TEST_RECIPIENT ? TEST_RECIPIENT : dest,
+      to: dest, subject, text, reply_to: TEST_RECIPIENT ? TEST_RECIPIENT : copy.email.threadAddress,
     }),
   });
   let data: { ok?: boolean; error?: string } = {};

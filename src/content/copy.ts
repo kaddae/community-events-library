@@ -108,7 +108,7 @@ export const copy = {
       send: 'Send to {firstName} and the library inbox',
     },
   },
-  // Emails. Every one goes to the host and threadAddress, with Reply set to both.
+  // Emails. Every one goes to the host and threadAddress. Reply goes to threadAddress.
   // Slots in {braces} are filled in for each request. Keep the slot names.
   email: {
     threadAddress: 'grouprojectnhv@gmail.com',
