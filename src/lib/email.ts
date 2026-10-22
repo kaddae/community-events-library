@@ -47,7 +47,7 @@ const depositText = (template: string, lines: RequestLine[], items: Item[]) => {
 function reflectionUrl(g: RequestGroup) {
   const token = isConfigured ? g.reflectionToken : reflectToken(g.id);
   if (!token) return '[The reflection link isn’t ready yet. Refresh the page and open this draft again.]';
-  return `${location.origin}${location.pathname}#/reflect/${token}`;
+  return `${location.href.split('#')[0]#/reflect/${token}`;
 }
 
 const baseVars = (g: RequestGroup) => ({
