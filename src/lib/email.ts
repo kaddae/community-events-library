@@ -3,7 +3,7 @@ import { env } from '@/env';
 import { copy } from '@/content/copy';
 import { isConfigured } from '@/lib/supabase';
 import {
-  useLibrary, availableFor, depositsFor, describeDeposits, reflectToken,
+  useLibrary, availableFor, depositsFor, describeDeposits, reflectToken, dollars,
   type EmailKind, type Item, type RequestGroup, type RequestLine,
 } from '@/lib/store';
 
@@ -66,6 +66,7 @@ export function requestEmail(g: RequestGroup, lines: RequestLine[], items: Item[
       ...baseVars(g),
       items: itemList(lines, items, true),
       deposit: depositText(copy.email.depositLine, lines, items),
+      pledge: g.donationPledge ? slot(copy.email.pledgeLine, { amount: dollars(g.donationPledge) }) : '',
     })),
   };
 }

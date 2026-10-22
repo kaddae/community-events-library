@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { differenceInCalendarDays, format, parseISO } from 'date-fns';
 import {
-  useLibrary, availableFor, reflectToken, depositsFor, describeDeposits, holdersFor,
+  useLibrary, availableFor, reflectToken, depositsFor, describeDeposits, holdersFor, dollars,
   type EmailKind, type ItemInput, type LineStatus, type RequestGroup,
 } from '@/lib/store';
 import { isConfigured } from '@/lib/supabase';
@@ -285,6 +285,12 @@ function Requests() {
             {deposits.length > 0 && (
               <p className="hairline-soft border-l-4 border-l-primary bg-muted px-3 py-2">
                 <span className="font-bold">{copy.desk.depositFlag}</span> {describeDeposits(deposits, false)}
+              </p>
+            )}
+            {g.donationPledge != null && (
+              <p className="hairline-soft px-3 py-2">
+                <span className="font-bold">{copy.desk.pledgeFlag}</span>{' '}
+                {g.donationPledge > 0 ? dollars(g.donationPledge) : copy.desk.pledgeNone}
               </p>
             )}
             {showEmails && (

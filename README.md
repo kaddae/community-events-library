@@ -17,7 +17,7 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 
 With `SUPABASE_URL` and `SUPABASE_ANON_KEY` set (see `.env.example`), the app uses one shared database. Without them it runs on seeded preview data saved in this browser.
 
-1. Run the files in `supabase/migrations/` in order, 0001 through 0010.
+1. Run the files in `supabase/migrations/` in order, 0001 through 0011.
 2. Authentication → Providers: turn on Email. Under URL Configuration, set Site URL to the address you use day to day. Add `https://<preview-host>/**` and `https://<published-host>/**` to Redirect URLs. The librarian sign-in page shows the exact line to paste.
 3. Librarians are rows in `librarian_allowlist`. To add someone, run a new migration (or SQL) with `insert into public.librarian_allowlist (email, name) values ('them@example.com', 'Their name');`. Delete the row to remove them.
 
@@ -31,6 +31,10 @@ Every email goes to the host and `grouprojectnhv+library@gmail.com`, with Reply 
 - **Checkout, return thank-you, late check-in:** drafts on each request card in the librarians' **Emails** row. Librarians edit and send them. The late email never sends by itself. After a send, the card shows when it went out.
 
 Librarians: use **Reply all** so the host stays in the thread. Set up a Gmail filter that labels `grouprojectnhv+library`, and agree on who checks that label each day. The default wording and the borrowing policy are in the `email` section of `src/content/copy.ts`.
+
+## Chipping in
+
+At the end of the request form, hosts pick what they'd like to chip in: $10, $15, $20, another whole-dollar amount, or "Not this time". "Not this time" counts the same as any other choice and asks nothing more. A **?** beside the heading explains why the library asks. The app only records the offer. The money changes hands in person at pickup (cash or Venmo), alongside any deposit. The amount shows on the confirmation page, in the request email and on the librarians' request card. "Not this time" shows only on the card. A pledge is an offer, not a bill, so nobody follows up on it. Librarians: agree where the cash goes and whose Venmo takes it, and every so often tell hosts what it paid for (`about.getInvolved` in the copy file is a good place).
 
 ## Editing the words
 

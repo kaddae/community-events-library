@@ -37,6 +37,9 @@ export interface RequestGroup {
   reflectionToken?: string;
   // When each librarian email last went out (ISO timestamps).
   emailsSent?: Partial<Record<EmailKind, string>>;
+  // What the host offered to chip in, whole dollars. 0 = "Not this time".
+  // null/missing = sent before the library asked.
+  donationPledge?: number | null;
 }
 export type EmailKind = 'checkout' | 'returned' | 'late';
 export type LineStatus = 'pending' | 'approved' | 'checked_out' | 'returned' | 'declined';

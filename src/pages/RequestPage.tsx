@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useLibrary, availableFor } from '@/lib/store';
-import { QuantityStepper, TodoText, DepositNotice, fill } from '@/components/Bits';
+import { QuantityStepper, TodoText, DepositNotice, InfoToggle, fill } from '@/components/Bits';
 import { sendRequestEmail } from '@/lib/email';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,6 +15,9 @@ const blank = {
 };
 
 type Dates = { eventDate: string; neededFrom: string; returnBy: string };
+
+// '' = not picked yet, '0' = Not this time, 'other' = typed amount.
+type Pledge = '' | '0' | 'other' | `${number}`;
 
 // ISO yyyy-mm-dd strings compare correctly as plain strings.
 function dateProblem(d: Dates, today: string): string {
@@ -42,6 +45,8 @@ export default function RequestPage() {
   const [trap, setTrap] = useState('');
   const [error, setError] = useState('');
   const [sending, setSending] = useState(false);
+  const [pledge, setPledge] = useState<Pledge>('');
+  const [otherAmount, setOtherAmount] = useState('');
 
   const set = (k: keyof typeof blank) => (e: { target: { value: string } }) => setF({ ...f, [k]: e.target.value });
 
@@ -80,10 +85,23 @@ export default function RequestPage() {
       setError(dateError);
       return;
     }
+    if (!pledge) {
+      setError(copy.request.chipInPick);
+      return;
+    }
+    let donationPledge = Number(pledge);
+    if (pledge === 'other') {
+      const n = parseInt(otherAmount, 10);
+      if (!/^\d+$/.test(otherAmount.trim()) || n < 1) {
+        setError(copy.request.chipInOtherError);
+        return;
+      }
+      donationPledge = Math.min(n, 10000);
+    }
     setSending(true);
     const { firstName, lastName, email, phone, affiliation, ...event } = f;
     try {
-      const id = await submitRequest({ host: { firstName, lastName, email, phone, affiliation }, ...event });
+      const id = await submitRequest({ host: { firstName, lastName, email, phone, affiliation }, ...event, donationPledge });
       // The request is saved first. The email only goes out once the database has accepted it.
       let emailFailed = false;
       let emailError = '';
@@ -198,6 +216,37 @@ export default function RequestPage() {
           <Label htmlFor="notes">Anything else the librarians should know</Label>
           <Textarea id="notes" rows={2} value={f.notes} onChange={set('notes')} />
         </div>
+
+        <div className="flex flex-col gap-3">
+          <InfoToggle title={copy.request.chipInWhyTitle} text={copy.request.chipInWhy} className="shelf-rule">
+            <h2 className="text-2xl">{copy.request.chipInTitle}</h2>
+          </InfoToggle>
+          <p>{copy.request.chipInLead}</p>
+          <div className="flex flex-wrap gap-2" role="group" aria-label={copy.request.chipInTitle}>
+            {([
+              ...copy.request.chipInAmounts.map((a) => [String(a), `$${a}`] as const),
+              ['other', copy.request.chipInOther] as const,
+              ['0', copy.request.chipInNone] as const,
+            ]).map(([value, label]) => (
+              <button key={value} type="button" aria-pressed={pledge === value}
+                onClick={() => { setPledge(value as Pledge); setError(''); }}
+                className={`min-h-11 border-[1.5px] border-secondary px-4 font-semibold ${pledge === value ? 'bg-secondary text-secondary-foreground' : 'text-secondary'}`}>
+                {label}
+              </button>
+            ))}
+          </div>
+          {pledge === 'other' && (
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="otherAmount">{copy.request.chipInOtherLabel}</Label>
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold" aria-hidden>$</span>
+                <Input id="otherAmount" type="text" inputMode="numeric" pattern="[0-9]*" className="max-w-32"
+                  value={otherAmount} onChange={(e) => setOtherAmount(e.target.value.replace(/[^0-9]/g, ''))} />
+              </div>
+            </div>
+          )}
+        </div>
+
         {error && <p className="font-semibold text-destructive" role="alert">{error}</p>}
         <TodoText text={copy.request.responseTime} />
         <button type="submit" disabled={sending} className="big-action bg-primary px-5 text-primary-foreground disabled:opacity-60">

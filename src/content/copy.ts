@@ -49,6 +49,18 @@ export const copy = {
     depositReturn: 'Returned in full when everything comes back in good shape.',
     privacy: 'Only the GROUP PROJECT librarians see your email and phone, and only for lending library business.',
     emailFailed: 'Your request was sent, but for some reason the email didn’t go out. Please write to {email} so we can find a time for pickup.',
+    // Chip-in ask at the end of the request form. Money changes hands at pickup.
+    chipInTitle: 'Chip in for the library?',
+    chipInLead: 'Borrowing is free. If you can, chip in toward keeping things stocked and repaired. $10–20 is typical, and any amount helps.',
+    chipInWhyTitle: 'Why chip in?',
+    chipInWhy: 'Managing this library requires time, energy, and money for operating costs like insurance and rent. We are committed to keeping the library accessible to as many people as possible, and do not require anyone to pay a certain amount to use the library. We do ask that you deeply consider paying $10–20 for your use of the library, to help sustain this resource for all.',
+    chipInAmounts: [10, 15, 20],
+    chipInOther: 'Other amount',
+    chipInOtherLabel: 'Amount in dollars',
+    chipInNone: 'Not this time',
+    chipInPick: 'Pick an amount to chip in, or “Not this time”.',
+    chipInOtherError: 'Type a whole-dollar amount, like 25.',
+    pledgeThanks: 'You offered {amount} toward the library. Thank you! Cash or Venmo at pickup, alongside any deposit.',
   },
   reflect: {
     title: 'Leave a tip for the next host',
@@ -72,6 +84,8 @@ export const copy = {
     consentLabel: 'They said it’s OK to post this with their first name.',
     testimonialsEmpty: 'No testimonials yet. They come in when a host fills out their reflection link.',
     depositFlag: 'Deposit at pickup:',
+    pledgeFlag: 'Toward the library:',
+    pledgeNone: 'Not this time',
     // Under a waiting line that asks for more than is in the library now.
     holder: '{qty} {state} with the {eventName}, back {returnBy}',
     holderWhen: {
@@ -104,6 +118,7 @@ export const copy = {
     depositLine: 'Deposit due at pickup: {deposits}. It’s returned in full when everything comes back in good shape.',
     outNow: ' ({count} out with another gathering right now. We’ll check it’s back in time.)',
     depositHeld: 'Deposit held: {deposits}. It’s returned in full when everything comes back in good shape.',
+    pledgeLine: 'You offered {amount} toward the library. Thank you! Cash or Venmo at pickup works, alongside any deposit.',
     signoff: '— The Community Events Lending Library\nGROUP PROJECT x Civic Works Department',
     policy: 'Events lending library - borrower agreement\nhttps://docs.google.com/document/d/1_nlWbO_1eAYxsQYAw-lKWgtMN9jd556UkXwyKaDvvbY/edit',
     request: `Hi {firstName},
@@ -117,6 +132,8 @@ Pickup: {neededFrom}{pickupWindow}
 Bring back by: {returnBy}
 
 {deposit}
+
+{pledge}
 
 Pickup is at {pickupAddress}.
 

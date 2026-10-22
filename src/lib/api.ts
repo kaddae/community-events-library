@@ -39,6 +39,8 @@ interface GroupRow {
   reflection_token: string | null;
   // Added in 0006; missing until that migration runs.
   checkout_email_at?: string | null; return_email_at?: string | null; late_email_at?: string | null;
+  // Added in 0011.
+  donation_pledge?: number | null;
   hosts: HostRow | null;
 }
 interface TestimonialRow {
@@ -66,6 +68,7 @@ const toGroup = (r: GroupRow): RequestGroup => ({
   neededFrom: r.needed_from, returnBy: r.return_by, pickupWindow: r.pickup_window,
   description: r.description, notes: r.notes,
   reflectionToken: r.reflection_token ?? undefined,
+  donationPledge: r.donation_pledge ?? null,
   emailsSent: {
     ...(r.checkout_email_at ? { checkout: r.checkout_email_at } : {}),
     ...(r.return_email_at ? { returned: r.return_email_at } : {}),

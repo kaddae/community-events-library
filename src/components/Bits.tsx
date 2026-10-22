@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState, type ReactNode } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { copy } from '@/content/copy';
 import { useLibrary, depositsFor, describeDeposits, type Item } from '@/lib/store';
@@ -16,6 +16,53 @@ export function DepositNotice({ entries }: { entries: { itemId: string }[] }) {
     <div className="flex flex-col gap-1 border-l-4 border-primary bg-muted px-4 py-3">
       <p><span className="font-bold">{copy.request.depositLead}</span> {describeDeposits(list)}.</p>
       <p className="text-muted-foreground">{copy.request.depositReturn}</p>
+    </div>
+  );
+}
+
+// A round "?" beside a heading. Hover (mouse), keyboard focus, or a tap opens
+// a short note under the heading. A second tap or Escape closes it.
+export function InfoToggle({
+  title, text, className = '', children,
+}: { title: string; text: string; className?: string; children: ReactNode }) {
+  const id = useId();
+  const [open, setOpen] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const show = open || hover || focused;
+
+  return (
+    <div
+      className="flex flex-col gap-2"
+      onKeyDown={(e) => {
+        if (e.key === 'Escape' && show) { setOpen(false); setHover(false); setFocused(false); }
+      }}
+    >
+      <div className={`flex items-center gap-1 ${className}`}>
+        {children}
+        <button
+          type="button"
+          aria-label={title}
+          aria-expanded={show}
+          aria-controls={id}
+          onClick={() => setOpen((o) => !o)}
+          onPointerEnter={(e) => { if (e.pointerType === 'mouse') setHover(true); }}
+          onPointerLeave={(e) => { if (e.pointerType === 'mouse') setHover(false); }}
+          onFocus={(e) => { if (e.currentTarget.matches(':focus-visible')) setFocused(true); }}
+          onBlur={() => setFocused(false)}
+          className="flex h-11 w-11 shrink-0 items-center justify-center text-secondary"
+        >
+          <span aria-hidden className={`flex h-7 w-7 items-center justify-center rounded-full border-[1.5px] border-secondary font-bold ${show ? 'bg-secondary text-secondary-foreground' : ''}`}>
+            ?
+          </span>
+        </button>
+      </div>
+      {show && (
+        <div id={id} role="note" className="flex flex-col gap-1 border-l-4 border-secondary bg-muted px-4 py-3">
+          <p className="font-bold">{title}</p>
+          <p>{text}</p>
+        </div>
+      )}
     </div>
   );
 }
