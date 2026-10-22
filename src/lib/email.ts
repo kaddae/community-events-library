@@ -44,10 +44,10 @@ const depositText = (template: string, lines: RequestLine[], items: Item[]) => {
   return list.length ? slot(template, { deposits: describeDeposits(list) }) : '';
 };
 
-function reflectionUrl(g: RequestGroup) {
+//Create one reflection link used for emails and librarian page. Empty means request has no code yet.
+export function reflectionUrl(g: RequestGroup) {
   const token = isConfigured ? g.reflectionToken : reflectToken(g.id);
-  if (!token) return '[The reflection link isn’t ready yet. Refresh the page and open this draft again.]';
-  return `${location.origin}${location.pathname}#/reflect/${token}`;
+  return token ? `${location.href.split('#')[0]}#/reflect/${token}` : '';
 }
 
 const baseVars = (g: RequestGroup) => ({
