@@ -7,7 +7,7 @@ export const copy = {
     siteName: 'Community Events Lending Library',
     placeLine: 'New Haven · GROUP PROJECT x Civic Works',
     supportedBy: 'The library is supported by GROUP PROJECT and Civic Works.',
-    librarianEmail: 'grouprojectnhv@gmail.com',
+    librarianEmail: 'groupprojectnhv@gmail.com',
     photoNeededShort: 'Photo needed — phone camera, plain wall at GROUP PROJECT',
     photoNeededFull: 'Add a real photo of this item — phone camera, plain wall at GROUP PROJECT is fine.',
   },
@@ -111,7 +111,7 @@ export const copy = {
   // Emails. Every one goes to the host and threadAddress. Reply goes to threadAddress.
   // Slots in {braces} are filled in for each request. Keep the slot names.
   email: {
-    threadAddress: 'grouprojectnhv@gmail.com',
+    threadAddress: 'groupprojectnhv@gmail.com',
     // The same subject on every email keeps each request in one Gmail thread.
     subject: 'Lending library request: {eventName} ({eventDate})',
     pickupAddress: 'GROUP PROJECT, 140 Bradley Street, New Haven CT 06511',
