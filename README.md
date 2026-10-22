@@ -25,12 +25,12 @@ Hosts' contact details can be read only by signed-in librarians on the allowlist
 
 ## Emails
 
-Every email goes to the host and `grouprojectnhv+library@gmail.com`, with Reply set to both. Each one uses the same subject line, so Gmail keeps the whole request in one thread. Emails are sent through Community Cloud, so there are no keys to manage. The sender (`library@groupproject.group`) is set in the Cloud tab under the connected backend, not in code. It only works while `groupproject.group` stays verified in the Resend account behind it. Replies go to the host and the library inbox, not to the From address.
+Every email goes to the host and `grouprojectnhv@gmail.com`, with Reply set to both. Each one uses the same subject line, so Gmail keeps the whole request in one thread. Emails are sent through Community Cloud, so there are no keys to manage. The sender (`library@groupproject.group`) is set in the Cloud tab under the connected backend, not in code. It only works while `groupproject.group` stays verified in the Resend account behind it. Replies go to the host and the library inbox, not to the From address.
 
 - **Request made:** sent automatically, but only after the database has saved the request. If the email fails, the host's confirmation page says so.
 - **Checkout, return thank-you, late check-in:** drafts on each request card in the librarians' **Emails** row. Librarians edit and send them. The late email never sends by itself. After a send, the card shows when it went out.
 
-Librarians: use **Reply all** so the host stays in the thread. Set up a Gmail filter that labels `grouprojectnhv+library`, and agree on who checks that label each day. The default wording and the borrowing policy are in the `email` section of `src/content/copy.ts`.
+Librarians: use **Reply all** so the host stays in the thread. Set up a Gmail filter that labels any email whose subject contains `Lending library request:` (replies starting with "Re:" match too), and agree on who checks that label each day. The default wording and the borrowing policy are in the `email` section of `src/content/copy.ts`.
 
 ## Chipping in
 

@@ -111,7 +111,7 @@ export const copy = {
   // Emails. Every one goes to the host and threadAddress, with Reply set to both.
   // Slots in {braces} are filled in for each request. Keep the slot names.
   email: {
-    threadAddress: 'grouprojectnhv+library@gmail.com',
+    threadAddress: 'grouprojectnhv@gmail.com',
     // The same subject on every email keeps each request in one Gmail thread.
     subject: 'Lending library request: {eventName} ({eventDate})',
     pickupAddress: 'GROUP PROJECT, 140 Bradley Street, New Haven CT 06511',
