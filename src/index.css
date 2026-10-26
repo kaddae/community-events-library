@@ -6,7 +6,7 @@
    warm white cinderblock walls and a honey wood floor.
    Keep --ink, --text and --warning dark enough to read on --wall. */
 :root {
-  --wall: #FFF6DC;      /* page + card background. Also change theme-color in index.html to match. */
+  --wall: ##FFFBF2;      /* page + card background. Also change theme-color in index.html to match. */
   --ink: #094A4E;       /* headings, rules, borders, focus outline, librarian bar */
   --text: #2A2622;      /* body text, and the text on orange buttons */
   --text-soft: #5E5448; /* quieter text: hints, dates, "on your list" */
