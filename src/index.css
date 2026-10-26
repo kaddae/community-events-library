@@ -2,12 +2,12 @@
 
 /* ── PALETTE ─────────────────────────────────────────────────────────────
    Change colors here. Everything else in the site reads from these lines.
-   CW gives the ink (teal), GP gives the color, the room gives the ground:
+   Navy gives the ink, GP gives the color, the room gives the ground:
    warm white cinderblock walls and a honey wood floor.
    Keep --ink, --text and --warning dark enough to read on --wall. */
 :root {
   --wall: #FFFBF2;      /* page + card background. Also change theme-color in index.html to match. */
-  --ink: #094A4E;       /* headings, rules, borders, focus outline, librarian bar */
+  --ink: #1F3557;       /* headings, rules, borders, focus outline, librarian bar. Was CW teal #094A4E. */
   --text: #2A2622;      /* body text, and the text on orange buttons */
   --text-soft: #5E5448; /* quieter text: hints, dates, "on your list" */
   --button: #EE8962;    /* main buttons */
@@ -75,7 +75,7 @@ body {
 
   /* Brand palettes. Color blocks and stripes only, and fixed: changing the
      palette above doesn't recolor these. None of these is dark enough for
-     text on --wall except CW teal (the same value as --ink today). */
+     text on --wall except CW teal. */
   --gp-olive: #CCC14D;
   --gp-sage: #92A461;
   --gp-blue: #5D83B3;
