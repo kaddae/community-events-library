@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useLibrary, availableFor, CATEGORIES, KIT_KEYS, type KitKey } from '@/lib/store';
+import { useLibrary, CATEGORIES, KIT_KEYS, type Category } from '@/lib/store';
 import ItemCard from '@/components/ItemCard';
-import { TodoText } from '@/components/Bits';
+import { TodoText, fill } from '@/components/Bits';
 import { copy } from '@/content/copy';
 
-type View = 'all' | KitKey;
+type View = 'all' | Category;
 
 export default function Catalog() {
   const items = useLibrary((s) => s.items);
-  const lines = useLibrary((s) => s.lines);
   const status = useLibrary((s) => s.status);
   const loadError = useLibrary((s) => s.loadError);
   const startKit = useLibrary((s) => s.startKit);
@@ -17,16 +16,17 @@ export default function Catalog() {
   const [view, setView] = useState<View>('all');
 
   const shelf = items.filter((i) => i.status !== 'retired');
-  const onShelf = shelf.reduce((n, i) => n + availableFor(i, lines), 0);
-  const shown = view === 'all' ? shelf : shelf.filter((i) => (i[view] ?? 0) > 0);
+  const owned = shelf.reduce((n, i) => n + i.quantityTotal, 0);
+  const shown = view === 'all' ? shelf : shelf.filter((i) => i.category === view);
   const kits = KIT_KEYS.map((key) => ({ key, inKit: shelf.filter((i) => (i[key] ?? 0) > 0) })).filter((k) => k.inKit.length > 0);
-  const views: View[] = ['all', ...kits.map((k) => k.key)];
+  // Only categories that have something in them get a button.
+  const views: View[] = ['all', ...CATEGORIES.filter((c) => shelf.some((i) => i.category === c))];
 
   return (
     <div className="flex flex-col gap-8">
       <section className="flex flex-col gap-3">
         <TodoText text={copy.home.who} className="text-lg" />
-        <p className="label-caps text-secondary">{onShelf} items available</p>
+        <p className="label-caps text-secondary">{fill(copy.home.countLine, { count: String(owned) })}</p>
       </section>
 
       <section className="flex flex-col gap-2">
@@ -87,12 +87,12 @@ export default function Catalog() {
         </div>
       )}
 
-      {kits.length > 0 && (
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Show items for">
+      {views.length > 2 && (
+        <div className="flex flex-wrap gap-2" role="group" aria-label={copy.home.filterLabel}>
           {views.map((v) => (
             <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}
               className={`min-h-11 border-[1.5px] border-secondary px-4 font-semibold ${view === v ? 'bg-secondary text-secondary-foreground' : 'text-secondary'}`}>
-              {v === 'all' ? copy.kits.everything : copy.kits[v].picker}
+              {v === 'all' ? copy.kits.everything : v}
             </button>
           ))}
         </div>

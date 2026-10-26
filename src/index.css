@@ -120,6 +120,10 @@ h1, h2, h3, .font-display {
 
 :focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
 
+/* Tailwind v4 gives buttons the plain arrow. Clickable ones get the pointing hand. */
+button:not(:disabled), [role="button"]:not([aria-disabled="true"]), summary, label:has(> input[type="checkbox"]) { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
 @keyframes pulse-once {
   0% { transform: scale(1); }
   40% { transform: scale(1.08); box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary) 30%, transparent); }

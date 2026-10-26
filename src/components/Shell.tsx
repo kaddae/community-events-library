@@ -41,7 +41,8 @@ export default function Shell({ children }: { children: ReactNode }) {
   const persona = useLibrary((s) => s.persona);
   const signOut = useLibrary((s) => s.signOut);
   const { pathname } = useLocation();
-  const count = cart.reduce((n, c) => n + c.quantity, 0);
+  // Different items on the list, not units: 20 chairs + a PA reads "(2)".
+  const count = cart.length;
 
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
 
@@ -80,7 +81,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             }`}
           >
             <ClipboardList size={20} aria-hidden />
-            Checkout
+            {count > 0 ? `Checkout (${count})` : 'Checkout'}
           </Link>
         </nav>
       </div>

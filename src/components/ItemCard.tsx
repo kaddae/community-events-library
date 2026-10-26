@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLibrary, availableFor, latestReflection, type Item } from '@/lib/store';
-import { PhotoSlot, StampTag, QuantityStepper } from '@/components/Bits';
+import { PhotoSlot, StampTag, QuantityStepper, fill } from '@/components/Bits';
 import { copy } from '@/content/copy';
 
 export function AddToRequest({ item, available }: { item: Item; available: number }) {
@@ -49,8 +49,9 @@ export default function ItemCard({ item }: { item: Item }) {
         <PhotoSlot item={item} />
       </Link>
       <div className="flex flex-1 flex-col gap-3 p-3">
-        <p className="text-sm text-muted-foreground">
-          {available} of {item.quantityTotal} available
+        <p className="flex flex-wrap items-baseline gap-x-2">
+          <span className="font-semibold">{fill(copy.item.cardTotal, { total: String(item.quantityTotal) })}</span>
+          <span className="text-sm text-muted-foreground">· {fill(copy.item.cardToday, { count: String(available) })}</span>
         </p>
         {tip && (
           <p className="text-base leading-snug">

@@ -15,12 +15,19 @@ export const copy = {
     librarianEmail: 'groupprojectnhv@gmail.com',
     photoNeededShort: 'Photo needed — phone camera, plain wall at GROUP PROJECT',
     photoNeededFull: 'Add a real photo of this item — phone camera, plain wall at GROUP PROJECT is fine.',
+    // The status tag on item cards and item pages. It describes today only.
+    tagIn: 'Available today',
+    tagOut: 'Out today',
+    tagRepair: 'In repair',
   },
   home: {
     who: 'Welcome to the Event Lending Library, hosted by GROUP PROJECT and Civic Works! Find what you need to have a great event, borrow it, and have a great gathering! ',
     emptyShelf: 'The library is empty right now. The librarians are restocking.',
     itemsTitle: 'Borrow individual items',
     itemsHint: 'Mix and match the items you need for your gathering.',
+    // {count} is every item the library owns, out or not.
+    countLine: '{count} items in the library',
+    filterLabel: 'Show a category',
   },
   // Gathering kits on the Library page. Counts come from the sheet's block_party
   // and indoor_gathering columns.
@@ -35,6 +42,9 @@ export const copy = {
   },
   item: {
     requestAnyway: 'Request anyway',
+    // The count line on each card: total first, today's count after it in smaller text.
+    cardTotal: '{total} in the library',
+    cardToday: '{count} here today',
     biographyTitle: 'Biography',
     biographyEmpty: 'No stories yet. The first host to borrow this can add to the history of this item.',
     careNotesTitle: 'Care notes',
