@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLibrary, availableFor, CATEGORIES, KIT_KEYS, type KitKey } from '@/lib/store';
 import ItemCard from '@/components/ItemCard';
 import { TodoText } from '@/components/Bits';
@@ -29,6 +29,21 @@ export default function Catalog() {
         <p className="label-caps text-secondary">{onShelf} items available</p>
       </section>
 
+      <section className="flex flex-col gap-2">
+        <h2 className="shelf-rule text-xl">{copy.about.howTitle}</h2>
+        <ol className="flex flex-col gap-2">
+          {[copy.about.borrow, copy.about.giveBack].map((line, i) => (
+            <li key={i} className="grid grid-cols-[1.75rem_1fr] gap-2">
+              <span className="font-display text-lg text-secondary">{i + 1}.</span>
+              <TodoText text={line} />
+            </li>
+          ))}
+        </ol>
+        <Link to="/about" className="self-start font-semibold text-secondary underline underline-offset-4">
+          {copy.about.title}
+        </Link>
+      </section>
+
       {status === 'loading' && <p className="text-lg text-muted-foreground">Checking the library…</p>}
       {status === 'error' && (
         <p className="text-lg" role="alert">
@@ -38,12 +53,17 @@ export default function Catalog() {
       {status === 'ready' && shelf.length === 0 && <p className="text-lg">{copy.home.emptyShelf}</p>}
 
       {kits.length > 0 && (
-        <section className="grid gap-4 md:grid-cols-2">
+        <section className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <h2 className="shelf-rule text-2xl">{copy.kits.title}</h2>
+            <p className="text-muted-foreground">{copy.kits.hint}</p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
           {kits.map(({ key, inKit }) => {
             const canGo = inKit.some((i) => i.status === 'active');
             return (
               <article key={key} className="stamp-border flex flex-col gap-3 p-4">
-                <h2 className="text-2xl">{copy.kits[key].title}</h2>
+                <h3 className="text-2xl">{copy.kits[key].title}</h3>
                 <p>{inKit.map((i) => `${Math.min(i[key] ?? 0, i.quantityTotal)} × ${i.name}`).join(', ')}</p>
                 {canGo ? (
                   <button type="button" onClick={() => { startKit(key); navigate('/request'); }}
@@ -56,7 +76,15 @@ export default function Catalog() {
               </article>
             );
           })}
+          </div>
         </section>
+      )}
+
+      {status === 'ready' && shelf.length > 0 && (
+        <div className="flex flex-col gap-1">
+          <h2 className="shelf-rule text-2xl">{copy.home.itemsTitle}</h2>
+          <p className="text-muted-foreground">{copy.home.itemsHint}</p>
+        </div>
       )}
 
       {kits.length > 0 && (

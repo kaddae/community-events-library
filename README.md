@@ -6,7 +6,7 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 
 - **The library** (home): all 13 starter items grouped by category. Each shows how many are available and the latest tip from a past host.
 - **Item pages**: description, care notes, availability, and the biography (dated tips from past borrowers, newest first).
-- **Request list**: add several items, adjust quantities, then send one short form. Submitting creates one request group with one line per item.
+- **Request list**: add several items, adjust quantities, then send one short form. Phone is required. Pickup is a range (earliest and latest day), which starts out as a single day until the host widens it. Submitting creates one request group with one line per item.
 - **Confirmation**: pickup details, plus the most recent tip for anything you requested.
 - **Librarians' desk** (`#/librarian`): requests grouped by submission, with Approve, Decline, Check out and Mark returned buttons for each item. Anything past its return date gets flagged. Once anything in a request comes back, the request gets one **Copy reflection link** button, and each returned item gets **Add a tip they told us** for tips a host says at the counter (posted only with their OK). The **Testimonials** tab is where librarians approve or hide testimonials that hosts marked OK to share. The Inventory tab syncs from a published Google Sheet CSV, with a preview before anything changes.
 - **Reflection page** (`#/reflect/<token>`): one link per request. It asks one required question, "How did the gathering go?", with an "OK to share" checkbox that starts unchecked. Below that are optional tips for each returned item, collapsed until the host taps one. Tips go straight onto item biographies. Testimonials stay private to librarians unless the host checked "OK to share" **and** a librarian approved them. Older per-item links still open the single-item form.
@@ -17,7 +17,7 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 
 With `SUPABASE_URL` and `SUPABASE_ANON_KEY` set (see `.env.example`), the app uses one shared database. Without them it runs on seeded preview data saved in this browser.
 
-1. Run the files in `supabase/migrations/` in order, 0001 through 0011.
+1. Run the files in `supabase/migrations/` in order, 0001 through 0013.
 2. Authentication → Providers: turn on Email. Under URL Configuration, set Site URL to the address you use day to day. Add `https://<preview-host>/**` and `https://<published-host>/**` to Redirect URLs. The librarian sign-in page shows the exact line to paste.
 3. Librarians are rows in `librarian_allowlist`. To add someone, run a new migration (or SQL) with `insert into public.librarian_allowlist (email, name) values ('them@example.com', 'Their name');`. Delete the row to remove them.
 
@@ -44,7 +44,7 @@ All public wording is in `src/content/copy.ts`, one named entry per piece of tex
 
 `name, slug, category, quantity_total, status, description, care_notes, replacement_cost, deposit, block_party, indoor_gathering`
 
-`block_party` and `indoor_gathering` hold the **suggested count** of that item for one typical gathering of that kind (e.g. 2 tables, 4 chairs, 1 cooler). They are not how many the library owns. Leave the cell blank if the item isn't in that kit. An item can be in both. "Start with this kit" on the Library page puts these counts on the host's request list, and the host adjusts from there. If a sheet doesn't have one of these columns, the saved counts stay as they are.
+`block_party` and `indoor_gathering` hold the **suggested count** of that item for one typical gathering of that kind (e.g. 2 tables, 4 chairs, 1 cooler). They are not how many the library owns. Leave the cell blank if the item isn't in that bundle. An item can be in both. "Start with this bundle" on the Library page puts these counts on the host's request list, and the host adjusts from there. If a sheet doesn't have one of these columns, the saved counts stay as they are.
 
 `replacement_cost` and `deposit` are optional and take whole dollars ("$180", "180" and "180.00" all work). A blank cell clears the amount. If a sheet doesn't have one of these columns, the amounts already saved stay as they are. Both amounts are public. The replacement cost shows on the item page. The deposit shows on the item page, on the request list, on the confirmation page and on the librarians' request card. Each item has one deposit, however many someone borrows.
 

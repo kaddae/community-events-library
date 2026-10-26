@@ -2,10 +2,15 @@
 // Rewrite any value freely — pages look blocks up by name, so keep the names.
 // A value starting with "TODO" renders as a dashed note until you replace it.
 
+// The pickup address, used in the footer, the borrowing steps, and every email.
+const STREET = '140 Bradley Street';
+const ADDRESS = `${STREET}, New Haven CT 06511`;
+
 export const copy = {
   shared: {
     siteName: 'Community Events Lending Library',
     placeLine: 'New Haven · GROUP PROJECT x Civic Works',
+    address: `GROUP PROJECT · ${ADDRESS}`,
     supportedBy: 'The library is supported by GROUP PROJECT and Civic Works.',
     librarianEmail: 'groupprojectnhv@gmail.com',
     photoNeededShort: 'Photo needed — phone camera, plain wall at GROUP PROJECT',
@@ -14,15 +19,19 @@ export const copy = {
   home: {
     who: 'Welcome to the Event Lending Library, hosted by GROUP PROJECT and Civic Works! Find what you need to have a great event, borrow it, and have a great gathering! ',
     emptyShelf: 'The library is empty right now. The librarians are restocking.',
+    itemsTitle: 'Borrow individual items',
+    itemsHint: 'Mix and match the items you need for your gathering.',
   },
   // Gathering kits on the Library page. Counts come from the sheet's block_party
   // and indoor_gathering columns.
   kits: {
+    title: 'Begin with a bundle',
+    hint: 'Hosting a block party or indoor gathering? Start with these pre-selected item bundles. You can still customize your selection after starting here.',
     blockParty: { title: 'Block Party Bundle', picker: 'Block party' },
-    indoorGathering: { title: 'Community Meeting Kit', picker: 'Community meeting' },
+    indoorGathering: { title: 'Indoor Gathering Bundle', picker: 'Indoor gathering' },
     everything: 'Everything',
-    start: 'Start with this kit',
-    none: 'Nothing in this kit can go out right now. Write the librarians and we’ll figure something out.',
+    start: 'Start with this bundle',
+    none: 'Nothing in this bundle can go out right now. Write the librarians and we’ll figure something out.',
   },
   item: {
     requestAnyway: 'Request anyway',
@@ -37,10 +46,15 @@ export const copy = {
     title: 'Your request list',
     empty: 'Nothing on your list yet. Add what your gathering needs from the library.',
     formTitle: 'About your gathering',
+    pickupEarliestLabel: 'Earliest pickup',
+    pickupLatestLabel: 'Latest pickup',
+    pickupRangeHint: 'This is helpful for our librarians as we coordinate availability.',
+    pickupTimesLabel: 'What time(s) of day work best for you for pick-up?',
+    descriptionLabel: 'Share more about your gathering.',
     submit: 'Send request to the librarians',
     responseTime: 'We will respond to you in the next 2 business days!',
     sentTitle: 'Request sent.',
-    sentBody: "We'll reach out to set up pickup at GROUP PROJECT (140 Bradley Street, New Haven CT, 06511). You can put down a deposit (if needed) and sign the borrower agreement in person.",
+    sentBody: `We'll reach out to set up pickup at GROUP PROJECT (${ADDRESS}). You can put down a deposit (if needed) and sign the borrower agreement in person.`,
     careAgreement: 'We ask you to treat the items you borrow carefully, and let us know if anything happens. If an item is lost or seriously damaged, we may ask you to pay for the replacement or repair.',
     handoffLead: 'A note from the last host',
     outNow: '{count} out with another gathering right now',
@@ -114,7 +128,7 @@ export const copy = {
     threadAddress: 'groupprojectnhv@gmail.com',
     // The same subject on every email keeps each request in one Gmail thread.
     subject: 'Lending library request: {eventName} ({eventDate})',
-    pickupAddress: 'GROUP PROJECT, 140 Bradley Street, New Haven CT 06511',
+    pickupAddress: `GROUP PROJECT, ${ADDRESS}`,
     depositLine: 'Deposit due at pickup: {deposits}. It’s returned in full when everything comes back in good shape.',
     outNow: ' ({count} out with another gathering right now. We’ll check it’s back in time.)',
     depositHeld: 'Deposit held: {deposits}. It’s returned in full when everything comes back in good shape.',
@@ -178,7 +192,7 @@ No worries if plans changed. Reply and let us know how it's going and when works
     title: 'All about the library',
     testimonialsTitle: 'What hosts say',
     howTitle: 'How borrowing works',
-    borrow: 'Browse our catalog and pick out what you need. Request your items, find a time to pick up at GROUP PROJECT, and have a great event!',
+    borrow: `Browse our catalog and pick out what you need. Request your items, find a time to pick up at GROUP PROJECT (${STREET}), and have a great event!`,
     giveBack: 'After your gathering, bring your item(s) back to GROUP PROJECT, and let us know how it went! We encourage you to share tips or tricks so that other event-hosts can learn from you.',
     cwd: 'Built by a growing coalition of neighbors, Civic Works\' mission is to increase volunteerism, civic engagement, and service in New Haven. We invest in neighbors to bring their blocks together because we believe that the health of our democracy begins at the neighborhood level. <br> Neighbors have often told us that a missing PA system, tables and chairs, or cleanup tools is often what stands between a great idea and an actual event. That\’s why we are so excited to partner with Group Project to build the Community Events Lending Library.',
     groupProject: 'GROUP PROJECT is a new hub for community-building that supports local projects through relationships, resources, and skill-sharing. We offer working space for projects, a lending library for gatherings, and partner with locals to host community-building events that inspire, educate, and help folks do cool stuff in New Haven. <br> We know from that hosting an event takes a lot of work, and can require organizers to coordinate the borrowing or buying of many different physical items. We built this library with the goal of encouraging more successful, impactful and joyous gatherings through easy access to the event materials and supplies they need.',

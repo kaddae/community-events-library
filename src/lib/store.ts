@@ -32,6 +32,9 @@ export interface Host {
 export interface RequestGroup {
   id: string; createdAt: string; host: Host; eventName: string; eventDate: string;
   neededFrom: string; returnBy: string; pickupWindow: string; description: string; notes: string;
+  // Latest day the host could pick up (neededFrom is the earliest).
+  // null/missing = sent before the library asked for a range.
+  pickupLatest?: string | null;
   // One reflection link per request. Connected mode only: the database stamps it
   // when the first item comes back.
   reflectionToken?: string;
@@ -81,6 +84,13 @@ export function latestReflection(itemIds: string[], reflections: Reflection[]) {
 }
 
 export const dollars = (n: number) => `$${n.toLocaleString('en-US')}`;
+
+// "2025-06-05", or "2025-06-05 to 2025-06-07" when the host gave a range. fmt formats each day.
+export function pickupSpan(g: Pick<RequestGroup, 'neededFrom' | 'pickupLatest'>, fmt: (iso: string) => string = (d) => d) {
+  return g.pickupLatest && g.pickupLatest !== g.neededFrom
+    ? `${fmt(g.neededFrom)} to ${fmt(g.pickupLatest)}`
+    : fmt(g.neededFrom);
+}
 
 // One entry per item with a deposit, counted once per item.
 export function depositsFor(entries: { itemId: string }[], items: Item[]) {

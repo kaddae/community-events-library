@@ -90,7 +90,10 @@ export default function Shell({ children }: { children: ReactNode }) {
       <footer className="border-t-[1.5px] border-secondary">
         <div className="mx-auto flex max-w-5xl flex-col gap-5 px-4 py-6 text-base">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="font-display text-lg text-secondary sm:max-w-xs">{copy.shared.supportedBy}</p>
+            <div className="flex flex-col gap-1 sm:max-w-xs">
+              <p className="font-display text-lg text-secondary">{copy.shared.supportedBy}</p>
+              <p className="text-muted-foreground">{copy.shared.address}</p>
+            </div>
             <div className="flex items-center gap-6">
               <a
                 href="https://groupproject.group"

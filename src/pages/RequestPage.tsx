@@ -11,10 +11,10 @@ import { copy } from '@/content/copy';
 
 const blank = {
   firstName: '', lastName: '', email: '', phone: '', affiliation: '',
-  eventName: '', eventDate: '', neededFrom: '', returnBy: '', pickupWindow: '', description: '', notes: '',
+  eventName: '', eventDate: '', neededFrom: '', pickupLatest: '', returnBy: '', pickupWindow: '', description: '', notes: '',
 };
 
-type Dates = { eventDate: string; neededFrom: string; returnBy: string };
+type Dates = { eventDate: string; neededFrom: string; pickupLatest: string; returnBy: string };
 
 // '' = not picked yet, '0' = Not this time, 'other' = typed amount.
 type Pledge = '' | '0' | 'other' | `${number}`;
@@ -24,6 +24,8 @@ function dateProblem(d: Dates, today: string): string {
   if (d.eventDate && d.eventDate < today) return 'The gathering date has already passed. Pick today or later.';
   if (d.neededFrom && d.neededFrom < today) return 'That pickup day has already passed. Pick today or later.';
   if (d.neededFrom && d.eventDate && d.neededFrom > d.eventDate) return 'Pickup comes after the gathering. Pick up on or before the day of it.';
+  if (d.pickupLatest && d.neededFrom && d.pickupLatest < d.neededFrom) return 'Latest pickup comes before earliest pickup. Check those two.';
+  if (d.pickupLatest && d.eventDate && d.pickupLatest > d.eventDate) return 'Latest pickup comes after the gathering. Pick a day on or before it.';
   if (d.returnBy && d.eventDate && d.returnBy < d.eventDate) return 'The bring-back day is before the gathering. Bring things back on or after it.';
   if (d.returnBy && d.neededFrom && d.returnBy < d.neededFrom) return 'The return date comes before the pickup date. Check those two.';
   return '';
@@ -38,7 +40,7 @@ export default function RequestPage() {
   const navigate = useNavigate();
   const [f, setF] = useState(blank);
   // Pickup and return follow the gathering date until the host picks them.
-  const [touched, setTouched] = useState({ neededFrom: false, returnBy: false });
+  const [touched, setTouched] = useState({ neededFrom: false, pickupLatest: false, returnBy: false });
   const today = format(new Date(), 'yyyy-MM-dd');
   const dateError = dateProblem(f, today);
   // Honeypot: people never see this field, but form-filling bots tend to fill it in.
@@ -56,15 +58,27 @@ export default function RequestPage() {
       const next = { ...prev, eventDate: v };
       if (!v) return next;
       if (!touched.neededFrom || !prev.neededFrom || prev.neededFrom > v) next.neededFrom = v;
+      if (!touched.pickupLatest || !prev.pickupLatest || prev.pickupLatest > v) next.pickupLatest = v;
       if (!touched.returnBy || !prev.returnBy || prev.returnBy < v) next.returnBy = v;
       return next;
     });
 
+  // Latest pickup follows earliest until the host picks it.
   const setPickup = (v: string) => {
     setTouched((t) => ({ ...t, neededFrom: true }));
     setF((prev) => ({
       ...prev,
       neededFrom: v,
+      pickupLatest: v && (!touched.pickupLatest || !prev.pickupLatest || prev.pickupLatest < v) ? v : prev.pickupLatest,
+      returnBy: v && (!prev.returnBy || prev.returnBy < v) ? v : prev.returnBy,
+    }));
+  };
+
+  const setLatest = (v: string) => {
+    setTouched((t) => ({ ...t, pickupLatest: true }));
+    setF((prev) => ({
+      ...prev,
+      pickupLatest: v,
       returnBy: v && (!prev.returnBy || prev.returnBy < v) ? v : prev.returnBy,
     }));
   };
@@ -186,7 +200,7 @@ export default function RequestPage() {
           {field('firstName', 'First name')}
           {field('lastName', 'Last name')}
           {field('email', 'Email', 'email')}
-          {field('phone', 'Phone', 'tel', false)}
+          {field('phone', 'Phone', 'tel')}
         </div>
         {field('affiliation', 'Group, block, or organization', 'text', false)}
         <TodoText text={copy.request.privacy} className="text-muted-foreground" />
@@ -200,16 +214,18 @@ export default function RequestPage() {
         <h2 className="shelf-rule text-2xl">{copy.request.formTitle}</h2>
         {field('eventName', 'Name of the gathering')}
         <div className="flex flex-col gap-2">
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2">
             {dateField('eventDate', 'Date', setEventDate, today)}
-            {dateField('neededFrom', 'Pickup Date', setPickup, today, f.eventDate)}
+            {dateField('neededFrom', copy.request.pickupEarliestLabel, setPickup, today, f.eventDate)}
+            {dateField('pickupLatest', copy.request.pickupLatestLabel, setLatest, f.neededFrom || today, f.eventDate)}
             {dateField('returnBy', 'Bring back by', setReturn, f.eventDate || f.neededFrom || today)}
           </div>
+          <p className="text-muted-foreground">{copy.request.pickupRangeHint}</p>
           {dateError && <p id="date-error" className="font-semibold text-destructive">{dateError}</p>}
         </div>
-        {field('pickupWindow', 'What days/times work best for you?', 'text', false)}
+        {field('pickupWindow', copy.request.pickupTimesLabel, 'text', false)}
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="description">What's the gathering?</Label>
+          <Label htmlFor="description">{copy.request.descriptionLabel}</Label>
           <Textarea id="description" rows={3} value={f.description} onChange={set('description')} />
         </div>
         <div className="flex flex-col gap-1.5">

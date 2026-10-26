@@ -3,7 +3,7 @@ import { env } from '@/env';
 import { copy } from '@/content/copy';
 import { isConfigured } from '@/lib/supabase';
 import {
-  useLibrary, availableFor, depositsFor, describeDeposits, reflectToken, dollars,
+  useLibrary, availableFor, depositsFor, describeDeposits, reflectToken, dollars, pickupSpan,
   type EmailKind, type Item, type RequestGroup, type RequestLine,
 } from '@/lib/store';
 
@@ -54,7 +54,7 @@ const baseVars = (g: RequestGroup) => ({
   firstName: g.host.firstName,
   eventName: g.eventName,
   eventDate: day(g.eventDate),
-  neededFrom: day(g.neededFrom),
+  neededFrom: pickupSpan(g, day),
   pickupWindow: g.pickupWindow ? ` (${g.pickupWindow})` : '',
   returnBy: day(g.returnBy),
   pickupAddress: copy.email.pickupAddress,

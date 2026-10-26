@@ -1,5 +1,5 @@
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { useLibrary, latestReflection, availableFor, dollars } from '@/lib/store';
+import { useLibrary, latestReflection, availableFor, dollars, pickupSpan } from '@/lib/store';
 import { TodoText, DepositNotice, fill } from '@/components/Bits';
 import { TEST_RECIPIENT } from '@/lib/email';
 import { copy } from '@/content/copy';
@@ -49,7 +49,7 @@ export default function RequestSent() {
             })}
           </ul>
           <p className="border-t px-3 py-2 text-muted-foreground" style={{ borderTop: 'var(--rule-soft)' }}>
-            Pickup {group.neededFrom} ({group.pickupWindow}) · back by {group.returnBy}
+            Pickup {pickupSpan(group)} ({group.pickupWindow}) · back by {group.returnBy}
           </p>
         </section>
       )}

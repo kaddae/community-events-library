@@ -67,7 +67,7 @@ export const seedGroups: RequestGroup[] = [
   },
   {
     id: 'grp_block', createdAt: stamp(-1), host: nadia, eventName: 'July block party',
-    eventDate: day(12), neededFrom: day(11), returnBy: day(13), pickupWindow: 'Thursday evening',
+    eventDate: day(12), neededFrom: day(11), pickupLatest: day(12), returnBy: day(13), pickupWindow: 'Thursday evening',
     description: 'Potluck and music for our block, about 60 neighbors.', notes: 'We can bring a car for pickup.',
   },
 ];

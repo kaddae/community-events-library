@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { differenceInCalendarDays, format, parseISO } from 'date-fns';
 import {
-  useLibrary, availableFor, reflectToken, depositsFor, describeDeposits, holdersFor, dollars,
+  useLibrary, availableFor, reflectToken, depositsFor, describeDeposits, holdersFor, dollars, pickupSpan,
   type EmailKind, type ItemInput, type LineStatus, type RequestGroup,
 } from '@/lib/store';
 import { isConfigured } from '@/lib/supabase';
@@ -280,7 +280,7 @@ function Requests() {
           <article key={g.id} className="stamp-border">
             <header className="hairline flex flex-wrap items-baseline justify-between gap-2 px-3 py-2.5">
               <h2 className="text-xl">{g.eventName}</h2>
-              <span className="text-sm text-muted-foreground">{g.eventDate} · pickup {g.neededFrom}{g.pickupWindow && `, ${g.pickupWindow}`} · back {g.returnBy}</span>
+              <span className="text-sm text-muted-foreground">{g.eventDate} · pickup {pickupSpan(g)}{g.pickupWindow && `, ${g.pickupWindow}`} · back {g.returnBy}</span>
             </header>
             {deposits.length > 0 && (
               <p className="hairline-soft border-l-4 border-l-primary bg-muted px-3 py-2">
