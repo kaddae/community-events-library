@@ -65,7 +65,7 @@ body {
 }
 
 @theme inline {
-  --font-display: "Zilla Slab", Georgia, serif;
+  --font-display: "Chango", Georgia, serif;
   --font-sans: "Public Sans", "Helvetica Neue", Helvetica, sans-serif;
 }
 
@@ -159,7 +159,11 @@ h1, h2, h3, .font-display {
   font-family: var(--font-display);
   color: var(--secondary);
   line-height: 1.15;
-  font-weight: 600; /* 700 for bolder headings */
+  /* Chango has one weight (400). A higher number makes the browser fake a
+     bold, which smears. Zilla Slab looked right at 600. */
+  font-weight: 400;
+  /* Chango is wide. This lets a long word wrap instead of running off a phone screen. */
+  overflow-wrap: break-word;
 }
 /* Headings are in capitals on the public pages. The wording in copy.ts stays
    in normal case, so screen readers read the words normally. The footer
