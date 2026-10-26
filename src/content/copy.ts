@@ -28,7 +28,7 @@ export const copy = {
   // Gathering kits on the Library page. Counts come from the sheet's block_party
   // and indoor_gathering columns.
   kits: {
-    title: 'Begin with a bundle',
+    title: 'Start with a bundle',
     hint: 'Hosting a block party or indoor gathering? Start with these pre-selected item bundles. You can still customize your selection after starting here.',
     blockParty: { title: 'Block Party Bundle', picker: 'Block party' },
     indoorGathering: { title: 'Indoor Gathering Bundle', picker: 'Indoor gathering' },
