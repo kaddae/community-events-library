@@ -69,7 +69,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <div className="sticky top-0 z-30 border-b-[1.5px] border-secondary bg-background">
+      <div className="sticky top-0 z-30 bg-background">
         <nav className="mx-auto flex max-w-5xl items-center justify-end gap-4 px-4 py-2 sm:justify-start">
           <NavLink to="/" end className={navCls}>Library</NavLink>
           <NavLink to="/about" className={navCls}>About</NavLink>
@@ -84,11 +84,13 @@ export default function Shell({ children }: { children: ReactNode }) {
             {count > 0 ? `Checkout (${count})` : 'Checkout'}
           </Link>
         </nav>
+        <div className="gp-band" aria-hidden />
       </div>
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:py-10">{children}</main>
 
-      <footer className="border-t-[1.5px] border-secondary">
+      <footer>
+        <div className="cw-band" aria-hidden />
         <div className="mx-auto flex max-w-5xl flex-col gap-5 px-4 py-6 text-base">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-col gap-1 sm:max-w-xs">

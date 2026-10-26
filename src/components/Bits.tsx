@@ -78,11 +78,13 @@ export function PhotoSlot({ item, size = 'card' }: { item: Item; size?: 'card' |
     return <img data-asset={item.photo} alt={item.name} className="aspect-[4/3] w-full object-cover" style={{ borderBottom: 'var(--rule)' }} />;
   }
   return (
-    <div className="photo-slot flex aspect-[4/3] w-full flex-col items-center justify-center gap-1 px-4 text-center">
-      <span className="font-display text-lg text-secondary">{item.name}</span>
-      <span className={`text-muted-foreground ${size === 'card' ? 'text-sm' : 'text-base'}`}>
-        {size === 'card' ? copy.shared.photoNeededShort : copy.shared.photoNeededFull}
-      </span>
+    <div data-cat={item.category} className="photo-slot flex aspect-[4/3] w-full items-center justify-center px-4 text-center">
+      <div className="flex flex-col gap-1 bg-background px-3 py-2">
+        <span className="font-display text-lg text-secondary">{item.name}</span>
+        <span className={`text-muted-foreground ${size === 'card' ? 'text-sm' : 'text-base'}`}>
+          {size === 'card' ? copy.shared.photoNeededShort : copy.shared.photoNeededFull}
+        </span>
+      </div>
     </div>
   );
 }

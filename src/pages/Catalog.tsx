@@ -62,17 +62,20 @@ export default function Catalog() {
           {kits.map(({ key, inKit }) => {
             const canGo = inKit.some((i) => i.status === 'active');
             return (
-              <article key={key} className="stamp-border flex flex-col gap-3 p-4">
-                <h3 className="text-2xl">{copy.kits[key].title}</h3>
-                <p>{inKit.map((i) => `${Math.min(i[key] ?? 0, i.quantityTotal)} × ${i.name}`).join(', ')}</p>
-                {canGo ? (
-                  <button type="button" onClick={() => { startKit(key); navigate('/request'); }}
-                    className="big-action mt-auto bg-primary px-4 text-primary-foreground">
-                    {copy.kits.start}
-                  </button>
-                ) : (
-                  <p className="mt-auto text-muted-foreground">{copy.kits.none}</p>
-                )}
+              <article key={key} className="stamp-border flex flex-col">
+                <div className="kit-band" data-kit={key} aria-hidden />
+                <div className="flex flex-1 flex-col gap-3 p-4">
+                  <h3 className="text-2xl">{copy.kits[key].title}</h3>
+                  <p>{inKit.map((i) => `${Math.min(i[key] ?? 0, i.quantityTotal)} × ${i.name}`).join(', ')}</p>
+                  {canGo ? (
+                    <button type="button" onClick={() => { startKit(key); navigate('/request'); }}
+                      className="big-action mt-auto bg-primary px-4 text-primary-foreground">
+                      {copy.kits.start}
+                    </button>
+                  ) : (
+                    <p className="mt-auto text-muted-foreground">{copy.kits.none}</p>
+                  )}
+                </div>
               </article>
             );
           })}
@@ -91,7 +94,9 @@ export default function Catalog() {
         <div className="flex flex-wrap gap-2" role="group" aria-label={copy.home.filterLabel}>
           {views.map((v) => (
             <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}
-              className={`min-h-11 border-[1.5px] border-secondary px-4 font-semibold ${view === v ? 'bg-secondary text-secondary-foreground' : 'text-secondary'}`}>
+              data-cat={v === 'all' ? undefined : v}
+              className={`flex min-h-11 items-center gap-2 border-[1.5px] border-secondary px-4 font-semibold ${view === v ? 'bg-secondary text-secondary-foreground' : 'text-secondary'}`}>
+              <span aria-hidden className={v === 'all' ? 'gp-chip' : 'cat-chip'} />
               {v === 'all' ? copy.kits.everything : v}
             </button>
           ))}
@@ -103,7 +108,7 @@ export default function Catalog() {
         if (group.length === 0) return null;
         return (
           <section key={cat} className="flex flex-col gap-4">
-            <h3 className="shelf-rule text-xl">{cat}</h3>
+            <h3 className="shelf-rule cat-rule text-xl" data-cat={cat}>{cat}</h3>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {group.map((item) => <ItemCard key={item.id} item={item} />)}
             </div>

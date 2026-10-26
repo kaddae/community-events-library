@@ -1,23 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F6F1E8;
-  --foreground: #2E2C27;
-  --card: #F6F1E8;
-  --card-foreground: #2E2C27;
-  --primary: #C4633B;
-  --primary-foreground: #FFFFFF;
-  --secondary: #1F4A38;
-  --secondary-foreground: #F6F1E8;
-  --muted: #ECE5D8;
-  --muted-foreground: #5B574E;
-  --accent: #E7EDE8;
-  --accent-foreground: #1F4A38;
-  --destructive: #8E2F1E;
+  /* CW gives the ink (teal), GP gives the color, the room gives the ground:
+     warm white cinderblock walls and a honey wood floor. */
+  --background: #F7F3EC;
+  --foreground: #2A2622;
+  --card: #F7F3EC;
+  --card-foreground: #2A2622;
+  --primary: #EE8962;
+  --primary-foreground: #2A2622;
+  --secondary: #094A4E;
+  --secondary-foreground: #F7F3EC;
+  --muted: #EBDDC6;
+  --muted-foreground: #5E5448;
+  --accent: #DDF3F5;
+  --accent-foreground: #094A4E;
+  --destructive: #A63A27;
   --destructive-foreground: #FBF3EF;
-  --border: #1F4A38;
-  --input: #1F4A38;
-  --ring: #C4633B;
+  --border: #094A4E;
+  --input: #094A4E;
+  --ring: #094A4E;
   --radius: 0rem;
 }
 
@@ -54,7 +56,80 @@ body {
 :root {
   --rule: 1.5px solid var(--secondary);
   --rule-soft: 1px solid color-mix(in srgb, var(--secondary) 28%, transparent);
+
+  /* Brand palettes. Color blocks and stripes only. None of these is dark
+     enough for text on the warm white, except CW teal (already --secondary). */
+  --gp-olive: #CCC14D;
+  --gp-sage: #92A461;
+  --gp-blue: #5D83B3;
+  --gp-periwinkle: #A0A3D2;
+  --gp-lavender: #D9ADD1;
+  --gp-pink: #EDA3A2;
+  --gp-red: #DC5D47;
+  --gp-orange: #EE8962;
+  --gp-yellow: #FFC962;
+  --cw-teal: #094A4E;
+  --cw-cyan: #71E3F4;
+  --cw-lime: #B8EA61;
 }
+
+/* One GP color per category, picked up by anything with data-cat. */
+[data-cat] { --cat: var(--gp-olive); }
+[data-cat="Furniture"] { --cat: var(--gp-orange); }
+[data-cat="Sound/AV"] { --cat: var(--gp-blue); }
+[data-cat="Lights/Power"] { --cat: var(--gp-yellow); }
+[data-cat="Signage"] { --cat: var(--gp-pink); }
+[data-cat="Safety"] { --cat: var(--gp-sage); }
+[data-cat="Games"] { --cat: var(--gp-periwinkle); }
+[data-cat="Other"] { --cat: var(--gp-lavender); }
+
+/* GP's nine colors under the nav; CW's three above the footer. */
+.gp-band {
+  height: 6px;
+  background: linear-gradient(90deg,
+    var(--gp-olive) 0 11.11%, var(--gp-sage) 0 22.22%, var(--gp-blue) 0 33.33%,
+    var(--gp-periwinkle) 0 44.44%, var(--gp-lavender) 0 55.55%, var(--gp-pink) 0 66.66%,
+    var(--gp-red) 0 77.77%, var(--gp-orange) 0 88.88%, var(--gp-yellow) 0 100%);
+}
+.cw-band {
+  height: 6px;
+  background: linear-gradient(90deg, var(--cw-teal) 0 33.33%, var(--cw-cyan) 0 66.66%, var(--cw-lime) 0 100%);
+}
+
+/* Chunky color block at the start of a category heading's rule. */
+.cat-rule::before {
+  content: "";
+  flex: none;
+  width: 1.4rem;
+  height: 0.95rem;
+  background: var(--cat);
+  border: var(--rule);
+}
+.cat-chip {
+  display: inline-block;
+  flex: none;
+  width: 0.85rem;
+  height: 0.85rem;
+  background: var(--cat);
+  border: 1.5px solid currentColor;
+}
+.gp-chip {
+  display: inline-block;
+  flex: none;
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 1.5px solid currentColor;
+  background: conic-gradient(var(--gp-orange) 0 25%, var(--gp-blue) 0 50%, var(--gp-yellow) 0 75%, var(--gp-pink) 0 100%);
+}
+
+/* Striped top band on each bundle card. */
+.kit-band {
+  height: 0.85rem;
+  border-bottom: var(--rule);
+  background: repeating-linear-gradient(135deg, var(--k1) 0 10px, var(--k2) 10px 20px);
+}
+[data-kit="blockParty"] { --k1: var(--cw-lime); --k2: var(--cw-cyan); }
+[data-kit="indoorGathering"] { --k1: var(--gp-periwinkle); --k2: var(--gp-lavender); }
 
 html { -webkit-text-size-adjust: 100%; }
 body {
@@ -94,7 +169,7 @@ h1, h2, h3, .font-display {
 }
 .photo-slot {
   background:
-    repeating-linear-gradient(135deg, transparent 0 10px, color-mix(in srgb, var(--secondary) 7%, transparent) 10px 11px);
+    repeating-linear-gradient(135deg, transparent 0 12px, color-mix(in srgb, var(--cat, var(--secondary)) 38%, transparent) 12px 20px);
   border-bottom: var(--rule);
 }
 .todo-note {

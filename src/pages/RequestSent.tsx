@@ -43,7 +43,7 @@ export default function RequestSent() {
               return (
                 <li key={l.id}>
                   {l.quantity} × {item?.name}
-                  {short > 0 && <span className="text-sm font-semibold text-primary"> · {fill(copy.request.outNow, { count: String(short) })}</span>}
+                  {short > 0 && <span className="text-sm font-semibold text-destructive"> · {fill(copy.request.outNow, { count: String(short) })}</span>}
                 </li>
               );
             })}

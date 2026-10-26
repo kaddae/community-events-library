@@ -22,7 +22,7 @@ export function AddToRequest({ item, available }: { item: Item; available: numbe
       disabled={item.status !== 'active' || item.quantityTotal === 0}
       onClick={() => setCartQty(item.id, 1)}
       className={`big-action w-full px-4 disabled:bg-muted disabled:text-muted-foreground ${
-        available > 0 ? 'bg-primary text-primary-foreground' : 'border-[1.5px] border-primary text-primary'
+        available > 0 ? 'bg-primary text-primary-foreground' : 'border-[1.5px] border-destructive text-destructive'
       }`}
     >
       {item.status === 'repair' ? 'Being repaired' : available > 0 ? 'Add to request' : copy.item.requestAnyway}

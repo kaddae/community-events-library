@@ -127,7 +127,7 @@ export default function RequestPage() {
     );
   }
 
-  const req = <span className="font-bold text-primary" aria-hidden> *</span>;
+  const req = <span className="font-bold text-destructive" aria-hidden> *</span>;
   const shortBy = (itemId: string, qty: number) => {
     const item = items.find((i) => i.id === itemId);
     return item ? Math.max(0, qty - availableFor(item, lines)) : 0;
@@ -164,7 +164,7 @@ export default function RequestPage() {
               <li key={c.itemId} className="hairline-soft flex flex-wrap items-center justify-between gap-3 p-3 last:border-0">
                 <span className="flex flex-col">
                   <Link to={`/items/${item.slug}`} className="font-semibold text-secondary underline-offset-4 hover:underline">{item.name}</Link>
-                  {short > 0 && <span className="text-sm font-semibold text-primary">{fill(copy.request.outNow, { count: String(short) })}</span>}
+                  {short > 0 && <span className="text-sm font-semibold text-destructive">{fill(copy.request.outNow, { count: String(short) })}</span>}
                 </span>
                 <QuantityStepper value={c.quantity} max={item.quantityTotal} onChange={(n) => setCartQty(item.id, n)} label={item.name} />
               </li>
@@ -176,7 +176,7 @@ export default function RequestPage() {
 
       <form onSubmit={onSubmit} className="relative flex flex-col gap-5">
         <DepositNotice entries={cart} />
-        <p className="text-muted-foreground">Fields marked <span className="font-bold text-primary">*</span> are needed. Everything else is up to you.</p>
+        <p className="text-muted-foreground">Fields marked <span className="font-bold text-destructive">*</span> are needed. Everything else is up to you.</p>
         <h2 className="shelf-rule text-2xl">About you</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {field('firstName', 'First name')}
