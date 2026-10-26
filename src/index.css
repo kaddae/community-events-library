@@ -3,14 +3,14 @@
 :root {
   /* CW gives the ink (teal), GP gives the color, the room gives the ground:
      warm white cinderblock walls and a honey wood floor. */
-  --background: #F7F3EC;
+  --background: #FFF6DC;
   --foreground: #2A2622;
-  --card: #F7F3EC;
+  --card: #FFF6DC;
   --card-foreground: #2A2622;
   --primary: #EE8962;
   --primary-foreground: #2A2622;
   --secondary: #094A4E;
-  --secondary-foreground: #F7F3EC;
+  --secondary-foreground: #FFF6DC;
   --muted: #EBDDC6;
   --muted-foreground: #5E5448;
   --accent: #DDF3F5;
