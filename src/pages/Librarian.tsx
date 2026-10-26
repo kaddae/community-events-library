@@ -464,10 +464,10 @@ export default function Librarian() {
   const toReview = testimonials.filter((t) => t.okToShare && t.review === 'waiting').length;
 
   if (!authReady) return <p className="text-lg text-muted-foreground">Checking your sign-in…</p>;
-  if (persona !== 'librarian') return <SignIn />;
+  if (persona !== 'librarian') return <div className="desk-case"><SignIn /></div>;
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="desk-case flex flex-col gap-5">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h1 className="text-3xl">The librarians' desk</h1>
         {!isConfigured && (

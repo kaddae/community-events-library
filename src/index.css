@@ -65,7 +65,7 @@ body {
 }
 
 @theme inline {
-  --font-display: "Source Serif 4", Georgia, serif;
+  --font-display: "Zilla Slab", Georgia, serif;
   --font-sans: "Public Sans", "Helvetica Neue", Helvetica, sans-serif;
 }
 
@@ -160,6 +160,19 @@ h1, h2, h3, .font-display {
   color: var(--secondary);
   line-height: 1.15;
   font-weight: 600; /* 700 for bolder headings */
+}
+/* Headings are in capitals on the public pages. The wording in copy.ts stays
+   in normal case, so screen readers read the words normally. The footer
+   sentence and the "photo needed" item names use .font-display without being
+   headings, so they stay in normal case. */
+h1, h2, h3, .masthead {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+/* The librarians' desk keeps normal case (event names people typed, etc.). */
+.desk-case :is(h1, h2, h3) {
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 /* Riso / card-catalog utilities */

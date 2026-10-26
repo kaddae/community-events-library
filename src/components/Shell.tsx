@@ -63,7 +63,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       <header className="bg-background">
         <div className="mx-auto max-w-5xl px-4 pt-3">
           <Link to="/" className="inline-block min-w-0">
-            <span className="font-display block text-xl leading-tight text-secondary sm:text-2xl">{copy.shared.siteName}</span>
+            <span className="font-display masthead block text-xl leading-tight text-secondary sm:text-2xl">{copy.shared.siteName}</span>
             <span className="label-caps block text-muted-foreground" style={{ fontSize: '0.7rem' }}>{copy.shared.placeLine}</span>
           </Link>
         </div>
