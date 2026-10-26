@@ -65,7 +65,7 @@ body {
 }
 
 @theme inline {
-  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-display: "Source Serif 4", Georgia, serif;
   --font-sans: "Public Sans", "Helvetica Neue", Helvetica, sans-serif;
 }
 
@@ -157,10 +157,9 @@ body {
 }
 h1, h2, h3, .font-display {
   font-family: var(--font-display);
-  font-variation-settings: "SOFT" 0, "WONK" 0;
   color: var(--secondary);
   line-height: 1.15;
-  font-weight: 700;
+  font-weight: 600; /* 700 for bolder headings */
 }
 
 /* Riso / card-catalog utilities */
