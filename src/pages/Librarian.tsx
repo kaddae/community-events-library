@@ -6,7 +6,7 @@ import {
   type EmailKind, type ItemInput, type LineStatus, type RequestGroup,
 } from '@/lib/store';
 import { isConfigured } from '@/lib/supabase';
-import { draftEmail, recipients, sendEmail } from '@/lib/email';
+import { draftEmail, recipients, sendEmail, reflectionUrl } from '@/lib/email';
 import { fill } from '@/components/Bits';
 import { sendMagicLink } from '@/lib/api';
 import { parseCSV, rowsToItems, loadSheet } from '@/lib/sheet-sync';
@@ -235,12 +235,12 @@ function Requests() {
     setWorking('');
   };
 
-  const copyLink = async (groupId: string, token?: string) => {
-    const t = isConfigured ? token : reflectToken(groupId);
-    if (!t) { setError('No reflection link for this request yet. Refresh the page and try again.'); return; }
-    const url = `${location.origin}${location.pathname}#/reflect/${t}`;
+  // Same link the return thank-you email carries.
+  const copyLink = async (g: RequestGroup) => {
+    const url = reflectionUrl(g);
+    if (!url) { setError('No reflection link for this request yet. Refresh the page and try again.'); return; }
     try { await navigator.clipboard.writeText(url); } catch { window.prompt('Copy this link', url); }
-    setCopied(groupId);
+    setCopied(g.id);
   };
 
   const emailButton = (g: RequestGroup, kind: EmailKind) => {
@@ -302,7 +302,7 @@ function Requests() {
                   {isLate && emailButton(g, 'late')}
                   {anyReturned && (answered
                     ? <span className="min-h-11 content-center text-sm text-muted-foreground">{g.host.firstName} sent in their reflection.</span>
-                    : <button onClick={() => { void copyLink(g.id, g.reflectionToken); }} className="min-h-11 text-sm text-secondary underline underline-offset-4">
+                    : <button onClick={() => { void copyLink(g); }} className="min-h-11 text-sm text-secondary underline underline-offset-4">
                         {copied === g.id ? copy.desk.emails.linkCopied : copy.desk.emails.copyLink}
                       </button>)}
                 </div>

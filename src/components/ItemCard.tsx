@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLibrary, availableFor, latestReflection, type Item } from '@/lib/store';
-import { PhotoSlot, StampTag, QuantityStepper, fill } from '@/components/Bits';
+import { PhotoSlot, QuantityStepper, fill } from '@/components/Bits';
 import { copy } from '@/content/copy';
 
 export function AddToRequest({ item, available }: { item: Item; available: number }) {
@@ -35,7 +35,6 @@ export default function ItemCard({ item }: { item: Item }) {
   const reflections = useLibrary((s) => s.reflections);
   const available = availableFor(item, lines);
   const tip = latestReflection([item.id], reflections);
-  const kind = item.status === 'repair' ? 'repair' : available > 0 ? 'in' : 'out';
 
   return (
     <article className="stamp-border flex flex-col">
@@ -43,7 +42,6 @@ export default function ItemCard({ item }: { item: Item }) {
         <Link to={`/items/${item.slug}`} className="label-caps min-h-8 text-secondary hover:underline" style={{ fontSize: '0.9rem' }}>
           {item.name}
         </Link>
-        <StampTag kind={kind} />
       </div>
       <Link to={`/items/${item.slug}`} aria-label={`About the ${item.name}`}>
         <PhotoSlot item={item} />

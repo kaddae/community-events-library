@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { useLibrary, availableFor, dollars } from '@/lib/store';
-import { PhotoSlot, StampTag, TodoText, fill } from '@/components/Bits';
+import { PhotoSlot, TodoText, fill } from '@/components/Bits';
 import { AddToRequest } from '@/components/ItemCard';
 import { copy } from '@/content/copy';
 
@@ -27,7 +27,6 @@ export default function ItemDetail() {
   }
 
   const available = availableFor(item, lines);
-  const kind = item.status === 'repair' ? 'repair' : available > 0 ? 'in' : 'out';
   const bio = reflections
     .filter((r) => r.itemId === item.id)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
@@ -41,12 +40,12 @@ export default function ItemDetail() {
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <Link to="/" className="label-caps text-muted-foreground hover:text-secondary">← {item.category}</Link>
-          <div className="flex items-start justify-between gap-3">
-            <h1 className="text-4xl">{item.name}</h1>
-            <StampTag kind={kind} />
-          </div>
+          <h1 className="text-4xl">{item.name}</h1>
           <p className="text-lg">{item.description}</p>
-          <p className="label-caps text-secondary">{available} of {item.quantityTotal} available</p>
+          <p className="flex flex-wrap items-baseline gap-x-2">
+            <span className="font-semibold">{fill(copy.item.cardTotal, { total: String(item.quantityTotal) })}</span>
+            <span className="text-sm text-muted-foreground">· {fill(copy.item.cardToday, { count: String(available) })}</span>
+          </p>
         </div>
 
         <AddToRequest item={item} available={available} />

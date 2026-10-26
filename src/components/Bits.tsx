@@ -72,10 +72,6 @@ export function TodoText({ text, className = '' }: { text: string; className?: s
   return <p className={`${isTodo ? 'todo-note' : ''} ${className}`}>{text}</p>;
 }
 
-export function StampTag({ kind }: { kind: 'in' | 'out' | 'repair' }) {
-  const label = kind === 'in' ? copy.shared.tagIn : kind === 'out' ? copy.shared.tagOut : copy.shared.tagRepair;
-  return <span className="status-tag" data-kind={kind}>{label}</span>;
-}
 
 export function PhotoSlot({ item, size = 'card' }: { item: Item; size?: 'card' | 'full' }) {
   if (item.photo) {
