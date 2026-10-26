@@ -40,6 +40,12 @@ At the end of the request form, hosts pick what they'd like to chip in: $10, $15
 
 All public wording is in `src/content/copy.ts`, one named entry per piece of text. Rewrite any value freely, but keep the names. A value starting with `TODO` shows up as a dashed note on the page until you replace it.
 
+## Changing colors
+
+Every site color lives in the **palette block** at the top of `src/index.css`. There are eight named lines: `--wall` (background), `--ink` (headings, borders), `--text`, `--text-soft`, `--button`, `--panel`, `--tint` and `--warning`. Change one line and the whole site follows. If you change `--wall`, also change `theme-color` in `index.html`, which colors the phone's browser bar.
+
+Keep `--ink`, `--text` and `--warning` dark enough to read on `--wall` (a contrast of 4.5:1 or more, which any online contrast checker will tell you). The GP and CW brand colors below the palette are fixed. They're used only for the stripes, category blocks and bundle bands, so changing the palette doesn't recolor them.
+
 ## Inventory sheet columns
 
 `name, slug, category, quantity_total, status, description, care_notes, replacement_cost, deposit, block_party, indoor_gathering`

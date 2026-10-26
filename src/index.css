@@ -1,25 +1,41 @@
 @import "tailwindcss";
 
+/* ── PALETTE ─────────────────────────────────────────────────────────────
+   Change colors here. Everything else in the site reads from these lines.
+   CW gives the ink (teal), GP gives the color, the room gives the ground:
+   warm white cinderblock walls and a honey wood floor.
+   Keep --ink, --text and --warning dark enough to read on --wall. */
 :root {
-  /* CW gives the ink (teal), GP gives the color, the room gives the ground:
-     warm white cinderblock walls and a honey wood floor. */
-  --background: #FFF6DC;
-  --foreground: #2A2622;
-  --card: #FFF6DC;
-  --card-foreground: #2A2622;
-  --primary: #EE8962;
-  --primary-foreground: #2A2622;
-  --secondary: #094A4E;
-  --secondary-foreground: #FFF6DC;
-  --muted: #EBDDC6;
-  --muted-foreground: #5E5448;
-  --accent: #DDF3F5;
-  --accent-foreground: #094A4E;
-  --destructive: #A63A27;
-  --destructive-foreground: #FBF3EF;
-  --border: #094A4E;
-  --input: #094A4E;
-  --ring: #094A4E;
+  --wall: #FFF6DC;      /* page + card background. Also change theme-color in index.html to match. */
+  --ink: #094A4E;       /* headings, rules, borders, focus outline, librarian bar */
+  --text: #2A2622;      /* body text, and the text on orange buttons */
+  --text-soft: #5E5448; /* quieter text: hints, dates, "on your list" */
+  --button: #EE8962;    /* main buttons */
+  --panel: #EBDDC6;     /* deposit notes and "?" explainers */
+  --tint: #DDF3F5;      /* pale teal accent */
+  --warning: #A63A27;   /* errors, required asterisks, "Request anyway" */
+}
+
+/* Color roles used by the site. These point at the palette above, so you
+   shouldn't need to edit them. */
+:root {
+  --background: var(--wall);
+  --foreground: var(--text);
+  --card: var(--wall);
+  --card-foreground: var(--text);
+  --primary: var(--button);
+  --primary-foreground: var(--text);
+  --secondary: var(--ink);
+  --secondary-foreground: var(--wall);
+  --muted: var(--panel);
+  --muted-foreground: var(--text-soft);
+  --accent: var(--tint);
+  --accent-foreground: var(--ink);
+  --destructive: var(--warning);
+  --destructive-foreground: #FBF3EF; /* light text on a --warning fill (rarely shown) */
+  --border: var(--ink);
+  --input: var(--ink);
+  --ring: var(--ink);
   --radius: 0rem;
 }
 
@@ -57,8 +73,9 @@ body {
   --rule: 1.5px solid var(--secondary);
   --rule-soft: 1px solid color-mix(in srgb, var(--secondary) 28%, transparent);
 
-  /* Brand palettes. Color blocks and stripes only. None of these is dark
-     enough for text on the warm white, except CW teal (already --secondary). */
+  /* Brand palettes. Color blocks and stripes only, and fixed: changing the
+     palette above doesn't recolor these. None of these is dark enough for
+     text on --wall except CW teal (the same value as --ink today). */
   --gp-olive: #CCC14D;
   --gp-sage: #92A461;
   --gp-blue: #5D83B3;
