@@ -39,8 +39,8 @@ export default function RequestPage() {
   const submitRequest = useLibrary((s) => s.submitRequest);
   const navigate = useNavigate();
   const [f, setF] = useState(blank);
-  // Pickup and return follow the gathering date until the host picks them.
-  const [touched, setTouched] = useState({ neededFrom: false, pickupLatest: false, returnBy: false });
+  // Latest pickup copies earliest pickup until the host picks it themselves.
+  const [latestTouched, setLatestTouched] = useState(false);
   const today = format(new Date(), 'yyyy-MM-dd');
   const dateError = dateProblem(f, today);
   // Honeypot: people never see this field, but form-filling bots tend to fill it in.
@@ -52,41 +52,23 @@ export default function RequestPage() {
 
   const set = (k: keyof typeof blank) => (e: { target: { value: string } }) => setF({ ...f, [k]: e.target.value });
 
-  // Filling pickup and return with the gathering date makes their calendars open on that month.
-  const setEventDate = (v: string) =>
-    setF((prev) => {
-      const next = { ...prev, eventDate: v };
-      if (!v) return next;
-      if (!touched.neededFrom || !prev.neededFrom || prev.neededFrom > v) next.neededFrom = v;
-      if (!touched.pickupLatest || !prev.pickupLatest || prev.pickupLatest > v) next.pickupLatest = v;
-      if (!touched.returnBy || !prev.returnBy || prev.returnBy < v) next.returnBy = v;
-      return next;
-    });
+  // The gathering date fills in nothing. It only sets the limits on the other dates.
+  const setEventDate = (v: string) => setF((prev) => ({ ...prev, eventDate: v }));
 
-  // Latest pickup follows earliest until the host picks it.
-  const setPickup = (v: string) => {
-    setTouched((t) => ({ ...t, neededFrom: true }));
+  // The one automatic fill: latest pickup copies earliest until the host sets it.
+  const setPickup = (v: string) =>
     setF((prev) => ({
       ...prev,
       neededFrom: v,
-      pickupLatest: v && (!touched.pickupLatest || !prev.pickupLatest || prev.pickupLatest < v) ? v : prev.pickupLatest,
-      returnBy: v && (!prev.returnBy || prev.returnBy < v) ? v : prev.returnBy,
+      pickupLatest: !latestTouched || !prev.pickupLatest ? v : prev.pickupLatest,
     }));
-  };
 
   const setLatest = (v: string) => {
-    setTouched((t) => ({ ...t, pickupLatest: true }));
-    setF((prev) => ({
-      ...prev,
-      pickupLatest: v,
-      returnBy: v && (!prev.returnBy || prev.returnBy < v) ? v : prev.returnBy,
-    }));
+    setLatestTouched(true);
+    setF((prev) => ({ ...prev, pickupLatest: v }));
   };
 
-  const setReturn = (v: string) => {
-    setTouched((t) => ({ ...t, returnBy: true }));
-    setF((prev) => ({ ...prev, returnBy: v }));
-  };
+  const setReturn = (v: string) => setF((prev) => ({ ...prev, returnBy: v }));
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
