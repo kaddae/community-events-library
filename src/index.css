@@ -12,6 +12,7 @@
   --text-soft: #4A4536; /* quieter text: hints, dates, "on your list" */
   --button: #5D83B3;    /* main buttons (GP blue) */
   --panel: #FFFFFF;     /* deposit notes and "?" explainers */
+  --paper: #FFFDF5;     /* item cards (eggshell). #FFFFFF for pure white. */
   --tint: #DDF3F5;      /* pale teal accent */
   --warning: #A63A27;   /* errors, required asterisks, "Request anyway" */
 }
@@ -185,6 +186,8 @@ h1, h2, h3, .masthead {
 .hairline { border-bottom: var(--rule); }
 .hairline-soft { border-bottom: var(--rule-soft); }
 .stamp-border { border: var(--rule); background: transparent; }
+/* Item cards sit on the yellow like paper. Comes after .stamp-border so it wins. */
+.paper-card { background: var(--paper); }
 .label-caps {
   text-transform: uppercase;
   letter-spacing: 0.12em;

@@ -37,7 +37,7 @@ export default function ItemCard({ item }: { item: Item }) {
   const tip = latestReflection([item.id], reflections);
 
   return (
-    <article className="stamp-border flex flex-col">
+    <article className="stamp-border paper-card flex flex-col">
       <div className="hairline flex items-start justify-between gap-2 px-3 py-2.5">
         <Link to={`/items/${item.slug}`} className="label-caps min-h-8 text-secondary hover:underline" style={{ fontSize: '0.9rem' }}>
           {item.name}
