@@ -62,7 +62,7 @@ export default function Catalog() {
           {kits.map(({ key, inKit }) => {
             const canGo = inKit.some((i) => i.status === 'active');
             return (
-              <article key={key} className="stamp-border flex flex-col">
+              <article key={key} className="stamp-border paper-card flex flex-col">
                 <div className="kit-band" data-kit={key} aria-hidden />
                 <div className="flex flex-1 flex-col gap-3 p-4">
                   <h3 className="text-2xl">{copy.kits[key].title}</h3>
