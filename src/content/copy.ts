@@ -17,7 +17,7 @@ export const copy = {
     photoNeededFull: 'Add a real photo of this item — phone camera, plain wall at GROUP PROJECT is fine.',
   },
   home: {
-    who: 'Welcome to the Event Lending Library, hosted by GROUP PROJECT and Civic Works! \nFind what you need to have a great event, borrow it, and have a great gathering! ',
+    who: 'Welcome to the Community Events Lending Library, hosted by GROUP PROJECT and Civic Works!',
     emptyShelf: 'The library is empty right now. The librarians are restocking.',
     itemsTitle: 'Borrow individual items',
     itemsHint: 'Mix and match the items you need for your gathering.',
