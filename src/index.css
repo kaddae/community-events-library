@@ -2,16 +2,16 @@
 
 /* ── PALETTE ─────────────────────────────────────────────────────────────
    Change colors here. Everything else in the site reads from these lines.
-   Navy gives the ink, GP gives the color, the room gives the ground:
-   warm white cinderblock walls and a honey wood floor.
+   GROUP PROJECT's yellow is the ground, black is the ink, and GP blue
+   marks the buttons. Notes sit on it like white paper on a yellow wall.
    Keep --ink, --text and --warning dark enough to read on --wall. */
 :root {
-  --wall: #F5F2ED;      /* page + card background. Also change theme-color in index.html to match. */
-  --ink: #260C1A;       /* headings, rules, borders, focus outline, librarian bar. Was CW teal. */
-  --text: #2A2622;      /* body text, and the text on orange buttons */
-  --text-soft: #5E5448; /* quieter text: hints, dates, "on your list" */
-  --button: #EE8962;    /* main buttons */
-  --panel: #EBDDC6;     /* deposit notes and "?" explainers */
+  --wall: #FFFC88;      /* page + card background. Also change theme-color in index.html to match. */
+  --ink: #141414;       /* headings, rules, borders, focus outline, librarian bar */
+  --text: #141414;      /* body text, and the text on blue buttons */
+  --text-soft: #4A4536; /* quieter text: hints, dates, "on your list" */
+  --button: #5D83B3;    /* main buttons (GP blue) */
+  --panel: #FFFFFF;     /* deposit notes and "?" explainers */
   --tint: #DDF3F5;      /* pale teal accent */
   --warning: #A63A27;   /* errors, required asterisks, "Request anyway" */
 }
@@ -100,13 +100,15 @@ body {
 [data-cat="Games"] { --cat: var(--gp-periwinkle); }
 [data-cat="Other"] { --cat: var(--gp-lavender); }
 
-/* GP's nine colors under the nav; CW's three above the footer. */
+/* GP's nine colors under the nav, warm and cool alternating (not a rainbow).
+   GP yellow sits at the end, where it fades into the yellow wall quietly.
+   CW's three above the footer. */
 .gp-band {
   height: 6px;
   background: linear-gradient(90deg,
-    var(--gp-olive) 0 11.11%, var(--gp-sage) 0 22.22%, var(--gp-blue) 0 33.33%,
-    var(--gp-periwinkle) 0 44.44%, var(--gp-lavender) 0 55.55%, var(--gp-pink) 0 66.66%,
-    var(--gp-red) 0 77.77%, var(--gp-orange) 0 88.88%, var(--gp-yellow) 0 100%);
+    var(--gp-blue) 0 11.11%, var(--gp-orange) 0 22.22%, var(--gp-sage) 0 33.33%,
+    var(--gp-pink) 0 44.44%, var(--gp-periwinkle) 0 55.55%, var(--gp-red) 0 66.66%,
+    var(--gp-olive) 0 77.77%, var(--gp-lavender) 0 88.88%, var(--gp-yellow) 0 100%);
 }
 .cw-band {
   height: 6px;
