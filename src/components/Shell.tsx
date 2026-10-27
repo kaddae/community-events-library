@@ -62,9 +62,17 @@ export default function Shell({ children }: { children: ReactNode }) {
 
       <header className="bg-background">
         <div className="mx-auto max-w-5xl px-4 pt-3">
-          <Link to="/" className="inline-block min-w-0">
-            <span className="font-display masthead block text-xl leading-tight text-secondary sm:text-2xl">{copy.shared.siteName}</span>
-            <span className="label-caps block text-muted-foreground" style={{ fontSize: '0.7rem' }}>{copy.shared.placeLine}</span>
+          <Link to="/" className="inline-flex min-w-0 items-center gap-3">
+            <img
+              data-asset="logo-d-2"
+              alt="GROUP PROJECT"
+              className="h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20"
+              style={{ mixBlendMode: 'multiply' }}
+            />
+            <span className="flex min-w-0 flex-col">
+              <span className="font-display masthead block text-xl leading-tight text-secondary sm:text-2xl">{copy.shared.siteName}</span>
+              <span className="label-caps block text-muted-foreground" style={{ fontSize: '0.7rem' }}>{copy.shared.placeLine}</span>
+            </span>
           </Link>
         </div>
       </header>
