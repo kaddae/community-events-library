@@ -49,7 +49,7 @@ export default function RequestSent() {
             })}
           </ul>
           <p className="border-t px-3 py-2 text-muted-foreground" style={{ borderTop: 'var(--rule-soft)' }}>
-            Pickup {pickupSpan(group)} ({group.pickupWindow}) · back by {group.returnBy}
+            Requested pickup {pickupSpan(group)}{group.pickupWindow && ` (${group.pickupWindow})`} · back by {group.returnBy}
           </p>
         </section>
       )}

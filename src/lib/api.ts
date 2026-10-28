@@ -43,6 +43,8 @@ interface GroupRow {
   donation_pledge?: number | null;
   // Added in 0013.
   pickup_latest?: string | null;
+  // Added in 0014.
+  heard_from?: string | null;
   hosts: HostRow | null;
 }
 interface TestimonialRow {
@@ -72,6 +74,7 @@ const toGroup = (r: GroupRow): RequestGroup => ({
   reflectionToken: r.reflection_token ?? undefined,
   donationPledge: r.donation_pledge ?? null,
   pickupLatest: r.pickup_latest ?? null,
+  heardFrom: r.heard_from ?? '',
   emailsSent: {
     ...(r.checkout_email_at ? { checkout: r.checkout_email_at } : {}),
     ...(r.return_email_at ? { returned: r.return_email_at } : {}),

@@ -21,11 +21,13 @@ export function AddToRequest({ item, available }: { item: Item; available: numbe
       type="button"
       disabled={item.status !== 'active' || item.quantityTotal === 0}
       onClick={() => setCartQty(item.id, 1)}
-      className={`big-action w-full px-4 disabled:bg-muted disabled:text-muted-foreground ${
+      className={`big-action w-full px-4 disabled:border-[1.5px] disabled:border-muted-foreground disabled:bg-muted disabled:text-muted-foreground ${
         available > 0 ? 'bg-primary text-primary-foreground' : 'border-[1.5px] border-destructive text-destructive'
       }`}
     >
-      {item.status === 'repair' ? 'Being repaired' : available > 0 ? 'Add to request' : copy.item.requestAnyway}
+      {item.status === 'repair' ? 'Being repaired'
+        : item.quantityTotal === 0 ? copy.item.comingSoon
+        : available > 0 ? 'Add to request' : copy.item.requestAnyway}
     </button>
   );
 }

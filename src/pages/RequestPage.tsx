@@ -12,6 +12,7 @@ import { copy } from '@/content/copy';
 const blank = {
   firstName: '', lastName: '', email: '', phone: '', affiliation: '',
   eventName: '', eventDate: '', neededFrom: '', pickupLatest: '', returnBy: '', pickupWindow: '', description: '', notes: '',
+  heardFrom: '',
 };
 
 type Dates = { eventDate: string; neededFrom: string; pickupLatest: string; returnBy: string };
@@ -214,6 +215,7 @@ export default function RequestPage() {
           <Label htmlFor="notes">Anything else the librarians should know</Label>
           <Textarea id="notes" rows={2} value={f.notes} onChange={set('notes')} />
         </div>
+        {field('heardFrom', copy.request.heardFromLabel, 'text', false)}
 
         <div className="flex flex-col gap-3">
           <InfoToggle title={copy.request.chipInWhyTitle} text={copy.request.chipInWhy} className="shelf-rule">

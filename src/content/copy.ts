@@ -42,6 +42,8 @@ export const copy = {
   },
   item: {
     requestAnyway: 'Request anyway',
+    // On the grayed-out button when the library has 0 of an item.
+    comingSoon: 'Coming soon',
     // The count line on each card: total first, today's count after it in smaller text.
     cardTotal: '{total} in the library',
     cardToday: '{count} available today',
@@ -61,6 +63,7 @@ export const copy = {
     pickupRangeHint: 'This is helpful for our librarians as we coordinate availability.',
     pickupTimesLabel: 'What time(s) of day work best for you for pick-up?',
     descriptionLabel: 'Share more about your gathering.',
+    heardFromLabel: 'How did you hear about the lending library?',
     submit: 'Send request to the librarians',
     responseTime: 'We will respond to you in the next 2 business days!',
     sentTitle: 'Request sent.',
@@ -110,6 +113,7 @@ export const copy = {
     depositFlag: 'Deposit at pickup:',
     pledgeFlag: 'Toward the library:',
     pledgeNone: 'Not this time',
+    heardFromFlag: 'Heard about us:',
     // Under a waiting line that asks for more than is in the library now.
     holder: '{qty} {state} with the {eventName}, back {returnBy}',
     holderWhen: {
@@ -152,8 +156,10 @@ Thanks for your request for the {eventName}! Here's what you asked for:
 {items}
 
 Gathering: {eventDate}
-Pickup: {neededFrom}{pickupWindow}
+Requested pickup date: {neededFrom}{pickupWindow}
 Bring back by: {returnBy}
+
+Your pickup isn't confirmed yet. Please wait to hear back from a librarian before coming by.
 
 {deposit}
 
@@ -198,14 +204,12 @@ No worries if plans changed. Reply and let us know how it's going and when works
 
 {signoff}`,
   },
+  // The About page's sections live in src/content/about.ts (markdown).
   about: {
     title: 'All about the library',
     testimonialsTitle: 'What hosts say',
     howTitle: 'How borrowing works',
     borrow: `Browse our catalog and pick out what you need. Request your items, find a time to pick up at GROUP PROJECT (${STREET}), and have a great event!`,
     giveBack: 'After your gathering, bring your items back to GROUP PROJECT, and let us know how it went!',
-    cwd: 'Built by a growing coalition of neighbors, Civic Works\' mission is to increase volunteerism, civic engagement, and service in New Haven. We invest in neighbors to bring their blocks together because we believe that the health of our democracy begins at the neighborhood level. <br> Neighbors have often told us that a missing PA system, tables and chairs, or cleanup tools is often what stands between a great idea and an actual event. That\’s why we are so excited to partner with Group Project to build the Community Events Lending Library.',
-    groupProject: 'GROUP PROJECT is a new hub for community-building that supports local projects through relationships, resources, and skill-sharing. We offer working space for projects, a lending library for gatherings, and partner with locals to host community-building events that inspire, educate, and help folks do cool stuff in New Haven. <br> We know from that hosting an event takes a lot of work, and can require organizers to coordinate the borrowing or buying of many different physical items. We built this library with the goal of encouraging more successful, impactful and joyous gatherings through easy access to the event materials and supplies they need.',
-    getInvolved: 'Reach out to groupprojectnhv@gmail.com if you’d like to donate any items, or support the library in another way!',
   },
 };

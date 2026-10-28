@@ -17,7 +17,7 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 
 With `SUPABASE_URL` and `SUPABASE_ANON_KEY` set (see `.env.example`), the app uses one shared database. Without them it runs on seeded preview data saved in this browser.
 
-1. Run the files in `supabase/migrations/` in order, 0001 through 0013.
+1. Run the files in `supabase/migrations/` in order, 0001 through 0014.
 2. Authentication → Providers: turn on Email. Under URL Configuration, set Site URL to the address you use day to day. Add `https://<preview-host>/**` and `https://<published-host>/**` to Redirect URLs. The librarian sign-in page shows the exact line to paste.
 3. Librarians are rows in `librarian_allowlist`. To add someone, run a new migration (or SQL) with `insert into public.librarian_allowlist (email, name) values ('them@example.com', 'Their name');`. Delete the row to remove them.
 
@@ -38,7 +38,9 @@ At the end of the request form, hosts pick what they'd like to chip in: $10, $15
 
 ## Editing the words
 
-All public wording is in `src/content/copy.ts`, one named entry per piece of text. Rewrite any value freely, but keep the names. A value starting with `TODO` shows up as a dashed note on the page until you replace it.
+The About page's sections are markdown in `src/content/about.ts`. Each `## Heading` starts a section, so add or delete a heading and its text to add or remove one. Blank lines start paragraphs, and `**bold**`, `[links](https://…)` and `- lists` work. Don't type a backtick in that text. "How borrowing works" lives on the Library page and stays in `copy.ts`.
+
+All other public wording is in `src/content/copy.ts`, one named entry per piece of text. Rewrite any value freely, but keep the names. A value starting with `TODO` shows up as a dashed note on the page until you replace it.
 
 ## Changing colors
 

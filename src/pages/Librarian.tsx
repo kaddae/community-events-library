@@ -293,6 +293,11 @@ function Requests() {
                 {g.donationPledge > 0 ? dollars(g.donationPledge) : copy.desk.pledgeNone}
               </p>
             )}
+            {g.heardFrom?.trim() && (
+              <p className="hairline-soft px-3 py-2">
+                <span className="font-bold">{copy.desk.heardFromFlag}</span> {g.heardFrom}
+              </p>
+            )}
             {showEmails && (
               <div className="hairline-soft flex flex-col gap-2 px-3 py-2">
                 <div className="flex flex-wrap items-start gap-x-4 gap-y-2">

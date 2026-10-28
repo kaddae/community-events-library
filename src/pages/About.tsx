@@ -1,6 +1,9 @@
-import { TodoText } from '@/components/Bits';
 import { useLibrary, isPublicTestimonial } from '@/lib/store';
 import { copy } from '@/content/copy';
+import { aboutMarkdown } from '@/content/about';
+import { parseSections, MdBlocks } from '@/components/Markdown';
+
+const sections = parseSections(aboutMarkdown);
 
 export default function About() {
   const testimonials = useLibrary((s) => s.testimonials);
@@ -11,25 +14,12 @@ export default function About() {
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
       <h1 className="text-4xl">{copy.about.title}</h1>
-      <section className="flex flex-col gap-2">
-        <h2 className="shelf-rule text-xl">{copy.about.howTitle}</h2>
-        <ol className="flex flex-col gap-2">
-          {[copy.about.borrow, copy.about.giveBack].map((line, i) => (
-            <li key={i} className="grid grid-cols-[1.75rem_1fr] gap-2">
-              <span className="font-display text-lg text-secondary">{i + 1}.</span>
-              <TodoText text={line} />
-            </li>
-          ))}
-        </ol>
-      </section>
-      <section className="flex flex-col gap-2">
-        <h2 className="shelf-rule text-xl">Civic Works</h2>
-        <TodoText text={copy.about.cwd} />
-      </section>
-      <section className="flex flex-col gap-2">
-        <h2 className="shelf-rule text-xl">GROUP PROJECT</h2>
-        <TodoText text={copy.about.groupProject} />
-      </section>
+      {sections.map((s, i) => (
+        <section key={i} className="flex flex-col gap-2">
+          {s.title && <h2 className="shelf-rule text-xl">{s.title}</h2>}
+          <MdBlocks blocks={s.blocks} />
+        </section>
+      ))}
       {shared.length > 0 && (
         <section className="flex flex-col gap-3">
           <h2 className="shelf-rule text-xl">{copy.about.testimonialsTitle}</h2>
@@ -45,11 +35,6 @@ export default function About() {
           </ul>
         </section>
       )}
-      <section className="flex flex-col gap-2">
-        <h2 className="shelf-rule text-xl">Help keep the library going</h2>
-        <TodoText text={copy.about.getInvolved} />
-        <a href={`mailto:${copy.shared.librarianEmail}`} className="font-semibold text-secondary underline underline-offset-4">{copy.shared.librarianEmail}</a>
-      </section>
     </div>
   );
 }

@@ -18,7 +18,8 @@ export default function Catalog() {
   const shelf = items.filter((i) => i.status !== 'retired');
   const owned = shelf.reduce((n, i) => n + i.quantityTotal, 0);
   const shown = view === 'all' ? shelf : shelf.filter((i) => i.category === view);
-  const kits = KIT_KEYS.map((key) => ({ key, inKit: shelf.filter((i) => (i[key] ?? 0) > 0) })).filter((k) => k.inKit.length > 0);
+  // Items the library has 0 of ("Coming soon") stay off the bundle lists.
+  const kits = KIT_KEYS.map((key) => ({ key, inKit: shelf.filter((i) => (i[key] ?? 0) > 0 && i.quantityTotal > 0) })).filter((k) => k.inKit.length > 0);
   // Only categories that have something in them get a button.
   const views: View[] = ['all', ...CATEGORIES.filter((c) => shelf.some((i) => i.category === c))];
 

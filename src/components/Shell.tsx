@@ -105,9 +105,7 @@ export default function Shell({ children }: { children: ReactNode }) {
           <Link
             key={lastAdded?.at ?? 0}
             to="/request"
-            className={`${lastAdded && Date.now() - lastAdded.at < 1500 ? 'pulse-once' : ''} ml-auto flex min-h-12 items-center gap-2 border-[1.5px] px-3 font-bold ${
-              count > 0 ? 'border-primary bg-primary text-primary-foreground' : 'border-secondary text-secondary'
-            }`}
+            className={`${lastAdded && Date.now() - lastAdded.at < 1500 ? 'pulse-once' : ''} paper-card ml-auto flex min-h-12 items-center gap-2 border-[1.5px] border-secondary px-3 font-bold text-secondary`}
           >
             <ClipboardList size={20} aria-hidden />
             {count > 0 ? `Checkout (${count})` : 'Checkout'}

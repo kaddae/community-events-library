@@ -43,6 +43,8 @@ export interface RequestGroup {
   // What the host offered to chip in, whole dollars. 0 = "Not this time".
   // null/missing = sent before the library asked.
   donationPledge?: number | null;
+  // "How did you hear about the lending library?" Optional, librarians only.
+  heardFrom?: string;
 }
 export type EmailKind = 'checkout' | 'returned' | 'late';
 export type LineStatus = 'pending' | 'approved' | 'checked_out' | 'returned' | 'declined';
