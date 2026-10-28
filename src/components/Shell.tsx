@@ -62,18 +62,39 @@ export default function Shell({ children }: { children: ReactNode }) {
 
       <header className="bg-background">
         <div className="mx-auto max-w-5xl px-4 pt-3">
-          <Link to="/" className="inline-flex min-w-0 items-center gap-3">
-            <img
-              data-asset="logo-d-2"
-              alt="GROUP PROJECT"
-              className="h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20"
-              style={{ mixBlendMode: 'multiply' }}
-            />
-            <span className="flex min-w-0 flex-col">
-              <span className="font-display masthead block text-xl leading-tight text-secondary sm:text-2xl">{copy.shared.siteName}</span>
-              <span className="label-caps block text-muted-foreground" style={{ fontSize: '0.7rem' }}>{copy.shared.placeLine}</span>
-            </span>
-          </Link>
+          <div className="flex min-w-0 items-center gap-3">
+            {/* Same place as the site name link, so it's skipped by keyboard and screen readers. */}
+            <Link to="/" tabIndex={-1} aria-hidden="true" className="shrink-0">
+              <img
+                data-asset="logo-d-2"
+                alt=""
+                className="h-16 w-16 object-contain sm:h-20 sm:w-20"
+                style={{ mixBlendMode: 'multiply' }}
+              />
+            </Link>
+            <div className="flex min-w-0 flex-col">
+              <Link to="/" className="font-display masthead block text-xl leading-tight text-secondary sm:text-2xl">
+                {copy.shared.siteName}
+              </Link>
+              <span className="label-caps block text-muted-foreground" style={{ fontSize: '0.7rem' }}>
+                {copy.shared.placeCity} ·{' '}
+                {[copy.shared.groupProject, copy.shared.civicWorks].map((org, i) => (
+                  <span key={org.url}>
+                    {i > 0 && ' x '}
+                    <a
+                      href={org.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block py-1.5 underline decoration-1 underline-offset-4 hover:text-secondary"
+                    >
+                      {org.name}
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  </span>
+                ))}
+              </span>
+            </div>
+          </div>
         </div>
       </header>
 

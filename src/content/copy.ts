@@ -10,6 +10,10 @@ export const copy = {
   shared: {
     siteName: 'Community Events Lending Library',
     placeLine: 'New Haven · GROUP PROJECT x Civic Works',
+    // The header line under the site name. Each partner name links to its website.
+    placeCity: 'New Haven',
+    groupProject: { name: 'GROUP PROJECT', url: 'https://groupproject.group' },
+    civicWorks: { name: 'Civic Works', url: 'https://www.civicworksct.org/' },
     address: `GROUP PROJECT · ${ADDRESS}`,
     supportedBy: 'The library is supported by GROUP PROJECT and Civic Works.',
     librarianEmail: 'groupprojectnhv@gmail.com',
