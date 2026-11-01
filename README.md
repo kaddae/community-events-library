@@ -34,7 +34,7 @@ Librarians: use **Reply all** so the host stays in the thread. Set up a Gmail fi
 
 ## Chipping in
 
-At the end of the request form, hosts pick what they'd like to chip in: $10, $15, $20, another whole-dollar amount, or "Not this time". "Not this time" counts the same as any other choice and asks nothing more. A **?** beside the heading explains why the library asks. The app only records the offer. The money changes hands in person at pickup (cash or Venmo), alongside any deposit. The amount shows on the confirmation page, in the request email and on the librarians' request card. "Not this time" shows only on the card. A pledge is an offer, not a bill, so nobody follows up on it. Librarians: agree where the cash goes and whose Venmo takes it, and every so often tell hosts what it paid for (`about.getInvolved` in the copy file is a good place).
+At the end of the request form, hosts pick what they'd like to chip in: $10, $15, $20, another whole-dollar amount, or "Not this time". "Not this time" counts the same as any other choice and asks nothing more. A **?** beside the heading explains why the library asks. The app only records the offer. Once a host picks an amount, the form tells them they can pay online on Venmo (`@groupprojectnhv`) or in person at pickup. The confirmation page and request email link to Venmo too. Deposits are still taken in person. The amount shows on the confirmation page, in the request email and on the librarians' request card. "Not this time" shows only on the card. A pledge is an offer, not a bill, so nobody follows up on it. Librarians: agree where the cash goes and whose Venmo takes it, and every so often tell hosts what it paid for (`about.getInvolved` in the copy file is a good place).
 
 ## Editing the words
 

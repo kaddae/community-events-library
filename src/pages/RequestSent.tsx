@@ -1,6 +1,6 @@
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useLibrary, latestReflection, availableFor, dollars, pickupSpan } from '@/lib/store';
-import { TodoText, DepositNotice, fill } from '@/components/Bits';
+import { TodoText, DepositNotice, VenmoText, fill } from '@/components/Bits';
 import { TEST_RECIPIENT } from '@/lib/email';
 import { copy } from '@/content/copy';
 
@@ -57,7 +57,16 @@ export default function RequestSent() {
       <DepositNotice entries={lines.filter((l) => l.status !== 'declined')} />
 
       {group?.donationPledge ? (
-        <p className="text-lg">{fill(copy.request.pledgeThanks, { amount: dollars(group.donationPledge) })}</p>
+        <section className="flex flex-col gap-3 border-l-4 border-primary bg-muted px-4 py-3">
+          <p className="text-lg">
+            <VenmoText text={fill(copy.request.pledgeThanks, { amount: dollars(group.donationPledge) })} />
+          </p>
+          <a href={copy.shared.venmo.url} target="_blank" rel="noopener noreferrer"
+            className="big-action inline-flex items-center self-start bg-primary px-5 text-primary-foreground">
+            {copy.request.venmoButton}<span className="sr-only"> (opens in a new tab)</span>
+          </a>
+          <p className="text-muted-foreground">{fill(copy.request.venmoNote, { eventName: group.eventName })}</p>
+        </section>
       ) : null}
 
       {handoff && handoffItem && (

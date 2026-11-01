@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useLibrary, availableFor } from '@/lib/store';
-import { QuantityStepper, TodoText, DepositNotice, InfoToggle, fill } from '@/components/Bits';
+import { QuantityStepper, TodoText, DepositNotice, InfoToggle, VenmoText, fill } from '@/components/Bits';
 import { sendRequestEmail } from '@/lib/email';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -244,6 +244,11 @@ export default function RequestPage() {
                   value={otherAmount} onChange={(e) => setOtherAmount(e.target.value.replace(/[^0-9]/g, ''))} />
               </div>
             </div>
+          )}
+          {pledge !== '' && pledge !== '0' && (
+            <p className="border-l-4 border-primary bg-muted px-4 py-3" aria-live="polite">
+              <VenmoText text={copy.request.chipInPay} />
+            </p>
           )}
         </div>
 

@@ -67,6 +67,23 @@ export function InfoToggle({
   );
 }
 
+// A sentence with a {venmo} slot, filled with a link to the library's Venmo.
+export function VenmoText({ text }: { text: string }) {
+  const [before, ...rest] = text.split('{venmo}');
+  return (
+    <>
+      {before}
+      {rest.length > 0 && (
+        <a href={copy.shared.venmo.url} target="_blank" rel="noopener noreferrer"
+          className="font-semibold text-secondary underline underline-offset-4">
+          {copy.shared.venmo.label}<span className="sr-only"> (opens in a new tab)</span>
+        </a>
+      )}
+      {rest.join('{venmo}')}
+    </>
+  );
+}
+
 export function TodoText({ text, className = '' }: { text: string; className?: string }) {
   const isTodo = text.trim().startsWith('TODO');
   return <p className={`${isTodo ? 'todo-note' : ''} ${className}`}>{text}</p>;

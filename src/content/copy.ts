@@ -5,6 +5,8 @@
 // The pickup address, used in the footer, the borrowing steps, and every email.
 const STREET = '140 Bradley Street';
 const ADDRESS = `${STREET}, New Haven CT 06511`;
+// Where hosts can chip in online. Used on the request form, the confirmation page and the request email.
+const VENMO_URL = 'https://www.venmo.com/u/groupprojectnhv';
 
 export const copy = {
   shared: {
@@ -17,6 +19,7 @@ export const copy = {
     address: `GROUP PROJECT · ${ADDRESS}`,
     supportedBy: 'The library is supported by GROUP PROJECT and Civic Works.',
     librarianEmail: 'groupprojectnhv@gmail.com',
+    venmo: { label: '@groupprojectnhv', url: VENMO_URL },
     photoNeededShort: 'Photo needed — phone camera, plain wall at GROUP PROJECT',
     photoNeededFull: 'Add a real photo of this item — phone camera, plain wall at GROUP PROJECT is fine.',
   },
@@ -87,7 +90,11 @@ export const copy = {
     chipInNone: 'Not this time',
     chipInPick: 'Pick an amount to chip in, or “Not this time”.',
     chipInOtherError: 'Type a whole-dollar amount, like 25.',
-    pledgeThanks: 'You offered {amount} toward the library. Thank you! Cash or Venmo at pickup, alongside any deposit.',
+    // Shows once an amount is picked. {venmo} becomes a link to the library's Venmo.
+    chipInPay: 'You can pay online on Venmo at {venmo}, or in person when you pick up your items.',
+    pledgeThanks: 'You offered {amount} toward the library. Thank you! You can pay online on Venmo at {venmo}, or in person (cash or Venmo) when you pick up, alongside any deposit.',
+    venmoButton: 'Chip in on Venmo',
+    venmoNote: 'Put “{eventName}” in the Venmo note so the librarians can match it to your request.',
   },
   reflect: {
     title: 'Leave a tip for the next host',
@@ -146,7 +153,7 @@ export const copy = {
     depositLine: 'Deposit due at pickup: {deposits}. It’s returned in full when everything comes back in good shape.',
     outNow: ' ({count} out with another gathering right now. We’ll check it’s back in time.)',
     depositHeld: 'Deposit held: {deposits}. It’s returned in full when everything comes back in good shape.',
-    pledgeLine: 'You offered {amount} toward the library. Thank you! Cash or Venmo at pickup works, alongside any deposit.',
+    pledgeLine: `You offered {amount} toward the library. Thank you! You can pay online on Venmo (${VENMO_URL}) or in person at pickup, alongside any deposit.`,
     signoff: '— The Community Events Lending Library\nGROUP PROJECT x Civic Works',
     policy: 'Events lending library - borrower agreement\nhttps://docs.google.com/document/d/1_nlWbO_1eAYxsQYAw-lKWgtMN9jd556UkXwyKaDvvbY/edit',
     request: `Hi {firstName},
