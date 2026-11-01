@@ -62,7 +62,7 @@ export function rowsToItems(rows: string[][], existing: Item[]): SyncResult {
     const prev = existing.find((e) => e.slug === slug);
     const cat = CATEGORIES.find((c) => c.toLowerCase() === get(idx.category).toLowerCase());
     const qty = parseInt(get(idx.qty), 10);
-    const status = (['active', 'repair', 'retired'].includes(get(idx.status).toLowerCase())
+    const status = (['active', 'repair', 'inactive', 'retired'].includes(get(idx.status).toLowerCase())
       ? get(idx.status).toLowerCase() : prev?.status ?? 'active') as ItemStatus;
     if (!cat && !prev) errors.push(`Row ${n + 2} (${name}): unknown category "${get(idx.category)}".`);
 

@@ -56,7 +56,7 @@ Keep `--ink`, `--text` and `--warning` dark enough to read on `--wall` (a contra
 
 `replacement_cost` and `deposit` are optional and take whole dollars ("$180", "180" and "180.00" all work). A blank cell clears the amount. If a sheet doesn't have one of these columns, the amounts already saved stay as they are. Both amounts are public. The replacement cost shows on the item page. The deposit shows on the item page, on the request list, on the confirmation page and on the librarians' request card. Each item has one deposit, however many someone borrows.
 
-Category is one of: Furniture, Sound/AV, Lights/Power, Signage, Safety, Games, Other. Status is one of: active, repair, retired. The sync matches rows to items by slug, and anything missing from the sheet stays as it is. In Google Sheets: File → Share → Publish to web → CSV.
+Category is one of: Furniture, Sound/AV, Lights/Power, Signage, Safety, Games, Other. Status is one of: active, repair, inactive, retired. **active** is listed and can be requested. **repair** is listed with a grayed-out "Being repaired" button. **inactive** means the library has it but isn't lending it right now. **retired** means it's gone for good. Inactive and retired items are both hidden from the Library page, the bundles and the item count. The sync matches rows to items by slug, and anything missing from the sheet stays as it is. In Google Sheets: File → Share → Publish to web → CSV.
 
 ## Photos
 

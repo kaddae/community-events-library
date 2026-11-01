@@ -11,7 +11,8 @@ export const CATEGORIES: Category[] = ['Furniture', 'Sound/AV', 'Lights/Power', 
 // A third kit later = one more sheet column, one more key here, one entry in copy.kits.
 export type KitKey = 'blockParty' | 'indoorGathering';
 export const KIT_KEYS: KitKey[] = ['blockParty', 'indoorGathering'];
-export type ItemStatus = 'active' | 'repair' | 'retired';
+// inactive = we have it, not lending right now. retired = gone. Both are hidden from the public page.
+export type ItemStatus = 'active' | 'repair' | 'inactive' | 'retired';
 
 export interface Item {
   id: string; slug: string; name: string; category: Category; description: string;

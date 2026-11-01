@@ -15,7 +15,8 @@ export default function Catalog() {
   const navigate = useNavigate();
   const [view, setView] = useState<View>('all');
 
-  const shelf = items.filter((i) => i.status !== 'retired');
+  // inactive (not lending right now) and retired (gone) both stay off the public page.
+  const shelf = items.filter((i) => i.status !== 'retired' && i.status !== 'inactive');
   const owned = shelf.reduce((n, i) => n + i.quantityTotal, 0);
   const shown = view === 'all' ? shelf : shelf.filter((i) => i.category === view);
   // Items the library has 0 of ("Coming soon") stay off the bundle lists.
