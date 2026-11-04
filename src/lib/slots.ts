@@ -1,8 +1,8 @@
 import { addDays, format, parseISO } from 'date-fns';
 import { copy } from '@/content/copy';
 
-// Pickup slots and drop-off days, built from copy.request.openHours.
-// Dates are yyyy-MM-dd strings; a slot key is "yyyy-MM-dd HH:mm".
+// Pickup days, ideal times and drop-off days, built from copy.request.openHours.
+// Dates are yyyy-MM-dd strings; a start time is "HH:mm".
 
 export interface OpenDay { date: string; from: string; to: string; starts: string[] }
 
@@ -18,7 +18,7 @@ function span(fromMin: number, toMin: number) {
     : `${clock(fromMin)} ${ampm(fromMin)}–${clock(toMin)} ${ampm(toMin)}`;
 }
 
-// Open days from start to end (inclusive), skipping past days and slots already started today.
+// Open days from start to end (inclusive), skipping past days and times already started today.
 function openDaysBetween(start: string, end: string, now = new Date()): OpenDay[] {
   const today = iso(now);
   const nowMin = now.getHours() * 60 + now.getMinutes();
@@ -60,17 +60,9 @@ export function returnDays(eventDate: string): OpenDay[] {
   return openDaysBetween(eventDate, iso(addDays(parseISO(eventDate), 7)));
 }
 
-export const slotKey = (date: string, start: string) => `${date} ${start}`;
 export const dayLabel = (date: string) => format(parseISO(date), 'EEE MMM d');
 export const hoursLabel = (d: OpenDay) => span(mins(d.from), mins(d.to));
+// "4:30" on the buttons
 export const startLabel = (start: string) => clock(mins(start));
-
-// "Thu Jun 5, 4:00–4:30 pm"
-export function formatSlot(key: string) {
-  const [date, start] = key.split(' ');
-  const s = mins(start);
-  return `${dayLabel(date)}, ${span(s, s + copy.request.slotMinutes)}`;
-}
-
-export const slotsToWindow = (keys: string[]) => [...keys].sort().map(formatSlot).join('; ');
-export const slotDays = (keys: string[]) => [...new Set(keys.map((k) => k.split(' ')[0]))].sort();
+// "4:30 pm" in saved text and for screen readers
+export const timeLabel = (start: string) => `${clock(mins(start))} ${ampm(mins(start))}`;

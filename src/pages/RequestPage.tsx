@@ -5,8 +5,7 @@ import { useLibrary, availableFor } from '@/lib/store';
 import { QuantityStepper, TodoText, DepositNotice, InfoToggle, VenmoText, fill } from '@/components/Bits';
 import { sendRequestEmail } from '@/lib/email';
 import {
-  pickupDays, returnDays, pickupWindowStart, slotKey, dayLabel, hoursLabel, startLabel, formatSlot,
-  slotsToWindow, slotDays,
+  pickupDays, returnDays, pickupWindowStart, dayLabel, hoursLabel, startLabel, timeLabel,
 } from '@/lib/slots';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -40,8 +39,9 @@ export default function RequestPage() {
   const submitRequest = useLibrary((s) => s.submitRequest);
   const navigate = useNavigate();
   const [f, setF] = useState(blank);
-  // Chosen pickup slots, as "yyyy-MM-dd HH:mm" keys.
-  const [slots, setSlots] = useState<string[]>([]);
+  // One pickup day (yyyy-MM-dd) and one ideal start time (HH:mm).
+  const [pickupDay, setPickupDay] = useState('');
+  const [pickupTime, setPickupTime] = useState('');
   // Used only when no open day falls before the gathering.
   const [pickupFallback, setPickupFallback] = useState('');
   const today = format(new Date(), 'yyyy-MM-dd');
@@ -62,14 +62,25 @@ export default function RequestPage() {
   const setEventDate = (v: string) => {
     const keepReturn = returnDays(v).some((d) => d.date === f.returnBy);
     setF((prev) => ({ ...prev, eventDate: v, returnBy: keepReturn ? prev.returnBy : '' }));
-    const keep = new Set(pickupDays(v).flatMap((d) => d.starts.map((s) => slotKey(d.date, s))));
-    setSlots((prev) => prev.filter((k) => keep.has(k)));
+    if (!pickupDays(v).some((d) => d.date === pickupDay)) {
+      setPickupDay('');
+      setPickupTime('');
+    }
   };
 
-  const toggleSlot = (key: string) => {
+  // A different day clears the time; the same day leaves it alone.
+  const pickDay = (date: string) => {
     setError('');
-    setSlots((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+    if (date !== pickupDay) setPickupTime('');
+    setPickupDay(date);
   };
+
+  const pickTime = (start: string) => {
+    setError('');
+    setPickupTime(start);
+  };
+
+  const chosenDay = pDays.find((d) => d.date === pickupDay);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -84,14 +95,12 @@ export default function RequestPage() {
     }
     let neededFrom: string, pickupLatest: string, pickupWindow: string;
     if (pDays.length > 0) {
-      // Drop any slot that has passed while the form was open.
-      const open = new Set(pDays.flatMap((d) => d.starts.map((s) => slotKey(d.date, s))));
-      const live = slots.filter((k) => open.has(k));
-      if (live.length === 0) { setError(copy.request.pickupPick); return; }
-      const days = slotDays(live);
-      neededFrom = days[0];
-      pickupLatest = days[days.length - 1];
-      pickupWindow = slotsToWindow(live);
+      // Rechecked here in case the day or time passed while the form was open.
+      if (!chosenDay) { setError(copy.request.pickupPick); return; }
+      if (!chosenDay.starts.includes(pickupTime)) { setError(copy.request.timePick); return; }
+      neededFrom = chosenDay.date;
+      pickupLatest = chosenDay.date;
+      pickupWindow = fill(copy.request.idealTime, { time: timeLabel(pickupTime) });
     } else {
       if (!pickupFallback.trim()) { setError(copy.request.pickupNoneNeeded); return; }
       neededFrom = pickupWindowStart(f.eventDate);
@@ -232,23 +241,37 @@ export default function RequestPage() {
           ) : (
             <>
               <p className="text-muted-foreground">{copy.request.pickupHint}</p>
-              {pDays.map((d) => (
-                <div key={d.date} role="group" aria-label={dayLabel(d.date)} className="flex flex-col gap-2">
-                  <p><span className="font-semibold">{dayLabel(d.date)}</span> <span className="text-muted-foreground">· {hoursLabel(d)}</span></p>
-                  <div className="flex flex-wrap gap-2">
-                    {d.starts.map((s) => {
-                      const key = slotKey(d.date, s);
-                      const on = slots.includes(key);
+              <div className="flex flex-col gap-2">
+                <p className="font-semibold">{copy.request.pickupDayLabel}</p>
+                <div className="flex flex-wrap gap-2" role="group" aria-label={copy.request.pickupDayLabel}>
+                  {pDays.map((d) => {
+                    const on = pickupDay === d.date;
+                    return (
+                      <button key={d.date} type="button" aria-pressed={on} onClick={() => pickDay(d.date)}
+                        className={`${choiceCls(on)} flex flex-col items-start py-1.5 text-left`}>
+                        <span>{dayLabel(d.date)}</span>
+                        <span className={`text-sm font-normal ${on ? '' : 'text-muted-foreground'}`}>{hoursLabel(d)}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              {chosenDay && (
+                <div className="flex flex-col gap-2">
+                  <p className="font-semibold">{copy.request.pickupTimeLabel}</p>
+                  <div className="flex flex-wrap gap-2" role="group" aria-label={`${copy.request.pickupTimeLabel}, ${dayLabel(chosenDay.date)}`}>
+                    {chosenDay.starts.map((s) => {
+                      const on = pickupTime === s;
                       return (
-                        <button key={key} type="button" aria-pressed={on} aria-label={formatSlot(key)}
-                          onClick={() => toggleSlot(key)} className={`${choiceCls(on)} min-w-[4.5rem]`}>
+                        <button key={s} type="button" aria-pressed={on} aria-label={timeLabel(s)}
+                          onClick={() => pickTime(s)} className={`${choiceCls(on)} min-w-[4.5rem]`}>
                           {startLabel(s)}
                         </button>
                       );
                     })}
                   </div>
                 </div>
-              ))}
+              )}
             </>
           )}
         </section>

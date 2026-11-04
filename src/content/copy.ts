@@ -78,12 +78,17 @@ export const copy = {
     formTitle: 'About your gathering',
     openHours: OPEN_HOURS,
     slotMinutes: 30,
-    pickupTitle: 'Pickup time',
-    pickupHint: 'Tap every half hour that could work for you in the week before your gathering. A librarian will confirm one.',
-    pickupNeedDate: 'Pick the date of your gathering first. Pickup times will show up here.',
+    pickupTitle: 'Pickup day and time',
+    pickupHint: 'Pick the day you’d like to pick up and your ideal time. A librarian will confirm by email.',
+    pickupNeedDate: 'Pick the date of your gathering first. Pickup days will show up here.',
     pickupNone: 'The library isn’t open again before your gathering. Tell us a time that could work, and we’ll sort it out by email.',
     pickupNoneLabel: 'A time that could work for pickup',
-    pickupPick: 'Pick at least one pickup time.',
+    pickupDayLabel: 'Pickup day',
+    pickupTimeLabel: 'Ideal time',
+    pickupPick: 'Pick a pickup day.',
+    timePick: 'Pick an ideal time.',
+    // Saved with the request and shown to librarians after the pickup day. {time} is like "4:30 pm".
+    idealTime: 'ideally {time}',
     pickupNoneNeeded: 'Tell us a time that could work for pickup.',
     returnTitle: 'Drop-off day',
     returnHint: 'Bring everything back during open hours on the day you pick.',
@@ -187,7 +192,7 @@ Thanks for your request for the {eventName}! Here's what you asked for:
 {items}
 
 Gathering: {eventDate}
-Pickup times that work for you: {neededFrom}{pickupWindow}
+Pickup day and ideal time: {neededFrom}{pickupWindow}
 Bring back by: {returnBy}
 
 Your pickup isn't confirmed yet. Please wait to hear back from a librarian before coming by.
