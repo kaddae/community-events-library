@@ -35,9 +35,9 @@ export const copy = {
   // and indoor_gathering columns.
   kits: {
     title: 'Start with a bundle',
-    hint: 'Hosting a block party or indoor gathering? Start with these pre-selected item bundles. You can still customize your selection after starting here.',
+    hint: 'Hosting a block party or community meeting? Start with these pre-selected item bundles. You can still customize your selection after starting here.',
     blockParty: { title: 'Block Party Bundle', picker: 'Block party' },
-    indoorGathering: { title: 'Indoor Gathering Bundle', picker: 'Indoor gathering' },
+    indoorGathering: { title: 'Community Meeting Bundle', picker: 'Community meeting' },
     everything: 'Everything',
     start: 'Start with this bundle',
     none: 'Nothing in this bundle can go out right now. Write the librarians and we’ll figure something out.',
