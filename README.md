@@ -6,7 +6,7 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 
 - **The library** (home): all 13 starter items grouped by category. Each shows how many are available and the latest tip from a past host.
 - **Item pages**: description, care notes, availability, and the biography (dated tips from past borrowers, newest first).
-- **Request list**: add several items, adjust quantities, then send one short form. Phone is required. Pickup is a range (earliest and latest day), which starts out as a single day until the host widens it. Submitting creates one request group with one line per item.
+- **Request list**: add several items, adjust quantities, then send one short form. Phone is required. After the gathering date, the host picks one pickup day from the open days in the week before the gathering, plus an ideal half-hour start time. A librarian confirms the exact time by email. If the library isn't open again before the gathering, a text box asks for a time that could work instead. The host also picks one drop-off day from the open days between the gathering and a week after it, with no set time. Submitting creates one request group with one line per item.
 - **Confirmation**: pickup details, plus the most recent tip for anything you requested.
 - **Librarians' desk** (`#/librarian`): requests grouped by submission, with Approve, Decline, Check out and Mark returned buttons for each item. Anything past its return date gets flagged. Once anything in a request comes back, the request gets one **Copy reflection link** button, and each returned item gets **Add a tip they told us** for tips a host says at the counter (posted only with their OK). The **Testimonials** tab is where librarians approve or hide testimonials that hosts marked OK to share. The Inventory tab syncs from a published Google Sheet CSV, with a preview before anything changes.
 - **Reflection page** (`#/reflect/<token>`): one link per request. It asks one required question, "How did the gathering go?", with an "OK to share" checkbox that starts unchecked. Below that are optional tips for each returned item, collapsed until the host taps one. Tips go straight onto item biographies. Testimonials stay private to librarians unless the host checked "OK to share" **and** a librarian approved them. Older per-item links still open the single-item form.
@@ -17,7 +17,7 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 
 With `SUPABASE_URL` and `SUPABASE_ANON_KEY` set (see `.env.example`), the app uses one shared database. Without them it runs on seeded preview data saved in this browser.
 
-1. Run the files in `supabase/migrations/` in order, 0001 through 0014.
+1. Run the files in `supabase/migrations/` in order, 0001 through 0015.
 2. Authentication → Providers: turn on Email. Under URL Configuration, set Site URL to the address you use day to day. Add `https://<preview-host>/**` and `https://<published-host>/**` to Redirect URLs. The librarian sign-in page shows the exact line to paste.
 3. Librarians are rows in `librarian_allowlist`. To add someone, run a new migration (or SQL) with `insert into public.librarian_allowlist (email, name) values ('them@example.com', 'Their name');`. Delete the row to remove them.
 
@@ -41,6 +41,10 @@ At the end of the request form, hosts pick what they'd like to chip in: $10, $15
 The About page's sections are markdown in `src/content/about.ts`. Each `## Heading` starts a section, so add or delete a heading and its text to add or remove one. Blank lines start paragraphs, and `**bold**`, `[links](https://…)` and `- lists` work. Don't type a backtick in that text. "How borrowing works" lives on the Library page and stays in `copy.ts`.
 
 All other public wording is in `src/content/copy.ts`, one named entry per piece of text. Rewrite any value freely, but keep the names. A value starting with `TODO` shows up as a dashed note on the page until you replace it.
+
+## Open hours
+
+Pickup and drop-off happen during open hours, set in the `OPEN_HOURS` list at the top of `src/content/copy.ts` (day 0 is Sunday, times are 24-hour). The request form's pickup and drop-off days, the half-hour pickup times and the hours in "How borrowing works" all follow that list. The form doesn't stop two hosts from choosing the same time, and it doesn't know about holidays. The librarian's email reply confirms the real time.
 
 ## Changing colors
 
