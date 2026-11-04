@@ -212,7 +212,7 @@ export default function RequestPage() {
         <h2 className="shelf-rule text-2xl">{copy.request.formTitle}</h2>
         {field('eventName', 'Name of the gathering')}
         <div className="flex flex-col gap-1.5 sm:max-w-xs">
-          <Label htmlFor="eventDate">Date{req}</Label>
+          <Label htmlFor="eventDate">Gathering Date{req}</Label>
           <Input id="eventDate" type="date" required min={today} value={f.eventDate}
             aria-invalid={Boolean(dateError) || undefined} aria-describedby={dateError ? 'date-error' : undefined}
             onChange={(e) => setEventDate(e.target.value)} />
