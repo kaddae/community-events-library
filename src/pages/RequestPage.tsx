@@ -4,6 +4,10 @@ import { format } from 'date-fns';
 import { useLibrary, availableFor } from '@/lib/store';
 import { QuantityStepper, TodoText, DepositNotice, InfoToggle, VenmoText, fill } from '@/components/Bits';
 import { sendRequestEmail } from '@/lib/email';
+import {
+  pickupDays, returnDays, pickupWindowStart, slotKey, dayLabel, hoursLabel, startLabel, formatSlot,
+  slotsToWindow, slotDays,
+} from '@/lib/slots';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -11,26 +15,22 @@ import { copy } from '@/content/copy';
 
 const blank = {
   firstName: '', lastName: '', email: '', phone: '', affiliation: '',
-  eventName: '', eventDate: '', neededFrom: '', pickupLatest: '', returnBy: '', pickupWindow: '', description: '', notes: '',
+  eventName: '', eventDate: '', returnBy: '', description: '', notes: '',
   heardFrom: '',
 };
-
-type Dates = { eventDate: string; neededFrom: string; pickupLatest: string; returnBy: string };
 
 // '' = not picked yet, '0' = Not this time, 'other' = typed amount.
 type Pledge = '' | '0' | 'other' | `${number}`;
 
 // ISO yyyy-mm-dd strings compare correctly as plain strings.
-function dateProblem(d: Dates, today: string): string {
+function dateProblem(d: { eventDate: string; returnBy: string }, today: string): string {
   if (d.eventDate && d.eventDate < today) return 'The gathering date has already passed. Pick today or later.';
-  if (d.neededFrom && d.neededFrom < today) return 'That pickup day has already passed. Pick today or later.';
-  if (d.neededFrom && d.eventDate && d.neededFrom > d.eventDate) return 'Pickup comes after the gathering. Pick up on or before the day of it.';
-  if (d.pickupLatest && d.neededFrom && d.pickupLatest < d.neededFrom) return 'Latest pickup comes before earliest pickup. Check those two.';
-  if (d.pickupLatest && d.eventDate && d.pickupLatest > d.eventDate) return 'Latest pickup comes after the gathering. Pick a day on or before it.';
-  if (d.returnBy && d.eventDate && d.returnBy < d.eventDate) return 'The bring-back day is before the gathering. Bring things back on or after it.';
-  if (d.returnBy && d.neededFrom && d.returnBy < d.neededFrom) return 'The return date comes before the pickup date. Check those two.';
+  if (d.returnBy && d.eventDate && d.returnBy < d.eventDate) return 'The drop-off day is before the gathering. Bring things back on or after it.';
   return '';
 }
+
+const choiceCls = (on: boolean) =>
+  `min-h-11 border-[1.5px] border-secondary px-3 font-semibold ${on ? 'bg-secondary text-secondary-foreground' : 'text-secondary'}`;
 
 export default function RequestPage() {
   const items = useLibrary((s) => s.items);
@@ -40,8 +40,10 @@ export default function RequestPage() {
   const submitRequest = useLibrary((s) => s.submitRequest);
   const navigate = useNavigate();
   const [f, setF] = useState(blank);
-  // Latest pickup copies earliest pickup until the host picks it themselves.
-  const [latestTouched, setLatestTouched] = useState(false);
+  // Chosen pickup slots, as "yyyy-MM-dd HH:mm" keys.
+  const [slots, setSlots] = useState<string[]>([]);
+  // Used only when no open day falls before the gathering.
+  const [pickupFallback, setPickupFallback] = useState('');
   const today = format(new Date(), 'yyyy-MM-dd');
   const dateError = dateProblem(f, today);
   // Honeypot: people never see this field, but form-filling bots tend to fill it in.
@@ -51,25 +53,23 @@ export default function RequestPage() {
   const [pledge, setPledge] = useState<Pledge>('');
   const [otherAmount, setOtherAmount] = useState('');
 
+  const pDays = pickupDays(f.eventDate);
+  const rDays = returnDays(f.eventDate);
+
   const set = (k: keyof typeof blank) => (e: { target: { value: string } }) => setF({ ...f, [k]: e.target.value });
 
-  // The gathering date fills in nothing. It only sets the limits on the other dates.
-  const setEventDate = (v: string) => setF((prev) => ({ ...prev, eventDate: v }));
-
-  // The one automatic fill: latest pickup copies earliest until the host sets it.
-  const setPickup = (v: string) =>
-    setF((prev) => ({
-      ...prev,
-      neededFrom: v,
-      pickupLatest: !latestTouched || !prev.pickupLatest ? v : prev.pickupLatest,
-    }));
-
-  const setLatest = (v: string) => {
-    setLatestTouched(true);
-    setF((prev) => ({ ...prev, pickupLatest: v }));
+  // A new gathering date keeps only the picks that still fit around it.
+  const setEventDate = (v: string) => {
+    const keepReturn = returnDays(v).some((d) => d.date === f.returnBy);
+    setF((prev) => ({ ...prev, eventDate: v, returnBy: keepReturn ? prev.returnBy : '' }));
+    const keep = new Set(pickupDays(v).flatMap((d) => d.starts.map((s) => slotKey(d.date, s))));
+    setSlots((prev) => prev.filter((k) => keep.has(k)));
   };
 
-  const setReturn = (v: string) => setF((prev) => ({ ...prev, returnBy: v }));
+  const toggleSlot = (key: string) => {
+    setError('');
+    setSlots((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+  };
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -80,6 +80,26 @@ export default function RequestPage() {
     }
     if (dateError) {
       setError(dateError);
+      return;
+    }
+    let neededFrom: string, pickupLatest: string, pickupWindow: string;
+    if (pDays.length > 0) {
+      // Drop any slot that has passed while the form was open.
+      const open = new Set(pDays.flatMap((d) => d.starts.map((s) => slotKey(d.date, s))));
+      const live = slots.filter((k) => open.has(k));
+      if (live.length === 0) { setError(copy.request.pickupPick); return; }
+      const days = slotDays(live);
+      neededFrom = days[0];
+      pickupLatest = days[days.length - 1];
+      pickupWindow = slotsToWindow(live);
+    } else {
+      if (!pickupFallback.trim()) { setError(copy.request.pickupNoneNeeded); return; }
+      neededFrom = pickupWindowStart(f.eventDate);
+      pickupLatest = f.eventDate;
+      pickupWindow = pickupFallback.trim();
+    }
+    if (!f.returnBy) {
+      setError(copy.request.returnPick);
       return;
     }
     if (!pledge) {
@@ -96,9 +116,13 @@ export default function RequestPage() {
       donationPledge = Math.min(n, 10000);
     }
     setSending(true);
-    const { firstName, lastName, email, phone, affiliation, ...event } = f;
+    const { firstName, lastName, email, phone, affiliation, eventName, eventDate, returnBy, description, notes, heardFrom } = f;
     try {
-      const id = await submitRequest({ host: { firstName, lastName, email, phone, affiliation }, ...event, donationPledge });
+      const id = await submitRequest({
+        host: { firstName, lastName, email, phone, affiliation },
+        eventName, eventDate, neededFrom, pickupLatest, returnBy, pickupWindow, description, notes, heardFrom,
+        donationPledge,
+      });
       // The request is saved first. The email only goes out once the database has accepted it.
       let emailFailed = false;
       let emailError = '';
@@ -134,15 +158,6 @@ export default function RequestPage() {
     return item ? Math.max(0, qty - availableFor(item, lines)) : 0;
   };
   const anyShort = cart.some((c) => shortBy(c.itemId, c.quantity) > 0);
-
-  const dateField = (k: keyof Dates, label: string, onChange: (v: string) => void, min: string, max?: string) => (
-    <div className="flex flex-col gap-1.5">
-      <Label htmlFor={k}>{label}{req}</Label>
-      <Input id={k} type="date" required min={min} max={max || undefined} value={f[k]}
-        aria-invalid={Boolean(dateError) || undefined} aria-describedby={dateError ? 'date-error' : undefined}
-        onChange={(e) => onChange(e.target.value)} />
-    </div>
-  );
 
   const field = (k: keyof typeof blank, label: string, type = 'text', required = true) => (
     <div className="flex flex-col gap-1.5">
@@ -196,17 +211,72 @@ export default function RequestPage() {
 
         <h2 className="shelf-rule text-2xl">{copy.request.formTitle}</h2>
         {field('eventName', 'Name of the gathering')}
-        <div className="flex flex-col gap-2">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {dateField('eventDate', 'Date', setEventDate, today)}
-            {dateField('neededFrom', copy.request.pickupEarliestLabel, setPickup, today, f.eventDate)}
-            {dateField('pickupLatest', copy.request.pickupLatestLabel, setLatest, f.neededFrom || today, f.eventDate)}
-            {dateField('returnBy', 'Bring back by', setReturn, f.eventDate || f.neededFrom || today)}
-          </div>
-          <p className="text-muted-foreground">{copy.request.pickupRangeHint}</p>
+        <div className="flex flex-col gap-1.5 sm:max-w-xs">
+          <Label htmlFor="eventDate">Date{req}</Label>
+          <Input id="eventDate" type="date" required min={today} value={f.eventDate}
+            aria-invalid={Boolean(dateError) || undefined} aria-describedby={dateError ? 'date-error' : undefined}
+            onChange={(e) => setEventDate(e.target.value)} />
           {dateError && <p id="date-error" className="font-semibold text-destructive">{dateError}</p>}
         </div>
-        {field('pickupWindow', copy.request.pickupTimesLabel, 'text', false)}
+
+        <section className="flex flex-col gap-3" aria-labelledby="pickup-title">
+          <h3 id="pickup-title" className="text-xl">{copy.request.pickupTitle}{req}</h3>
+          {!f.eventDate ? (
+            <p className="text-muted-foreground">{copy.request.pickupNeedDate}</p>
+          ) : pDays.length === 0 ? (
+            <div className="flex flex-col gap-2">
+              <p className="border-l-4 border-primary bg-muted px-4 py-3">{copy.request.pickupNone}</p>
+              <Label htmlFor="pickupFallback">{copy.request.pickupNoneLabel}{req}</Label>
+              <Input id="pickupFallback" value={pickupFallback} onChange={(e) => setPickupFallback(e.target.value)} />
+            </div>
+          ) : (
+            <>
+              <p className="text-muted-foreground">{copy.request.pickupHint}</p>
+              {pDays.map((d) => (
+                <div key={d.date} role="group" aria-label={dayLabel(d.date)} className="flex flex-col gap-2">
+                  <p><span className="font-semibold">{dayLabel(d.date)}</span> <span className="text-muted-foreground">· {hoursLabel(d)}</span></p>
+                  <div className="flex flex-wrap gap-2">
+                    {d.starts.map((s) => {
+                      const key = slotKey(d.date, s);
+                      const on = slots.includes(key);
+                      return (
+                        <button key={key} type="button" aria-pressed={on} aria-label={formatSlot(key)}
+                          onClick={() => toggleSlot(key)} className={`${choiceCls(on)} min-w-[4.5rem]`}>
+                          {startLabel(s)}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+        </section>
+
+        <section className="flex flex-col gap-3" aria-labelledby="return-title">
+          <h3 id="return-title" className="text-xl">{copy.request.returnTitle}{req}</h3>
+          {!f.eventDate ? (
+            <p className="text-muted-foreground">{copy.request.returnNeedDate}</p>
+          ) : (
+            <>
+              <p className="text-muted-foreground">{copy.request.returnHint}</p>
+              <div className="flex flex-wrap gap-2" role="group" aria-label={copy.request.returnTitle}>
+                {rDays.map((d) => {
+                  const on = f.returnBy === d.date;
+                  return (
+                    <button key={d.date} type="button" aria-pressed={on}
+                      onClick={() => { setError(''); setF((prev) => ({ ...prev, returnBy: d.date })); }}
+                      className={`${choiceCls(on)} flex flex-col items-start py-1.5 text-left`}>
+                      <span>{dayLabel(d.date)}</span>
+                      <span className={`text-sm font-normal ${on ? '' : 'text-muted-foreground'}`}>{hoursLabel(d)}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </section>
+
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="description">{copy.request.descriptionLabel}</Label>
           <Textarea id="description" rows={3} value={f.description} onChange={set('description')} />

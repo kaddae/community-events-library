@@ -7,6 +7,22 @@ const STREET = '140 Bradley Street';
 const ADDRESS = `${STREET}, New Haven CT 06511`;
 // Where hosts can chip in online. Used on the request form, the confirmation page and the request email.
 const VENMO_URL = 'https://www.venmo.com/u/groupprojectnhv';
+// Open hours for pickup and drop-off. day: 0 = Sunday … 6 = Saturday. Times are 24-hour.
+// Change hours here and the request form and "How borrowing works" both follow.
+const OPEN_HOURS = [
+  { day: 1, from: '16:00', to: '19:00' },
+  { day: 2, from: '15:00', to: '18:00' },
+  { day: 4, from: '16:00', to: '19:00' },
+];
+const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const hourShort = (t: string) => {
+  const [h, m] = t.split(':').map(Number);
+  return `${h % 12 || 12}${m ? `:${String(m).padStart(2, '0')}` : ''}`;
+};
+// "Mon 4–7 pm, Tue 3–6 pm, Thu 4–7 pm"
+const HOURS = OPEN_HOURS
+  .map((o) => `${DAY_NAMES[o.day]} ${hourShort(o.from)}–${hourShort(o.to)} ${Number(o.to.split(':')[0]) >= 12 ? 'pm' : 'am'}`)
+  .join(', ');
 
 export const copy = {
   shared: {
@@ -60,10 +76,19 @@ export const copy = {
     title: 'Your request list',
     empty: 'Nothing on your list yet. Add what your gathering needs from the library.',
     formTitle: 'About your gathering',
-    pickupEarliestLabel: 'Earliest pickup',
-    pickupLatestLabel: 'Latest pickup',
-    pickupRangeHint: 'This is helpful for our librarians as we coordinate availability.',
-    pickupTimesLabel: 'What time(s) of day work best for you for pick-up?',
+    openHours: OPEN_HOURS,
+    slotMinutes: 30,
+    pickupTitle: 'Pickup time',
+    pickupHint: 'Tap every half hour that could work for you in the week before your gathering. A librarian will confirm one.',
+    pickupNeedDate: 'Pick the date of your gathering first. Pickup times will show up here.',
+    pickupNone: 'The library isn’t open again before your gathering. Tell us a time that could work, and we’ll sort it out by email.',
+    pickupNoneLabel: 'A time that could work for pickup',
+    pickupPick: 'Pick at least one pickup time.',
+    pickupNoneNeeded: 'Tell us a time that could work for pickup.',
+    returnTitle: 'Drop-off day',
+    returnHint: 'Bring everything back during open hours on the day you pick.',
+    returnNeedDate: 'Pick the date of your gathering first. Drop-off days will show up here.',
+    returnPick: 'Pick a day to bring things back.',
     descriptionLabel: 'Share more about your gathering.',
     heardFromLabel: 'How did you hear about the lending library?',
     submit: 'Send request to the librarians',
@@ -162,7 +187,7 @@ Thanks for your request for the {eventName}! Here's what you asked for:
 {items}
 
 Gathering: {eventDate}
-Requested pickup date: {neededFrom}{pickupWindow}
+Pickup times that work for you: {neededFrom}{pickupWindow}
 Bring back by: {returnBy}
 
 Your pickup isn't confirmed yet. Please wait to hear back from a librarian before coming by.
@@ -215,7 +240,7 @@ No worries if plans changed. Reply and let us know how it's going and when works
     title: 'All about the library',
     testimonialsTitle: 'What hosts say',
     howTitle: 'How borrowing works',
-    borrow: `Browse our catalog and pick out what you need. Request your items, find a time to pick up at GROUP PROJECT (${STREET}), and have a great event!`,
+    borrow: `Browse our catalog and pick out what you need. Request your items, find a time to pick up at GROUP PROJECT (${STREET}) during open hours (${HOURS}), and have a great event!`,
     giveBack: 'After your gathering, bring your items back to GROUP PROJECT, and let us know how it went!',
   },
 };
