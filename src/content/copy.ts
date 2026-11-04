@@ -20,8 +20,7 @@ export const copy = {
     supportedBy: 'The library is supported by GROUP PROJECT and Civic Works.',
     librarianEmail: 'groupprojectnhv@gmail.com',
     venmo: { label: '@groupprojectnhv', url: VENMO_URL },
-    photoNeededShort: 'Photo needed — phone camera, plain wall at GROUP PROJECT',
-    photoNeededFull: 'Add a real photo of this item — phone camera, plain wall at GROUP PROJECT is fine.',
+    photoComingSoon: 'Photo coming soon',
   },
   home: {
     who: 'Welcome to the Community Events Lending Library, hosted by GROUP PROJECT and Civic Works!',

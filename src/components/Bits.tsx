@@ -99,7 +99,7 @@ export function PhotoSlot({ item, size = 'card' }: { item: Item; size?: 'card' |
       <div className="flex flex-col gap-1 bg-background px-3 py-2">
         <span className="font-display text-lg text-secondary">{item.name}</span>
         <span className={`text-muted-foreground ${size === 'card' ? 'text-sm' : 'text-base'}`}>
-          {size === 'card' ? copy.shared.photoNeededShort : copy.shared.photoNeededFull}
+          {copy.shared.photoComingSoon}
         </span>
       </div>
     </div>
