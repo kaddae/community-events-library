@@ -63,12 +63,20 @@ export default function Catalog() {
           <div className="grid gap-4 md:grid-cols-2">
           {kits.map(({ key, inKit }) => {
             const canGo = inKit.some((i) => i.status === 'active');
+            const kit = copy.kits[key];
+            const link = 'link' in kit ? kit.link : undefined;
             return (
               <article key={key} className="stamp-border paper-card flex flex-col">
                 <div className="kit-band" data-kit={key} aria-hidden />
                 <div className="flex flex-1 flex-col gap-3 p-4">
-                  <h3 className="text-2xl">{copy.kits[key].title}</h3>
+                  <h3 className="text-2xl">{kit.title}</h3>
                   <p>{inKit.map((i) => `${Math.min(i[key] ?? 0, i.quantityTotal)} × ${i.name}`).join(', ')}</p>
+                  {link && (
+                    <a href={link.url} target="_blank" rel="noopener noreferrer"
+                      className="inline-block self-start py-1.5 text-sm font-semibold text-secondary underline underline-offset-4">
+                      {link.text}<span className="sr-only"> (PDF, opens in a new tab)</span>
+                    </a>
+                  )}
                   {canGo ? (
                     <button type="button" onClick={() => { startKit(key); navigate('/request'); }}
                       className="big-action mt-auto bg-primary px-4 text-primary-foreground">

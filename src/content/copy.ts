@@ -52,7 +52,14 @@ export const copy = {
   kits: {
     title: 'Start with a bundle',
     hint: 'Hosting a block party or community meeting? Start with these pre-selected item bundles. You can still customize your selection after starting here.',
-    blockParty: { title: 'Block Party Bundle', picker: 'Block party' },
+    blockParty: {
+      title: 'Block Party Bundle', picker: 'Block party',
+      // A small link under the bundle's item list. Only bundles with a link show one.
+      link: {
+        text: 'Get more tips on hosting a block party here!',
+        url: 'https://www.civicworksct.org/s/Civic-Works-Dept-Block-Party-Toolkit-Digital-V2.pdf',
+      },
+    },
     indoorGathering: { title: 'Community Meeting Bundle', picker: 'Community meeting' },
     everything: 'Everything',
     start: 'Start with this bundle',
