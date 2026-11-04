@@ -186,12 +186,14 @@ export default function RequestPage() {
             if (!item) return null;
             const short = shortBy(c.itemId, c.quantity);
             return (
-              <li key={c.itemId} className="hairline-soft flex flex-wrap items-center justify-between gap-3 p-3 last:border-0">
-                <span className="flex flex-col">
+              <li key={c.itemId} className="hairline-soft flex items-start justify-between gap-3 p-3 last:border-0">
+                <span className="flex min-h-12 min-w-0 flex-col justify-center break-words">
                   <Link to={`/items/${item.slug}`} className="font-semibold text-secondary underline-offset-4 hover:underline">{item.name}</Link>
                   {short > 0 && <span className="text-sm font-semibold text-destructive">{fill(copy.request.outNow, { count: String(short) })}</span>}
                 </span>
-                <QuantityStepper value={c.quantity} max={item.quantityTotal} onChange={(n) => setCartQty(item.id, n)} label={item.name} />
+                <div className="shrink-0">
+                  <QuantityStepper value={c.quantity} max={item.quantityTotal} onChange={(n) => setCartQty(item.id, n)} label={item.name} />
+                </div>
               </li>
             );
           })}
