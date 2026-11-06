@@ -342,7 +342,7 @@ export default function RequestPage() {
           )}
           {pledge !== '' && pledge !== '0' && (
             <p className="border-l-4 border-primary bg-muted px-4 py-3" aria-live="polite">
-              <VenmoText text={copy.request.chipInPay} />
+              <VenmoText text={copy.request.chipInPay} url={payUrl} />
             </p>
           )}
         </div>

@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { seedItems, seedGroups, seedLines, seedReflections, seedTestimonials } from '@/data/seed';
 import { isConfigured, supabase } from '@/lib/supabase';
 import * as api from '@/lib/api';
+import { copy } from '@/content/copy';
 
 export type Category = 'Furniture' | 'Sound/AV' | 'Lights/Power' | 'Signage' | 'Safety' | 'Games' | 'Other';
 export const CATEGORIES: Category[] = ['Furniture', 'Sound/AV', 'Lights/Power', 'Signage', 'Safety', 'Games', 'Other'];
@@ -87,6 +88,14 @@ export function latestReflection(itemIds: string[], reflections: Reflection[]) {
 }
 
 export const dollars = (n: number) => `$${n.toLocaleString('en-US')}`;
+
+// A Venmo payment link with the amount and note filled in, for the request
+// form and the confirmation page. The note is the gathering's name ("library"
+// if blank). audience=private keeps it out of the host's public Venmo feed.
+export function venmoPayUrl(amount: number, note: string) {
+  const n = encodeURIComponent(note.trim() || 'library');
+  return `https://venmo.com/?txn=pay&recipients=${copy.shared.venmo.handle}&amount=${amount}&note=${n}&audience=private`;
+}
 
 // "2025-06-05", or "2025-06-05 to 2025-06-07" when the host gave a range. fmt formats each day.
 export function pickupSpan(g: Pick<RequestGroup, 'neededFrom' | 'pickupLatest'>, fmt: (iso: string) => string = (d) => d) {

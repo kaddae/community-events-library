@@ -6,7 +6,8 @@
 const STREET = '140 Bradley Street';
 const ADDRESS = `${STREET}, New Haven CT 06511`;
 // Where hosts can chip in online. Used on the request form, the confirmation page and the request email.
-const VENMO_URL = 'https://www.venmo.com/u/groupprojectnhv';
+const VENMO_HANDLE = 'groupprojectnhv';
+const VENMO_URL = `https://www.venmo.com/u/${VENMO_HANDLE}`;
 // Open hours for pickup and drop-off. day: 0 = Sunday … 6 = Saturday. Times are 24-hour.
 // Change hours here and the request form and "How borrowing works" both follow.
 const OPEN_HOURS = [
@@ -35,7 +36,8 @@ export const copy = {
     address: `GROUP PROJECT · ${ADDRESS}`,
     supportedBy: 'The library is supported by GROUP PROJECT and Civic Works.',
     librarianEmail: 'groupprojectnhv@gmail.com',
-    venmo: { label: '@groupprojectnhv', url: VENMO_URL },
+    // url is the plain profile page. handle goes into the prefilled payment links on the request form and confirmation page.
+    venmo: { label: `@${VENMO_HANDLE}`, url: VENMO_URL, handle: VENMO_HANDLE },
     photoComingSoon: 'Photo coming soon',
   },
   home: {
@@ -130,7 +132,7 @@ export const copy = {
     chipInPay: 'You can pay online on Venmo at {venmo}, or in person when you pick up your items.',
     pledgeThanks: 'You offered {amount} toward the library. Thank you! You can pay online on Venmo at {venmo}, or in person (cash or Venmo) when you pick up, alongside any deposit.',
     venmoButton: 'Chip in on Venmo',
-    venmoNote: 'Put “{eventName}” in the Venmo note so the librarians can match it to your request.',
+    venmoNote: 'The amount and “{eventName}” are already filled in, so the librarians can match it to your request.',
   },
   reflect: {
     title: 'Leave a tip for the next host',
