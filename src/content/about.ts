@@ -8,6 +8,8 @@
 //
 // Email addresses become links on their own. Don't type a backtick ( ` ) in the text.
 export const aboutMarkdown = `
+Hosting an event takes a lot of work, and can require organizers to coordinate the borrowing or buying of many different physical items like tables, chairs, or a mic and PA that can be expensive, hard to store, and used infrequently by an individual organizer or group. This lending library will reduce the burden on organizers by gathering, storing and taking care of these items on behalf of the commons so that community members can affordably borrow items that they otherwise would not be able to, allowing them to host more successful, impactful and joyous community gatherings. 
+
 ## Civic Works
 
 Built by a growing coalition of neighbors, Civic Works' mission is to increase volunteerism, civic engagement, and service in New Haven. We invest in neighbors to bring their blocks together because we believe that the health of our democracy begins at the neighborhood level.
