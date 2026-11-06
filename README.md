@@ -73,14 +73,7 @@ Real photos only: a phone camera against a plain wall at GROUP PROJECT. No AI-ge
 > Remixed from Local Supplies Sharing — https://studio.relationaltechproject.org/library?item=dcb4d804-a256-4402-b785-00dabbf9635c
 > Item-biography pattern drawn from the Z-Space community library shelf.
 
-## Join the network
 
-- [ ] Make repo public
-- [ ] Add `relational-tech` topic (`gh repo edit <owner>/<repo> --add-topic relational-tech`, or gear icon next to "About" in the GitHub UI)
-- [ ] Add MIT license
-- [ ] Commit `.reltech.yml`
-
-The RTP Watcher finds public repos with the `relational-tech` topic so other neighborhoods can find this work and remix it.
 
 ## License
 
