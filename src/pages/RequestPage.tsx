@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
-import { useLibrary, availableFor } from '@/lib/store';
+import { useLibrary, availableFor, venmoPayUrl } from '@/lib/store';
 import { QuantityStepper, TodoText, DepositNotice, InfoToggle, VenmoText, fill } from '@/components/Bits';
 import { sendRequestEmail } from '@/lib/email';
 import {
@@ -52,6 +52,12 @@ export default function RequestPage() {
   const [sending, setSending] = useState(false);
   const [pledge, setPledge] = useState<Pledge>('');
   const [otherAmount, setOtherAmount] = useState('');
+  // The Venmo link with the picked amount and the gathering's name filled in.
+  // "Other" counts once it's a valid whole number; otherwise the plain profile page.
+  const pledgeAmount = pledge === 'other'
+    ? (/^\d+$/.test(otherAmount.trim()) ? Math.min(parseInt(otherAmount, 10), 10000) : 0)
+    : Number(pledge);
+  const payUrl = pledgeAmount > 0 ? venmoPayUrl(pledgeAmount, f.eventName) : copy.shared.venmo.url;
 
   const pDays = pickupDays(f.eventDate);
   const rDays = returnDays(f.eventDate);
