@@ -249,7 +249,7 @@ No worries if plans changed. Reply and let us know how it's going and when works
   },
   // The About page's sections live in src/content/about.ts (markdown).
   about: {
-    title: 'All about the library',
+    title: 'Learn more about the library',
     testimonialsTitle: 'What hosts say',
     howTitle: 'How borrowing works',
     borrow: `Browse our catalog and pick out what you need. Request your items, find a time to pick up at GROUP PROJECT (${STREET}) during open hours (${HOURS}), and have a great event!`,
