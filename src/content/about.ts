@@ -8,7 +8,7 @@
 //
 // Email addresses become links on their own. Don't type a backtick ( ` ) in the text.
 export const aboutMarkdown = `
-Hosting an event takes a lot of work, and can require organizers to coordinate the borrowing or buying of many different physical items like tables, chairs, or a mic and PA that can be expensive, hard to store, and used infrequently by an individual organizer or group. This lending library will reduce the burden on organizers by gathering, storing and taking care of these items on behalf of the commons so that community members can affordably borrow items that they otherwise would not be able to, allowing them to host more successful, impactful and joyous community gatherings. 
+We know hosting an event takes a lot of work, and often requires organizers to coordinate the borrowing or buying of many different physical items like tables, chairs, or a mic and PA -- not only is this costly, these items can be hard to store, and aren't even used that often by 1 organizer. The community events lending library was created to help reduce the burden on organizers by gathering, storing and taking care of these items on behalf of the commons so that community members can affordably borrow items that they need to host more successful, impactful and joyous community gatherings! 
 
 ## Civic Works
 
