@@ -228,7 +228,7 @@ Please bring everything back to {pickupAddress} by {returnBy}.
 Our borrowing policy:
 {policy}
 
-If anything breaks or you need more time, just reply here. We'd much rather hear about it early.
+If anything breaks or you need more time, just let us know!
 
 {signoff}`,
     returned: `Hi {firstName},
@@ -241,11 +241,11 @@ Would you take two minutes to tell us how the gathering went? You can also leave
 {signoff}`,
     late: `Hi {firstName},
 
-Just checking in about the gear from the {eventName}. We had it down to come back {returnBy}, and these are still out:
+Just checking in about the gear from the {eventName}. We had planned to have you drop-off on {returnBy}, and these are still out:
 
 {items}
 
-No worries if plans changed. Reply and let us know how it's going and when works to bring it by {pickupAddress}. If something broke or went missing, tell us. We'd rather figure it out together.
+No worries if plans changed. Reply and let us know how it's going and when works to bring it by {pickupAddress}. Thanks!
 
 {signoff}`,
   },
