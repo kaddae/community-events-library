@@ -17,6 +17,13 @@ import {
 // The host and the library inbox get nothing. '' means live: real recipients.
 export const TEST_RECIPIENT = '';
 
+// The library's public address, used for the reflection link in the
+// thank-you email. Fill this in with the published site (no trailing slash,
+// no #). Blank = the address of the page the email is sent from, which is
+// fine on the published site but comes out as an unusable blob: link when
+// sending from the Builder preview.
+export const SITE_URL = '';
+
 const slot = (text: string, vars: Record<string, string>) =>
   text.replace(/\{(\w+)\}/g, (m, k: string) => vars[k] ?? m);
 const tidy = (s: string) => s.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
@@ -44,10 +51,12 @@ const depositText = (template: string, lines: RequestLine[], items: Item[]) => {
   return list.length ? slot(template, { deposits: describeDeposits(list) }) : '';
 };
 
-//Create one reflection link used for emails and librarian page. Empty means request has no code yet.
+// One reflection link, used in the thank-you email and on the librarians' desk.
+// Empty means the request has no code yet.
 export function reflectionUrl(g: RequestGroup) {
   const token = isConfigured ? g.reflectionToken : reflectToken(g.id);
-  return token ? `${location.href.split('#')[0]}#/reflect/${token}` : '';
+  const base = SITE_URL.trim().replace(/\/?#?\/?$/, '') || location.href.split('#')[0];
+  return token ? `${base}#/reflect/${token}` : '';
 }
 
 const baseVars = (g: RequestGroup) => ({
