@@ -66,7 +66,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             {/* Same place as the site name link, so it's skipped by keyboard and screen readers. */}
             <Link to="/" tabIndex={-1} aria-hidden="true" className="shrink-0">
               <img
-                data-asset="logo-d-2"
+                data-asset="gp-logo-black"
                 alt=""
                 className="h-16 w-16 object-contain sm:h-20 sm:w-20"
                 style={{ mixBlendMode: 'multiply' }}
@@ -132,7 +132,7 @@ export default function Shell({ children }: { children: ReactNode }) {
                 className="inline-flex transition-opacity hover:opacity-70"
               >
                 <img
-                  data-asset="logo-d"
+                  data-asset="gp-logo-bg"
                   alt="GROUP PROJECT website (opens in a new tab)"
                   className="h-20 w-20 object-contain"
                   style={{ mixBlendMode: 'multiply' }}
@@ -145,7 +145,7 @@ export default function Shell({ children }: { children: ReactNode }) {
                 className="inline-flex min-h-12 items-center transition-opacity hover:opacity-70"
               >
                 <img
-                  data-asset="cw-tertiary-logo-1"
+                  data-asset="cw-logo"
                   alt="Civic Works website (opens in a new tab)"
                   className="h-9 w-auto object-contain"
                   style={{ mixBlendMode: 'multiply' }}
@@ -163,7 +163,7 @@ export default function Shell({ children }: { children: ReactNode }) {
 
       <AddedNotice />
       {/* Source for the site icon only; never shown. */}
-      <img data-asset="logo-cropped" alt="" aria-hidden="true" hidden />
+      <img data-asset="gp-logo-cropped" alt="" aria-hidden="true" hidden />
     </div>
   );
 }
