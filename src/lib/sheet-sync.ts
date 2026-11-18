@@ -24,6 +24,11 @@ export function parseCSV(text: string): string[][] {
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+// A loose form of a name for matching: no capitals, no (bracketed part), no plural s,
+// no punctuation. "Folding Table (6ft)" and "Folding tables" both give "foldingtable".
+export const looseKey = (name: string) =>
+  name.toLowerCase().replace(/\([^)]*\)/g, '').replace(/s\b/g, '').replace(/[^a-z0-9]+/g, '');
+
 // Whole dollars: "$180", "180", "1,200" and "180.00" all work. Blank means none.
 // Returns undefined when the cell can't be read as whole dollars.
 export function parseDollars(raw: string): number | null | undefined {
@@ -53,12 +58,31 @@ export function rowsToItems(rows: string[][], existing: Item[]): SyncResult {
     block: col('block_party'), indoor: col('indoor_gathering') };
   if (idx.name < 0) return { rows: [], errors: ['No "name" column found in the first row.'] };
 
+  // Rows match stored items by slug. A row with a blank slug cell whose
+  // name-built slug finds nothing falls back to the name (loosely), and reuses
+  // that item's slug, so a renamed row updates the item instead of adding a
+  // second one. Only when exactly one stored item and one sheet row fit.
+  const nameOf = (r: string[]) => (r[idx.name] ?? '').trim();
+  const typedSlug = (r: string[]) => (idx.slug >= 0 ? (r[idx.slug] ?? '').trim() : '');
+  const slugOf = (r: string[]) => typedSlug(r) || slugify(nameOf(r));
+  const stored = (slug: string) => existing.some((e) => e.slug === slug);
+  const named = body.filter((r) => nameOf(r));
+  const direct = new Set(named.map(slugOf));
+  const matchSlug = (r: string[]) => {
+    const slug = slugOf(r);
+    const key = looseKey(nameOf(r));
+    if (typedSlug(r) || stored(slug) || !key) return slug;
+    const candidates = existing.filter((e) => !direct.has(e.slug) && looseKey(e.name) === key);
+    const rivals = named.filter((o) => !typedSlug(o) && !stored(slugOf(o)) && looseKey(nameOf(o)) === key);
+    return candidates.length === 1 && rivals.length === 1 ? candidates[0].slug : slug;
+  };
+
   const out: ItemInput[] = [];
   body.forEach((r, n) => {
     const get = (i: number) => (i >= 0 ? (r[i] ?? '').trim() : '');
     const name = get(idx.name);
     if (!name) return;
-    const slug = get(idx.slug) || slugify(name);
+    const slug = matchSlug(r);
     const prev = existing.find((e) => e.slug === slug);
     const cat = CATEGORIES.find((c) => c.toLowerCase() === get(idx.category).toLowerCase());
     const qty = parseInt(get(idx.qty), 10);

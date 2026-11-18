@@ -17,7 +17,7 @@ A lending library for the gear that makes gatherings happen: folding tables, cha
 
 With `SUPABASE_URL` and `SUPABASE_ANON_KEY` set (see `.env.example`), the app uses one shared database. Without them it runs on seeded preview data saved in this browser.
 
-1. Run the files in `supabase/migrations/` in order, 0001 through 0016.
+1. Run the files in `supabase/migrations/` in order, 0001 through 0017.
 2. Authentication → Providers: turn on Email. Under URL Configuration, set Site URL to the address you use day to day. Add `https://<preview-host>/**` and `https://<published-host>/**` to Redirect URLs. The librarian sign-in page shows the exact line to paste.
 3. Librarians are rows in `librarian_allowlist`. To add someone, run a new migration (or SQL) with `insert into public.librarian_allowlist (email, name) values ('them@example.com', 'Their name');`. Delete the row to remove them.
 
@@ -60,7 +60,7 @@ Keep `--ink`, `--text` and `--warning` dark enough to read on `--wall` (a contra
 
 `replacement_cost` and `deposit` are optional and take whole dollars ("$180", "180" and "180.00" all work). A blank cell clears the amount. If a sheet doesn't have one of these columns, the amounts already saved stay as they are. Both amounts are public. The replacement cost shows on the item page. The deposit shows on the item page, on the request list, on the confirmation page and on the librarians' request card. Each item has one deposit, however many someone borrows.
 
-Category is one of: Furniture, Sound/AV, Lights/Power, Signage, Safety, Games, Other. Status is one of: active, repair, inactive, retired. **active** is listed and can be requested. **repair** is listed with a grayed-out "Being repaired" button. **inactive** means the library has it but isn't lending it right now. **retired** means it's gone for good. Inactive and retired items are both hidden from the Library page, the bundles and the item count. The sync matches rows to items by slug, and anything missing from the sheet stays as it is. In Google Sheets: File → Share → Publish to web → CSV.
+Category is one of: Furniture, Sound/AV, Lights/Power, Signage, Safety, Games, Other. Status is one of: active, repair, inactive, retired. **active** is listed and can be requested. **repair** is listed with a grayed-out "Being repaired" button. **inactive** means the library has it but isn't lending it right now. **retired** means it's gone for good. Inactive and retired items are both hidden from the Library page, the bundles and the item count. The sync matches rows to items by slug. If the `slug` cell is blank and the slug built from the name finds nothing, it falls back to the name, ignoring capitals, anything in brackets, plural s and punctuation, so "Folding Table (6ft)" updates "Folding tables" instead of adding a second item. The preview says "updates [item]" or "new item" for each row before anything changes. Anything missing from the sheet stays as it is. In Google Sheets: File → Share → Publish to web → CSV.
 
 ## Photos
 

@@ -430,7 +430,9 @@ function Inventory() {
                 return (
                   <li key={r.slug} className="hairline-soft flex justify-between px-3 py-1.5 last:border-0">
                     <span>{r.name} · {r.quantityTotal} · {r.status}</span>
-                    <span className={change === 'same' ? 'text-muted-foreground' : 'font-semibold text-secondary'}>{change}</span>
+                    <span className={change === 'same' ? 'text-muted-foreground' : 'font-semibold text-secondary'}>
+                      {change === 'new' ? 'new item' : change === 'changed' && prev ? `updates ${prev.name}` : change}
+                    </span>
                   </li>
                 );
               })}
