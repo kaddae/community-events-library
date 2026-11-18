@@ -20,7 +20,7 @@ Neighbors have often told us that a missing PA system, tables and chairs, or cle
 
 GROUP PROJECT is a new hub for community-building that supports local projects through relationships, resources, and skill-sharing. We offer working space for projects, a lending library for gatherings, and partner with locals to host community-building events that inspire, educate, and help folks do cool stuff in New Haven.
 
-We know from that hosting an event takes a lot of work, and can require organizers to coordinate the borrowing or buying of many different physical items. We built this library with the goal of encouraging more successful, impactful and joyous gatherings through easy access to the event materials and supplies they need.
+We know that hosting an event takes a lot of work, and can require organizers to coordinate the borrowing or buying of many different physical items. We built this library with the goal of encouraging more successful, impactful and joyous gatherings through easy access to the event materials and supplies they need.
 
 ## Help keep the library going
 
