@@ -163,7 +163,7 @@ export default function Shell({ children }: { children: ReactNode }) {
 
       <AddedNotice />
       {/* Source for the site icon only; never shown. */}
-      <img data-asset="logo-d-color-1" alt="" aria-hidden="true" hidden />
+      <img data-asset="cropped" alt="" aria-hidden="true" hidden />
     </div>
   );
 }
