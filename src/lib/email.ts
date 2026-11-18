@@ -22,7 +22,7 @@ export const TEST_RECIPIENT = '';
 // no #). Blank = the address of the page the email is sent from, which is
 // fine on the published site but comes out as an unusable blob: link when
 // sending from the Builder preview.
-export const SITE_URL = '';
+export const SITE_URL = 'https://relationalbuilder.org/s/new-haven-community-events-lending-library';
 
 const slot = (text: string, vars: Record<string, string>) =>
   text.replace(/\{(\w+)\}/g, (m, k: string) => vars[k] ?? m);

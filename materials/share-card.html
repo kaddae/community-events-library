@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1200">
+<title>Share card · Community Events Lending Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chango&family=Nunito:wght@700&display=swap" rel="stylesheet">
+<script src="../assets/logo-d.js"></script>
+<script src="../assets/cw-tertiary-logo-1.js"></script>
+<style>
+  /* A screen image, not a printed piece: sizes are in pixels on purpose.
+     The card is exactly 1200 x 630 and sits at the top-left corner, so a
+     1200 x 630 screenshot captures it edge to edge. */
+  :root {
+    --wall: #FFFC88;
+    --ink: #141414;
+    --text-soft: #4A4536;
+    --gp-olive: #CCC14D;
+    --gp-sage: #92A461;
+    --gp-blue: #5D83B3;
+    --gp-periwinkle: #A0A3D2;
+    --gp-lavender: #D9ADD1;
+    --gp-pink: #EDA3A2;
+    --gp-red: #DC5D47;
+    --gp-orange: #EE8962;
+    --gp-yellow: #FFC962;
+    --cw-teal: #094A4E;
+    --cw-cyan: #71E3F4;
+    --cw-lime: #B8EA61;
+    --font-display: 'Chango', Georgia, serif;
+    --font-sans: 'Nunito', 'Helvetica Neue', Helvetica, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { background: var(--wall); }
+  body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .card {
+    width: 1200px;
+    height: 630px;
+    display: flex;
+    flex-direction: column;
+    background: var(--wall);
+    color: var(--ink);
+    overflow: hidden;
+  }
+
+  /* Zone: the site's two color bands, GP on top and CW at the bottom */
+  .gp-band {
+    flex: none;
+    height: 18px;
+    background: linear-gradient(90deg,
+      var(--gp-blue) 0 11.11%, var(--gp-orange) 0 22.22%, var(--gp-sage) 0 33.33%,
+      var(--gp-pink) 0 44.44%, var(--gp-periwinkle) 0 55.55%, var(--gp-red) 0 66.66%,
+      var(--gp-olive) 0 77.77%, var(--gp-lavender) 0 88.88%, var(--gp-yellow) 0 100%);
+  }
+  .cw-band {
+    flex: none;
+    height: 18px;
+    background: linear-gradient(90deg, var(--cw-teal) 0 33.33%, var(--cw-cyan) 0 66.66%, var(--cw-lime) 0 100%);
+  }
+
+  .inner {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 56px 72px 44px;
+  }
+
+  /* Zone: the title */
+  .title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 72px;
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .title span { display: block; white-space: nowrap; }
+
+  /* Zone: the place line */
+  .place {
+    margin-top: 26px;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 27px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+  }
+
+  /* Zone: both logos */
+  .logos {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+  .logos img { display: block; object-fit: contain; mix-blend-mode: multiply; }
+  .logo-gp { width: 170px; height: 170px; }
+  .logo-cw { height: 78px; width: auto; max-width: 420px; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="gp-band" aria-hidden="true"></div>
+
+    <div class="inner">
+      <!-- Title and place line -->
+      <header>
+        <h1 class="title"><span>Community Events</span><span>Lending Library</span></h1>
+        <p class="place">New Haven · GROUP PROJECT x Civic Works</p>
+      </header>
+
+      <!-- Both logos -->
+      <div class="logos">
+        <img class="logo-gp" data-asset="logo-d" alt="GROUP PROJECT">
+        <img class="logo-cw" data-asset="cw-tertiary-logo-1" alt="Civic Works">
+      </div>
+    </div>
+
+    <div class="cw-band" aria-hidden="true"></div>
+  </main>
+</body>
+</html>
