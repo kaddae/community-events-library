@@ -7,13 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chango&family=Nunito:wght@700&display=swap" rel="stylesheet">
-<script src="../assets/logo-d.js"></script>
-<script src="../assets/cw-tertiary-logo-1.js"></script>
 <style>
   /* A screen image, not a printed piece: sizes are in pixels on purpose.
-     The card is exactly 1200 x 630 and sits at the top-left corner, so a
-     1200 x 630 screenshot captures it edge to edge. */
+     Every size is a multiple of --u. In a window 1200px wide or wider,
+     --u is exactly 1px, so the card is exactly 1200 x 630 and sits at the
+     top-left corner: a 1200 x 630 screenshot captures it edge to edge.
+     In a narrower window --u shrinks, so the whole card stays in view. */
   :root {
+    --u: min(1px, 100vw / 1200);
     --wall: #FFFC88;
     --ink: #141414;
     --text-soft: #4A4536;
@@ -37,15 +38,13 @@
 
   html, body { background: var(--wall); }
   body {
-    width: 1200px;
-    height: 630px;
-    overflow: hidden;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
 
   .card {
-    width: 1200px;
-    height: 630px;
+    width: calc(1200 * var(--u));
+    height: calc(630 * var(--u));
     display: flex;
     flex-direction: column;
     background: var(--wall);
@@ -56,7 +55,7 @@
   /* Zone: the site's two color bands, GP on top and CW at the bottom */
   .gp-band {
     flex: none;
-    height: 18px;
+    height: calc(18 * var(--u));
     background: linear-gradient(90deg,
       var(--gp-blue) 0 11.11%, var(--gp-orange) 0 22.22%, var(--gp-sage) 0 33.33%,
       var(--gp-pink) 0 44.44%, var(--gp-periwinkle) 0 55.55%, var(--gp-red) 0 66.66%,
@@ -64,7 +63,7 @@
   }
   .cw-band {
     flex: none;
-    height: 18px;
+    height: calc(18 * var(--u));
     background: linear-gradient(90deg, var(--cw-teal) 0 33.33%, var(--cw-cyan) 0 66.66%, var(--cw-lime) 0 100%);
   }
 
@@ -74,14 +73,14 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 56px 72px 44px;
+    padding: calc(56 * var(--u)) calc(72 * var(--u)) calc(44 * var(--u));
   }
 
   /* Zone: the title */
   .title {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: 72px;
+    font-size: calc(68 * var(--u));
     line-height: 1.1;
     letter-spacing: 0.03em;
     text-transform: uppercase;
@@ -90,10 +89,10 @@
 
   /* Zone: the place line */
   .place {
-    margin-top: 26px;
+    margin-top: calc(26 * var(--u));
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: 27px;
+    font-size: calc(27 * var(--u));
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-soft);
@@ -103,11 +102,11 @@
   .logos {
     display: flex;
     align-items: center;
-    gap: 48px;
+    gap: calc(48 * var(--u));
   }
   .logos img { display: block; object-fit: contain; mix-blend-mode: multiply; }
-  .logo-gp { width: 170px; height: 170px; }
-  .logo-cw { height: 78px; width: auto; max-width: 420px; }
+  .logo-gp { width: calc(170 * var(--u)); height: calc(170 * var(--u)); }
+  .logo-cw { height: calc(78 * var(--u)); width: auto; max-width: calc(420 * var(--u)); }
 </style>
 </head>
 <body>
@@ -130,5 +129,9 @@
 
     <div class="cw-band" aria-hidden="true"></div>
   </main>
+
+  <!-- The logo files. They come after the images so the images exist when these run. -->
+  <script src="./assets/logo-d.js"></script>
+  <script src="./assets/cw-tertiary-logo-1.js"></script>
 </body>
 </html>
