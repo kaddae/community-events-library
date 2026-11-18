@@ -3,41 +3,42 @@ import { createRoot } from 'react-dom/client';
 import '@/index.css';
 import App from '@/App';
 
-// Site icon: the cropped GROUP PROJECT logo in its own colors on a cream square.
-// The logo is drawn with "multiply", so a white background in the image
-// turns cream instead of leaving a white box.
-const CREAM = '#F6F1E8';
-
-// Just the two faces — the middle band of the logo, without the GROUP / PROJECT
-// lettering, so the icon reads at tab size. Fractions of the source image.
-const FACES = { x: 0.10, y: 0.23, w: 0.80, h: 0.54 };
+// Site icon: the whole "cropped" logo (black lines, see-through background) on
+// a solid square in the site's yellow, so it reads on light and dark tab bars
+// and on a phone's home screen. Same color as theme-color in index.html.
+const TILE = '#FFFC88';
 
 function stampIcon(src: string) {
   const img = new Image();
   img.onload = () => {
-    const make = (size: number) => {
-      const sx = img.width * FACES.x, sy = img.height * FACES.y;
-      const sw = img.width * FACES.w, sh = img.height * FACES.h;
-      const pad = Math.round(size * 0.05);
-      const box = size - pad * 2;
-      const scale = Math.min(box / sw, box / sh);
-      const w = Math.round(sw * scale), h = Math.round(sh * scale);
+    if (!img.width || !img.height) return;
+    // rounded: the tab icon gets soft corners. The home-screen icon stays a
+    // full square, since phones round it themselves.
+    const make = (size: number, rounded: boolean) => {
       const out = document.createElement('canvas');
       out.width = size; out.height = size;
       const oc = out.getContext('2d')!;
+      if (rounded) {
+        const r = size * 0.18;
+        oc.beginPath();
+        oc.moveTo(r, 0);
+        oc.arcTo(size, 0, size, size, r);
+        oc.arcTo(size, size, 0, size, r);
+        oc.arcTo(0, size, 0, 0, r);
+        oc.arcTo(0, 0, size, 0, r);
+        oc.closePath();
+        oc.clip();
+      }
+      oc.fillStyle = TILE;
+      oc.fillRect(0, 0, size, size);
+      // The whole picture, proportions kept, with a small margin.
+      const box = size - Math.round(size * 0.1) * 2;
+      const scale = Math.min(box / img.width, box / img.height);
+      const w = Math.round(img.width * scale), h = Math.round(img.height * scale);
       oc.imageSmoothingQuality = 'high';
-      oc.drawImage(img, sx, sy, sw, sh, Math.round((size - w) / 2), Math.round((size - h) / 2), w, h);
-      // Knock the paper-white background out to transparent: the whiter a pixel,
-      // the more see-through it becomes. The saturated blue and green lines stay.
-      try {
-        const px = oc.getImageData(0, 0, size, size);
-        const d = px.data;
-        for (let i = 0; i < d.length; i += 4) {
-          const white = Math.min(d[i], d[i + 1], d[i + 2]);
-          d[i + 3] = Math.min(d[i + 3], 255 - white);
-        }
-        oc.putImageData(px, 0, 0);
-      } catch { /* cross-origin image: leave it as drawn */ }
+      // "multiply" keeps the black lines; any white in the picture takes the tile's color.
+      oc.globalCompositeOperation = 'multiply';
+      oc.drawImage(img, Math.round((size - w) / 2), Math.round((size - h) / 2), w, h);
       return out.toDataURL('image/png');
     };
     try {
@@ -46,9 +47,9 @@ function stampIcon(src: string) {
         if (!link) { link = document.createElement('link'); link.rel = rel; document.head.appendChild(link); }
         link.href = href;
       };
-      setLink('icon', make(64));
-      setLink('apple-touch-icon', make(180));
-    } catch { /* keep the plain cream square */ }
+      setLink('icon', make(64, true));
+      setLink('apple-touch-icon', make(180, false));
+    } catch { /* keep the blank placeholder icon from index.html */ }
   };
   img.src = src;
 }
