@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout checklist · Community Events Lending Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  @page { size: letter; margin: 0.5in; }
+
+  :root {
+    --paper: #ffffff;
+    --ink: #000000;
+    --ink-soft: #3a3a3a;
+    --rule: 2.5pt solid var(--ink);
+    --rule-thin: 0.75pt solid var(--ink);
+    --font: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { background: var(--paper); }
+  body {
+    font-family: var(--font);
+    font-weight: 500;
+    font-size: 13.5pt;
+    line-height: 1.3;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* One letter page: 7.5in x 10in inside the half-inch margins. */
+  .sheet {
+    width: 7.5in;
+    height: 9.9in;
+    margin: 0.5in auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Zone: title */
+  .title { border-bottom: var(--rule); padding-bottom: 0.12in; }
+  .title h1 {
+    font-size: 36pt;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+  .title p { margin-top: 0.07in; font-size: 11pt; color: var(--ink-soft); }
+
+  /* Zone: the three parts of a checkout */
+  .part { margin-top: 0.2in; break-inside: avoid; }
+  .part h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.13in;
+    font-size: 16pt;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding-bottom: 0.06in;
+    border-bottom: var(--rule-thin);
+  }
+  .part h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 0.32in;
+    height: 0.32in;
+    border: var(--rule);
+    font-size: 14pt;
+    letter-spacing: 0;
+  }
+
+  .steps { list-style: none; }
+  .steps li {
+    display: grid;
+    grid-template-columns: 0.22in 1fr;
+    column-gap: 0.15in;
+    align-items: start;
+    padding-top: 0.1in;
+    break-inside: avoid;
+  }
+  .steps .box {
+    width: 0.22in;
+    height: 0.22in;
+    border: 2pt solid var(--ink);
+    margin-top: 0.01in;
+  }
+  .steps strong { font-weight: 700; }
+
+  /* Zone: facts to have at hand */
+  .facts {
+    margin-top: auto;
+    border-top: var(--rule);
+    padding-top: 0.1in;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.05in 0.3in;
+    font-size: 11pt;
+    break-inside: avoid;
+  }
+  .facts dt {
+    font-size: 8pt;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .facts dd { font-weight: 700; }
+
+  /* Zone: who is behind it */
+  .behind {
+    margin-top: 0.1in;
+    padding-top: 0.07in;
+    border-top: var(--rule-thin);
+    font-size: 9.5pt;
+    color: var(--ink-soft);
+  }
+
+  @media print {
+    .sheet { margin: 0; }
+  }
+</style>
+</head>
+<body>
+  <main class="sheet">
+
+    <!-- Title -->
+    <header class="title">
+      <h1>Checkout checklist</h1>
+      <p>Each time gear goes out. Amounts, care notes and tips are on the request card.</p>
+    </header>
+
+    <!-- Part 1 -->
+    <section class="part">
+      <h2><span class="num">1</span>Before they arrive</h2>
+      <ul class="steps">
+        <li><span class="box"></span><span><strong>Pickup time confirmed by email,</strong> not just their ideal time.</span></li>
+        <li><span class="box"></span><span><strong>Every item on the request card says Approved.</strong></span></li>
+        <li><span class="box"></span><span><strong>Items pulled and counted</strong> against the card.</span></li>
+        <li><span class="box"></span><span><strong>Condition checked.</strong> Note anything already dinged.</span></li>
+      </ul>
+    </section>
+
+    <!-- Part 2 -->
+    <section class="part">
+      <h2><span class="num">2</span>At the counter</h2>
+      <ul class="steps">
+        <li><span class="box"></span><span><strong>Borrower agreement signed.</strong></span></li>
+        <li><span class="box"></span><span><strong>Deposit taken,</strong> if the card shows one. Write it in the desk log.</span></li>
+        <li><span class="box"></span><span><strong>Chip-in taken</strong> if they offered one. “Not this time” means don’t ask.</span></li>
+        <li><span class="box"></span><span><strong>Care notes walked through</strong> for each item.</span></li>
+        <li><span class="box"></span><span><strong>Last host’s tip passed along</strong> for something they’re taking.</span></li>
+        <li><span class="box"></span><span><strong>Drop-off day confirmed,</strong> along with the open hours.</span></li>
+        <li><span class="box"></span><span><strong>Told them</strong> a “how did it go?” link comes by email after return.</span></li>
+      </ul>
+    </section>
+
+    <!-- Part 3 -->
+    <section class="part">
+      <h2><span class="num">3</span>After they leave</h2>
+      <ul class="steps">
+        <li><span class="box"></span><span><strong>Tap Check out on each item,</strong> so a late return gets flagged.</span></li>
+        <li><span class="box"></span><span><strong>Send the Checkout email</strong> from the request card.</span></li>
+      </ul>
+    </section>
+
+    <!-- Facts to have at hand -->
+    <dl class="facts">
+      <div><dt>Open hours</dt><dd>Mon 4–7 pm · Tue 3–6 pm · Thu 4–7 pm</dd></div>
+      <div><dt>Library inbox</dt><dd>groupprojectnhv@gmail.com</dd></div>
+      <div><dt>Venmo</dt><dd>@groupprojectnhv</dd></div>
+      <div><dt>Borrower agreement</dt><dd>Linked in the checkout email</dd></div>
+    </dl>
+
+    <!-- Who is behind it -->
+    <p class="behind">Community Events Lending Library · GROUP PROJECT x Civic Works · 140 Bradley Street, New Haven</p>
+
+  </main>
+</body>
+</html>
