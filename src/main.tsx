@@ -55,7 +55,7 @@ function stampIcon(src: string) {
 
 // The builder loads the logo into a hidden image in the page shell; we pick it up from there.
 function watchForLogo() {
-  const find = () => document.querySelector<HTMLImageElement>('img[data-asset="gp-logo-cropped"]')?.getAttribute('src');
+  const find = () => document.querySelector<HTMLImageElement>('img[data-asset="logo-d-color-1"]')?.getAttribute('src');
   const found = find();
   if (found) { stampIcon(found); return; }
   const obs = new MutationObserver(() => {
